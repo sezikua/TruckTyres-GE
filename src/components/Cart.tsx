@@ -60,10 +60,10 @@ export default function Cart() {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      (window as any).addToCart = addToCart;
+      (window as { addToCart?: typeof addToCart }).addToCart = addToCart;
       return () => {
-        if ((window as any).addToCart === addToCart) {
-          (window as any).addToCart = undefined;
+        if ((window as { addToCart?: typeof addToCart }).addToCart === addToCart) {
+          (window as { addToCart?: typeof addToCart }).addToCart = undefined;
         }
       };
     }
@@ -122,8 +122,9 @@ export default function Cart() {
       if (!res.ok) throw new Error(data?.error || 'Помилка відправки');
       setSuccess('Замовлення надіслано. Ми зателефонуємо вам найближчим часом.');
       setCartItems([]);
-    } catch (e: any) {
-      setError(e?.message || 'Невідома помилка');
+    } catch (e: unknown) {
+      const error = e instanceof Error ? e : new Error('Невідома помилка');
+      setError(error.message);
     } finally { setSubmitting(false); }
   }
 
@@ -156,8 +157,9 @@ export default function Cart() {
       if (!res.ok) throw new Error(data?.error || 'Помилка відправки');
       setSuccess('Замовлення надіслано в Telegram. Ми з вами звʼяжемось.');
       setCartItems([]);
-    } catch (e: any) {
-      setError(e?.message || 'Невідома помилка');
+    } catch (e: unknown) {
+      const error = e instanceof Error ? e : new Error('Невідома помилка');
+      setError(error.message);
     } finally { setSubmitting(false); }
   }
 
@@ -213,7 +215,7 @@ export default function Cart() {
                         <div className="flex items-center gap-2">
                           <button onClick={() => updateQuantity(item.product.id, item.quantity - 1)} className="w-6 h-6 rounded bg-black/5 dark:bg-white/10">-</button>
                           <span className="w-8 text-center text-sm">{item.quantity}</span>
-                          <button onClick={() => updateQuantity(item.product.id, item.quantity + 1)} className="w-6 h-6 rounded bg-black/5 dark:bg_WHITE/10">+</button>
+                          <button onClick={() => updateQuantity(item.product.id, item.quantity + 1)} className="w-6 h-6 rounded bg-black/5 dark:bg-white/10">+</button>
                         </div>
                         <button onClick={() => removeFromCart(item.product.id)} className="p-1 text-red-500 hover:bg-red-500/10 rounded-md">
                           <Trash2 className="h-4 w-4" />
@@ -232,7 +234,7 @@ export default function Cart() {
                 <div className="space-y-4">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <input value={qFirstName} onChange={e=>setQFirstName(e.target.value)} placeholder="Імʼя *" className="px-3 py-2 rounded border border-black/10 dark:border-white/10 bg-white dark:bg-neutral-800" />
-                    <input value={qPhone} onChange={e=>setQPhone(e.target.value)} placeholder="№ телефону *" className="px-3 py-2 rounded border border-black/10 dark:border_WHITE/10 bg_WHITE dark:bg-neutral-800" />
+                    <input value={qPhone} onChange={e=>setQPhone(e.target.value)} placeholder="№ телефону *" className="px-3 py-2 rounded border border-black/10 dark:border-white/10 bg-white dark:bg-neutral-800" />
                   </div>
                   <button disabled={submitting} onClick={submitQuick} className="w-full inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text_WHITE py-3 rounded-lg">
                     <Send className="w-4 h-4" /> Відправити замовлення

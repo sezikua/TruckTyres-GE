@@ -67,7 +67,6 @@ function isOrderPayload(x: unknown): x is OrderPayload {
 
 function formatMessage(payload: OrderPayload): string {
   const {
-    type,
     firstName,
     lastName,
     email,
