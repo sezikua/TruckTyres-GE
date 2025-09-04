@@ -1,0 +1,8 @@
+Backup name: ceat-katalog-20250904-100914
+Created at: 2025-09-04T07:09:15Z
+Working dir: /Users/serg/Library/Mobile Documents/com~apple~CloudDocs/Домашняя_работа/CEAT-katalog/ceat-katalog
+Archive file: ceat-katalog-20250904-100914.tar.gz
+Notes file: ceat-katalog-20250904-100914.txt
+
+Excluded: node_modules, .next, .git, dist, turbo
+Included (top-level): .DS_Store,.gitignore,ceat-katalog-20250904-100914.tar.gz,eslint.config.mjs,next-env.d.ts,next.config.ts,package-lock.json,package.json,postcss.config.mjs,public,README.md,src,tsconfig.json
