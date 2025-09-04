@@ -45,7 +45,7 @@ export default function Header() {
               className="hidden md:inline-flex h-10 items-center rounded-md bg-white/10 hover:bg-white/20 text-white px-4 transition"
               onClick={() => setContactOpen(true)}
             >
-              Зворотний зв'язок
+              Зворотний зв&apos;язок
             </button>
             <Cart />
             <ThemeToggle />
@@ -69,7 +69,7 @@ export default function Header() {
             onClick={() => { setContactOpen(true); setOpen(false); }}
             className="px-3 py-2 rounded-md hover:bg-white/10 text-left"
           >
-            Зворотний зв'язок
+            Зворотний зв&apos;язок
           </button>
           {navItems.map((item) => (
             <Link
