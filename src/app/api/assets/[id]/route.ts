@@ -4,9 +4,13 @@ export async function GET(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  let id: string = 'unknown';
+  let directusUrl: string = 'unknown';
+  
   try {
-    const { id } = await params;
-    const directusUrl = process.env.DIRECTUS_URL || 'http://173.212.215.18:8055';
+    const resolvedParams = await params;
+    id = resolvedParams.id;
+    directusUrl = process.env.DIRECTUS_URL || 'http://173.212.215.18:8055';
     const directusToken = process.env.DIRECTUS_TOKEN || 'wFd_KOyK9LJEZSe98DEu8Uww5wKGg1qD';
     const url = `${directusUrl}/assets/${id}`;
 
