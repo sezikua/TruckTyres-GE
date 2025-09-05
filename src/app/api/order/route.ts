@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
 
 // NOTE: У продакшені збережіть у ENV
-const TELEGRAM_BOT_TOKEN = '8335053620:AAH7nD2cVB5wH2WkH7wSDTdBynIEZSTFP60';
-const TELEGRAM_CHAT_ID = '442457024';
+const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '8335053620:AAH7nD2cVB5wH2WkH7wSDTdBynIEZSTFP60';
+const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID || '442457024';
 
 type DeliveryOption = 'Нова Пошта' | 'САТ' | 'Делівері' | 'Самовивіз';
 
