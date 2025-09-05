@@ -15,12 +15,13 @@ export default async function Head({ params }: { params: Promise<{ category: str
   const decoded = decodeURIComponent(category);
 
   // ItemList JSON-LD for category page
-  let items: Array<{ id: number; product_name: string } & Record<string, unknown>> = [];
+  type ItemForList = { id: number; product_name: string };
+  let items: ItemForList[] = [];
   try {
     const res = await fetch(`${baseUrl}/api/products?category=${encodeURIComponent(decoded)}&limit=50`, { next: { revalidate: 300 } });
     if (res.ok) {
       const json = await res.json();
-      items = (json?.data || []).slice(0, 50);
+      items = ((json?.data || []) as ItemForList[]).slice(0, 50);
     }
   } catch {}
 
@@ -28,7 +29,7 @@ export default async function Head({ params }: { params: Promise<{ category: str
     '@context': 'https://schema.org',
     '@type': 'ItemList',
     name: `Категорія: ${decoded}`,
-    itemListElement: items.map((p: any, index: number) => ({
+    itemListElement: items.map((p: ItemForList, index: number) => ({
       '@type': 'ListItem',
       position: index + 1,
       url: `${baseUrl}/products/${p.id}`,

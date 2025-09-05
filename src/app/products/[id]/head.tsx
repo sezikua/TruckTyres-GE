@@ -14,12 +14,24 @@ export default async function Head({ params }: { params: Promise<{ id: string }>
   const baseUrl = await getBaseUrl();
 
   // Fetch minimal product data for JSON-LD
-  let product: any = null;
+  type ProductForHead = {
+    id: number;
+    product_name: string;
+    description: string | null;
+    model: string;
+    size: string;
+    product_image: string | null;
+    sku: string;
+    warehouse: string;
+    regular_price: string;
+    discount_price: string | null;
+  };
+  let product: ProductForHead | null = null;
   try {
     const res = await fetch(`${baseUrl}/api/products/${id}`, { next: { revalidate: 300 } });
     if (res.ok) {
-      const json = await res.json();
-      product = json.data;
+      const json: { data: ProductForHead | null } = await res.json();
+      product = json.data ?? null;
     }
   } catch {}
 
