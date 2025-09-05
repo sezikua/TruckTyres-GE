@@ -45,6 +45,9 @@ export default function ContactsPage() {
           тел.: <a href="tel:+380504249510" className="text-[#0054a6] hover:underline font-semibold">+38 050 424 95 10</a> Сергій
         </p>
         <p className="text-lg">
+          тел.: <a href="tel:+380686007030" className="text-[#0054a6] hover:underline font-semibold">+38 068 600 70 30</a>
+        </p>
+        <p className="text-lg">
           Для замовлення пишіть на пошту
           <br />
           <a href="mailto:s.kostrov@agrosolar.com.ua" className="text-[#0054a6] hover:underline font-semibold">s.kostrov@agrosolar.com.ua</a>
