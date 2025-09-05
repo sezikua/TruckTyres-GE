@@ -13,6 +13,7 @@ export default function ProductPage() {
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<'description' | 'specs'>('description');
 
   useEffect(() => {
     const loadProduct = async () => {
@@ -210,34 +211,52 @@ export default function ProductPage() {
           </div>
         </div>
 
-        {/* Description & Specifications */}
+        {/* Description & Specifications (Tabs) */}
         {(product.description || product.specifications) && (
           <div className="mt-16">
-            <div className="lg:grid lg:grid-cols-2 lg:gap-12">
-              {/* Description */}
+            {/* Tabs header */}
+            <div className="flex gap-2 border-b border-foreground/10 mb-6">
               {product.description && (
-                <div>
-                  <h2 className="text-2xl font-bold text-foreground mb-6">Опис товару</h2>
-                  <div 
-                    className="prose prose-foreground max-w-none text-foreground"
-                    dangerouslySetInnerHTML={{ 
-                      __html: product.description.replace(/\\n/g, '<br>') 
-                    }}
-                  />
-                </div>
+                <button
+                  type="button"
+                  onClick={() => setActiveTab('description')}
+                  className={`px-4 py-2 rounded-t-lg text-sm font-medium transition-colors ${
+                    activeTab === 'description'
+                      ? 'bg-foreground/10 text-foreground'
+                      : 'text-foreground/70 hover:text-foreground'
+                  }`}
+                >
+                  Опис товару
+                </button>
               )}
-
-              {/* Specifications */}
               {product.specifications && (
-                <div>
-                  <h2 className="text-2xl font-bold text-foreground mb-6">Технічні характеристики</h2>
-                  <div 
-                    className="prose prose-foreground max-w-none text-foreground"
-                    dangerouslySetInnerHTML={{ 
-                      __html: product.specifications.replace(/\\n/g, '<br>') 
-                    }}
-                  />
-                </div>
+                <button
+                  type="button"
+                  onClick={() => setActiveTab('specs')}
+                  className={`px-4 py-2 rounded-t-lg text-sm font-medium transition-colors ${
+                    activeTab === 'specs'
+                      ? 'bg-foreground/10 text-foreground'
+                      : 'text-foreground/70 hover:text-foreground'
+                  }`}
+                >
+                  Технічні характеристики
+                </button>
+              )}
+            </div>
+
+            {/* Tabs content */}
+            <div className="rounded-xl border border-foreground/10 p-5 bg-background/50">
+              {activeTab === 'description' && product.description && (
+                <div
+                  className="prose prose-foreground max-w-none text-foreground"
+                  dangerouslySetInnerHTML={{ __html: product.description.replace(/\\n/g, '<br>') }}
+                />
+              )}
+              {activeTab === 'specs' && product.specifications && (
+                <div
+                  className="prose prose-foreground max-w-none text-foreground"
+                  dangerouslySetInnerHTML={{ __html: product.specifications.replace(/\\n/g, '<br>') }}
+                />
               )}
             </div>
           </div>
