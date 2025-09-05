@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { ShoppingCart, X, Trash2, Send } from 'lucide-react';
 import { Product } from '@/lib/api';
+import OrderSuccessModal from './OrderSuccessModal';
 
 interface CartItem {
   product: Product;
@@ -20,6 +21,7 @@ export default function Cart() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   // Quick order
   const [qFirstName, setQFirstName] = useState('');
@@ -120,8 +122,11 @@ export default function Cart() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data?.error || 'Помилка відправки');
-      setSuccess('Замовлення надіслано. Ми зателефонуємо вам найближчим часом.');
       setCartItems([]);
+      setQFirstName('');
+      setQPhone('');
+      setIsOpen(false);
+      setShowSuccessModal(true);
     } catch (e: unknown) {
       const error = e instanceof Error ? e : new Error('Невідома помилка');
       setError(error.message);
@@ -155,8 +160,18 @@ export default function Cart() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data?.error || 'Помилка відправки');
-      setSuccess('Замовлення надіслано в Telegram. Ми з вами звʼяжемось.');
       setCartItems([]);
+      setFirstName('');
+      setLastName('');
+      setEmail('');
+      setPhone('');
+      setRegion('');
+      setCity('');
+      setDelivery([]);
+      setCarrierWarehouse('');
+      setMessage('');
+      setIsOpen(false);
+      setShowSuccessModal(true);
     } catch (e: unknown) {
       const error = e instanceof Error ? e : new Error('Невідома помилка');
       setError(error.message);
@@ -236,6 +251,7 @@ export default function Cart() {
                     <input value={qFirstName} onChange={e=>setQFirstName(e.target.value)} placeholder="Імʼя *" className="px-3 py-2 rounded border border-black/10 dark:border-white/10 bg-white dark:bg-neutral-800" />
                     <input value={qPhone} onChange={e=>setQPhone(e.target.value)} placeholder="№ телефону *" className="px-3 py-2 rounded border border-black/10 dark:border-white/10 bg-white dark:bg-neutral-800" />
                   </div>
+                  {error && <p className="text-red-600 text-sm">{error}</p>}
                   <button disabled={submitting} onClick={submitQuick} className="w-full inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text_WHITE py-3 rounded-lg">
                     <Send className="w-4 h-4" /> Відправити замовлення
                   </button>
@@ -273,7 +289,6 @@ export default function Cart() {
                   <textarea value={message} onChange={e=>setMessage(e.target.value)} placeholder="Повідомлення" className="w-full px-3 py-2 rounded border border-black/10 dark:border_WHITE/10 bg_WHITE dark:bg-neutral-800 min-h-[100px]" />
 
                   {error && <p className="text-red-600 text-sm">{error}</p>}
-                  {success && <p className="text-green-600 text-sm">{success}</p>}
 
                   <button disabled={submitting} onClick={submitFull} className="w-full inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text_WHITE py-3 rounded-lg">
                     <Send className="w-4 h-4" /> Оформити замовлення
@@ -284,6 +299,11 @@ export default function Cart() {
           </div>
         </div>
       )}
+
+      <OrderSuccessModal 
+        isOpen={showSuccessModal} 
+        onClose={() => setShowSuccessModal(false)} 
+      />
     </>
   );
 }
