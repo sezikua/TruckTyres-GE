@@ -13,7 +13,10 @@ export async function GET(request: Request) {
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '30');
     
-    let url = `http://173.212.215.18:8055/items/Product?page=${page}&limit=${limit}&meta=total_count`;
+    const directusUrl = process.env.DIRECTUS_URL || 'http://173.212.215.18:8055';
+    const directusToken = process.env.DIRECTUS_TOKEN || 'wFd_KOyK9LJEZSe98DEu8Uww5wKGg1qD';
+    
+    let url = `${directusUrl}/items/Product?page=${page}&limit=${limit}&meta=total_count`;
     const filters: string[] = [];
     
     // Single category filter (for backward compatibility)
