@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { ShoppingCart, Eye } from 'lucide-react';
 import { Product, getProductImageUrl } from '@/lib/api';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface ProductCardProps {
   product: Product;
@@ -49,10 +50,11 @@ export default function ProductCard({ product }: ProductCardProps) {
       {/* Clickable area to open product */}
       <Link href={`/products/${product.id}`} className="block">
         <div className="relative aspect-square overflow-hidden bg-foreground/5">
-          <img
+          <Image
             src={getProductImageUrl(product.product_image)}
             alt={product.product_name}
-            className={`w-full h-full object-contain transition-transform duration-300 ${
+            fill
+            className={`object-contain transition-transform duration-300 ${
               isHovered ? 'scale-105' : 'scale-100'
             }`}
             onError={(e) => {

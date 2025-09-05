@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Product, fetchSimilarProducts, getProductImageUrl } from '@/lib/api';
 import { ShoppingCart, Package } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Loader2 } from 'lucide-react';
 
 interface SimilarProductsProps {
@@ -116,11 +117,12 @@ export default function SimilarProducts({ currentProductId, size }: SimilarProdu
               className="bg-background border border-foreground/10 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group"
             >
               <Link href={`/products/${product.id}`}>
-                <div className="aspect-square bg-background overflow-hidden">
-                  <img
+                <div className="aspect-square bg-background overflow-hidden relative">
+                  <Image
                     src={getProductImageUrl(product.product_image)}
                     alt={product.product_name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;
                       target.src = '/placeholder-image.svg';

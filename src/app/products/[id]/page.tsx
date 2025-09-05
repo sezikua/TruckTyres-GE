@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation';
 import { fetchProductById, Product, getProductImageUrl } from '@/lib/api';
 import { ShoppingCart, ArrowLeft, Truck, Shield, Clock } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Loader2, Package } from 'lucide-react';
 import SimilarProducts from '@/components/SimilarProducts';
 
@@ -98,11 +99,12 @@ export default function ProductPage() {
         <div className="lg:grid lg:grid-cols-2 lg:gap-12">
           {/* Product Images */}
           <div className="mb-8 lg:mb-0">
-            <div className="aspect-square bg-background border border-foreground/10 rounded-xl shadow-lg overflow-hidden mb-4">
-              <img
+            <div className="aspect-square bg-background border border-foreground/10 rounded-xl shadow-lg overflow-hidden mb-4 relative">
+              <Image
                 src={getProductImageUrl(product.product_image)}
                 alt={product.product_name}
-                className="w-full h-full object-cover"
+                fill
+                className="object-cover"
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
                   target.src = '/placeholder-image.svg';

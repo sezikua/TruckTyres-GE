@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Search, X, Loader2 } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Product } from '@/lib/api';
 
 interface SearchResult {
@@ -173,11 +174,12 @@ export default function SearchBar() {
                 >
                   <div className="flex items-start gap-3">
                     {result.image && (
-                      <div className="w-12 h-12 bg-gray-100 dark:bg-neutral-600 rounded-lg overflow-hidden flex-shrink-0">
-                        <img
+                      <div className="w-12 h-12 bg-gray-100 dark:bg-neutral-600 rounded-lg overflow-hidden flex-shrink-0 relative">
+                        <Image
                           src={result.image}
                           alt={result.title}
-                          className="w-full h-full object-cover"
+                          fill
+                          className="object-cover"
                         />
                       </div>
                     )}

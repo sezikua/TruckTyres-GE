@@ -30,7 +30,7 @@ export default function OrderSuccessModal({ isOpen, onClose }: OrderSuccessModal
           <h2 className="text-xl font-semibold mb-2">Дякуємо!</h2>
           
           <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-            Ваше замовлення надіслано. Ми зв'яжемось з Вами якомога швидше.
+            Ваше замовлення надіслано. Ми зв&apos;яжемось з Вами якомога швидше.
           </p>
           
           <button

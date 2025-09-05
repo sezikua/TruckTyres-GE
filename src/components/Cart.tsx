@@ -20,7 +20,6 @@ export default function Cart() {
   const [tab, setTab] = useState<'items' | 'quick' | 'checkout'>('items');
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   // Quick order
@@ -103,7 +102,7 @@ export default function Cart() {
   })), [cartItems]);
 
   async function submitQuick() {
-    setSubmitting(true); setError(null); setSuccess(null);
+    setSubmitting(true); setError(null);
     try {
       if (!qFirstName.trim() || !qPhone.trim()) {
         setError('Вкажіть Імʼя та номер телефону');
@@ -134,7 +133,7 @@ export default function Cart() {
   }
 
   async function submitFull() {
-    setSubmitting(true); setError(null); setSuccess(null);
+    setSubmitting(true); setError(null);
     try {
       if (!firstName.trim() || !lastName.trim() || !phone.trim() || !region.trim() || !city.trim() || delivery.length === 0) {
         setError('Заповніть обовʼязкові поля');
