@@ -1,90 +1,125 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Filter, X } from 'lucide-react';
-import { Product } from '@/lib/api';
+import { Product, fetchFilteredProducts, FilterOptions, PaginationInfo } from '@/lib/api';
 
 interface ProductFiltersProps {
-  products: Product[];
-  onFiltersChange: (filteredProducts: Product[]) => void;
+  onFiltersChange: (filteredProducts: Product[], pagination?: PaginationInfo) => void;
+  onLoadingChange?: (loading: boolean) => void;
 }
 
-export default function ProductFilters({ products, onFiltersChange }: ProductFiltersProps) {
+export default function ProductFilters({ onFiltersChange, onLoadingChange }: ProductFiltersProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [selectedSegments, setSelectedSegments] = useState<string[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string>('');
+  const [selectedSegment, setSelectedSegment] = useState<string>('');
   const [priceRange, setPriceRange] = useState({ min: '', max: '' });
   const [warehouseFilter, setWarehouseFilter] = useState<string>('all');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [allCategories, setAllCategories] = useState<string[]>([]);
+  const [allSegments, setAllSegments] = useState<string[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  // Get unique categories and segments
-  const categories = [...new Set(products.map(p => p.Category))].sort();
-  const segments = [...new Set(products.map(p => p.Segment))].sort();
-
-  // Apply filters
+  // Load all categories and segments from API
   useEffect(() => {
-    let filtered = [...products];
+    const loadFilterOptions = async () => {
+      try {
+        setLoading(true);
+        const [categoriesResponse, segmentsResponse] = await Promise.all([
+          fetch('/api/categories'),
+          fetch('/api/segments')
+        ]);
 
-    // Search filter
-    if (searchQuery) {
-      filtered = filtered.filter(product =>
-        product.product_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        product.model.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        product.sku.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-    }
+        if (categoriesResponse.ok && segmentsResponse.ok) {
+          const [categoriesData, segmentsData] = await Promise.all([
+            categoriesResponse.json(),
+            segmentsResponse.json()
+          ]);
+          
+          setAllCategories(categoriesData.categories || []);
+          setAllSegments(segmentsData.segments || []);
+        }
+      } catch (error) {
+        console.error('Error loading filter options:', error);
+        setAllCategories([]);
+        setAllSegments([]);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    // Category filter
-    if (selectedCategories.length > 0) {
-      filtered = filtered.filter(product => selectedCategories.includes(product.Category));
-    }
+    loadFilterOptions();
+  }, []);
 
-    // Segment filter
-    if (selectedSegments.length > 0) {
-      filtered = filtered.filter(product => selectedSegments.includes(product.Segment));
-    }
+  // Apply filters function (called manually)
+  const applyFilters = useCallback(async () => {
+    try {
+      if (onLoadingChange) {
+        onLoadingChange(true);
+      }
 
-    // Price range filter
-    if (priceRange.min) {
-      filtered = filtered.filter(product => parseFloat(product.regular_price) >= parseFloat(priceRange.min));
-    }
-    if (priceRange.max) {
-      filtered = filtered.filter(product => parseFloat(product.regular_price) <= parseFloat(priceRange.max));
-    }
+      const filters: FilterOptions = {
+        page: 1,
+        limit: 1000, // Get more products for filtering
+      };
 
-    // Warehouse filter
-    if (warehouseFilter !== 'all') {
-      filtered = filtered.filter(product => product.warehouse.toLowerCase() === warehouseFilter);
-    }
+      if (selectedCategory) {
+        filters.categories = [selectedCategory];
+      }
 
-    onFiltersChange(filtered);
-  }, [products, selectedCategories, selectedSegments, priceRange, warehouseFilter, searchQuery, onFiltersChange]);
+      if (selectedSegment) {
+        filters.segments = [selectedSegment];
+      }
+
+
+      if (priceRange.min) {
+        filters.minPrice = priceRange.min;
+      }
+
+      if (priceRange.max) {
+        filters.maxPrice = priceRange.max;
+      }
+
+      if (warehouseFilter !== 'all') {
+        filters.warehouse = warehouseFilter;
+      }
+
+      const response = await fetchFilteredProducts(filters);
+      onFiltersChange(response.data, response.pagination);
+    } catch (error) {
+      console.error('Error applying filters:', error);
+      onFiltersChange([]);
+    } finally {
+      if (onLoadingChange) {
+        onLoadingChange(false);
+      }
+    }
+  }, [selectedCategory, selectedSegment, priceRange, warehouseFilter, onFiltersChange, onLoadingChange]);
+
 
   const clearFilters = () => {
-    setSelectedCategories([]);
-    setSelectedSegments([]);
+    setSelectedCategory('');
+    setSelectedSegment('');
     setPriceRange({ min: '', max: '' });
     setWarehouseFilter('all');
-    setSearchQuery('');
   };
 
-  const toggleCategory = (category: string) => {
-    setSelectedCategories(prev =>
-      prev.includes(category)
-        ? prev.filter(c => c !== category)
-        : [...prev, category]
-    );
+  const handlePriceChange = (field: 'min' | 'max', value: string) => {
+    setPriceRange(prev => ({ ...prev, [field]: value }));
   };
 
-  const toggleSegment = (segment: string) => {
-    setSelectedSegments(prev =>
-      prev.includes(segment)
-        ? prev.filter(s => s !== segment)
-        : [...prev, segment]
-    );
+  const handleWarehouseChange = (value: string) => {
+    setWarehouseFilter(value);
   };
 
-  const activeFiltersCount = selectedCategories.length + selectedSegments.length + 
+  const handleCategoryChange = (value: string) => {
+    setSelectedCategory(value);
+  };
+
+  const handleSegmentChange = (value: string) => {
+    setSelectedSegment(value);
+  };
+
+  const activeFiltersCount = (selectedCategory ? 1 : 0) + (selectedSegment ? 1 : 0) + 
     (priceRange.min || priceRange.max ? 1 : 0) + (warehouseFilter !== 'all' ? 1 : 0);
 
   return (
@@ -109,70 +144,55 @@ export default function ProductFilters({ products, onFiltersChange }: ProductFil
       <div className={`lg:block ${isOpen ? 'block' : 'hidden'}`}>
         <div className="bg-[#0054a6] text-white border border-white/20 rounded-lg p-4 lg:p-6">
           {/* Header */}
-          <div className="flex items-center justify-between mb-4">
+          <div className="mb-4">
             <h3 className="text-lg font-semibold text-white">Фільтри</h3>
-            {activeFiltersCount > 0 && (
-              <button
-                onClick={clearFilters}
-                className="text-sm text-white/90 hover:text-white font-medium"
-              >
-                Очистити всі
-              </button>
-            )}
           </div>
 
-          {/* Search */}
-          <div className="mb-6">
-            <label className="block text-sm font-medium text-white/90 mb-2">
-              Пошук
-            </label>
-            <input
-              type="text"
-              placeholder="Назва, модель або SKU..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full px-3 py-2 border border-white/20 rounded-lg bg-white/10 text-white placeholder-white/70 focus:ring-2 focus:ring-white/50 focus:border-transparent"
-            />
-          </div>
 
           {/* Categories */}
           <div className="mb-6">
             <label className="block text-sm font-medium text-white/90 mb-3">
-              Категорії
+              Категорія
             </label>
-            <div className="space-y-2 max-h-40 overflow-y-auto">
-              {categories.map((category) => (
-                <label key={category} className="flex items-center text-white/90">
-                  <input
-                    type="checkbox"
-                    checked={selectedCategories.includes(category)}
-                    onChange={() => toggleCategory(category)}
-                    className="rounded border-white/40 text-white focus:ring-white/50"
-                  />
-                  <span className="ml-2 text-sm">{category}</span>
-                </label>
-              ))}
-            </div>
+            <select
+              value={selectedCategory}
+              onChange={(e) => handleCategoryChange(e.target.value)}
+              className="w-full px-3 py-2 border border-white/20 rounded-lg bg-white/10 text-white placeholder-white/70 focus:ring-2 focus:ring-white/50 focus:border-transparent"
+            >
+              <option value="" className="text-black">Всі категорії</option>
+              {loading ? (
+                <option value="" className="text-black">Завантаження...</option>
+              ) : (
+                allCategories.map((category) => (
+                  <option key={category} value={category} className="text-black">
+                    {category}
+                  </option>
+                ))
+              )}
+            </select>
           </div>
 
           {/* Segments */}
           <div className="mb-6">
             <label className="block text-sm font-medium text-white/90 mb-3">
-              Сегменти
+              Сегмент
             </label>
-            <div className="space-y-2 max-h-40 overflow-y-auto">
-              {segments.map((segment) => (
-                <label key={segment} className="flex items-center text-white/90">
-                  <input
-                    type="checkbox"
-                    checked={selectedSegments.includes(segment)}
-                    onChange={() => toggleSegment(segment)}
-                    className="rounded border-white/40 text-white focus:ring-white/50"
-                  />
-                  <span className="ml-2 text-sm">{segment}</span>
-                </label>
-              ))}
-            </div>
+            <select
+              value={selectedSegment}
+              onChange={(e) => handleSegmentChange(e.target.value)}
+              className="w-full px-3 py-2 border border-white/20 rounded-lg bg-white/10 text-white placeholder-white/70 focus:ring-2 focus:ring-white/50 focus:border-transparent"
+            >
+              <option value="" className="text-black">Всі сегменти</option>
+              {loading ? (
+                <option value="" className="text-black">Завантаження...</option>
+              ) : (
+                allSegments.map((segment) => (
+                  <option key={segment} value={segment} className="text-black">
+                    {segment}
+                  </option>
+                ))
+              )}
+            </select>
           </div>
 
           {/* Price Range */}
@@ -185,14 +205,14 @@ export default function ProductFilters({ products, onFiltersChange }: ProductFil
                 type="number"
                 placeholder="Від"
                 value={priceRange.min}
-                onChange={(e) => setPriceRange(prev => ({ ...prev, min: e.target.value }))}
+                onChange={(e) => handlePriceChange('min', e.target.value)}
                 className="px-3 py-2 border border-white/20 rounded-lg bg-white/10 text-white placeholder-white/70 focus:ring-2 focus:ring-white/50 focus:border-transparent"
               />
               <input
                 type="number"
                 placeholder="До"
                 value={priceRange.max}
-                onChange={(e) => setPriceRange(prev => ({ ...prev, max: e.target.value }))}
+                onChange={(e) => handlePriceChange('max', e.target.value)}
                 className="px-3 py-2 border border-white/20 rounded-lg bg-white/10 text-white placeholder-white/70 focus:ring-2 focus:ring-white/50 focus:border-transparent"
               />
             </div>
@@ -205,7 +225,7 @@ export default function ProductFilters({ products, onFiltersChange }: ProductFil
             </label>
             <select
               value={warehouseFilter}
-              onChange={(e) => setWarehouseFilter(e.target.value)}
+              onChange={(e) => handleWarehouseChange(e.target.value)}
               className="w-full px-3 py-2 border border-white/20 rounded-lg bg-white/10 text-white placeholder-white/70 focus:ring-2 focus:ring-white/50 focus:border-transparent"
             >
               <option value="all" className="text-black">Всі товари</option>
@@ -217,62 +237,94 @@ export default function ProductFilters({ products, onFiltersChange }: ProductFil
 
           {/* Active Filters Display */}
           {activeFiltersCount > 0 && (
-            <div className="pt-4 border-t border-white/20">
+            <div className="mb-6 p-4 bg-white/5 rounded-lg border border-white/10">
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-sm font-semibold text-white">
+                  Застосовані фільтри ({activeFiltersCount})
+                </span>
+              </div>
               <div className="flex flex-wrap gap-2">
-                {selectedCategories.map((category) => (
-                  <span
-                    key={category}
-                    className="inline-flex items-center gap-1 bg-white/10 text-white text-xs px-2 py-1 rounded-full"
-                  >
-                    {category}
+                {selectedCategory && (
+                  <span className="inline-flex items-center gap-2 bg-[#008E4E]/20 text-white text-sm px-3 py-2 rounded-lg border border-[#008E4E]/30">
+                    <span className="font-medium">Категорія:</span>
+                    <span>{selectedCategory}</span>
                     <button
-                      onClick={() => toggleCategory(category)}
-                      className="hover:bg-white/20 rounded-full p-0.5"
+                      onClick={() => setSelectedCategory('')}
+                      className="hover:bg-[#008E4E]/30 rounded-full p-1 transition-colors"
+                      title="Видалити фільтр"
                     >
-                      <X className="w-3 h-3" />
+                      <X className="w-4 h-4" />
                     </button>
                   </span>
-                ))}
-                {selectedSegments.map((segment) => (
-                  <span
-                    key={segment}
-                    className="inline-flex items-center gap-1 bg-white/10 text-white text-xs px-2 py-1 rounded-full"
-                  >
-                    {segment}
+                )}
+                {selectedSegment && (
+                  <span className="inline-flex items-center gap-2 bg-[#008E4E]/20 text-white text-sm px-3 py-2 rounded-lg border border-[#008E4E]/30">
+                    <span className="font-medium">Сегмент:</span>
+                    <span>{selectedSegment}</span>
                     <button
-                      onClick={() => toggleSegment(segment)}
-                      className="hover:bg-white/20 rounded-full p-0.5"
+                      onClick={() => setSelectedSegment('')}
+                      className="hover:bg-[#008E4E]/30 rounded-full p-1 transition-colors"
+                      title="Видалити фільтр"
                     >
-                      <X className="w-3 h-3" />
+                      <X className="w-4 h-4" />
                     </button>
                   </span>
-                ))}
+                )}
                 {(priceRange.min || priceRange.max) && (
-                  <span className="inline-flex items-center gap-1 bg-white/10 text-white text-xs px-2 py-1 rounded-full">
-                    Ціна: {priceRange.min || '0'} - {priceRange.max || '∞'} грн
+                  <span className="inline-flex items-center gap-2 bg-[#008E4E]/20 text-white text-sm px-3 py-2 rounded-lg border border-[#008E4E]/30">
+                    <span className="font-medium">Ціна:</span>
+                    <span>{priceRange.min || '0'} - {priceRange.max || '∞'} грн</span>
                     <button
                       onClick={() => setPriceRange({ min: '', max: '' })}
-                      className="hover:bg-white/20 rounded-full p-0.5"
+                      className="hover:bg-[#008E4E]/30 rounded-full p-1 transition-colors"
+                      title="Видалити фільтр"
                     >
-                      <X className="w-3 h-3" />
+                      <X className="w-4 h-4" />
                     </button>
                   </span>
                 )}
                 {warehouseFilter !== 'all' && (
-                  <span className="inline-flex items-center gap-1 bg-white/10 text-white text-xs px-2 py-1 rounded-full">
-                    {warehouseFilter === 'in stock' ? 'В наявності' : 
-                     warehouseFilter === 'on order' ? 'Під замовлення' : 'Немає в наявності'}
+                  <span className="inline-flex items-center gap-2 bg-[#008E4E]/20 text-white text-sm px-3 py-2 rounded-lg border border-[#008E4E]/30">
+                    <span className="font-medium">Наявність:</span>
+                    <span>
+                      {warehouseFilter === 'in stock' ? 'В наявності' : 
+                       warehouseFilter === 'on order' ? 'Під замовлення' : 'Немає в наявності'}
+                    </span>
                     <button
                       onClick={() => setWarehouseFilter('all')}
-                      className="hover:bg-white/20 rounded-full p-0.5"
+                      className="hover:bg-[#008E4E]/30 rounded-full p-1 transition-colors"
+                      title="Видалити фільтр"
                     >
-                      <X className="w-3 h-3" />
+                      <X className="w-4 h-4" />
                     </button>
                   </span>
                 )}
               </div>
             </div>
           )}
+
+          {/* Action Buttons */}
+          <div className="pt-4 border-t border-white/20 mt-6">
+            <div className="space-y-3">
+              <button
+                onClick={applyFilters}
+                className="w-full bg-[#008E4E] hover:bg-[#007A42] text-white px-4 py-3 rounded-lg font-medium transition-colors"
+              >
+                Застосувати фільтри
+              </button>
+              <button
+                onClick={clearFilters}
+                className={`w-full px-4 py-3 rounded-lg font-medium transition-colors ${
+                  activeFiltersCount > 0 
+                    ? 'bg-white/10 hover:bg-white/20 text-white' 
+                    : 'bg-white/5 text-white/50 cursor-not-allowed'
+                }`}
+                disabled={activeFiltersCount === 0}
+              >
+                Скинути фільтри {activeFiltersCount > 0 && `(${activeFiltersCount})`}
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

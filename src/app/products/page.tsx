@@ -36,8 +36,15 @@ export default function ProductsPage() {
     loadProducts();
   }, [currentPage]);
 
-  const handleFiltersChange = useCallback((filtered: Product[]) => {
+  const handleFiltersChange = useCallback((filtered: Product[], pagination?: PaginationInfo) => {
     setFilteredProducts(filtered);
+    if (pagination) {
+      setPagination(pagination);
+    }
+  }, []);
+
+  const handleLoadingChange = useCallback((loading: boolean) => {
+    setLoading(loading);
   }, []);
 
   const handleSearch = useCallback(async (query: string) => {
@@ -175,10 +182,12 @@ export default function ProductsPage() {
         <div className="lg:grid lg:grid-cols-4 lg:gap-8">
           {/* Filters Sidebar */}
           <div className="lg:col-span-1">
-            <ProductFilters
-              products={products}
-              onFiltersChange={handleFiltersChange}
-            />
+            <div className="lg:sticky lg:top-20">
+              <ProductFilters
+                onFiltersChange={handleFiltersChange}
+                onLoadingChange={handleLoadingChange}
+              />
+            </div>
           </div>
 
           {/* Products Grid */}

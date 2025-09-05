@@ -20,7 +20,7 @@ export default function Header() {
   const [contactOpen, setContactOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-[#0054a6] text-white border-b border-black/0">
+    <header className="fixed top-0 left-0 right-0 z-50 w-full bg-[#0054a6] text-white border-b border-black/0 shadow-lg">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <Link href="/" className="flex items-center gap-3">
@@ -62,7 +62,7 @@ export default function Header() {
 
       {/* Mobile menu */}
       <div
-        className={`md:hidden overflow-hidden transition-[max-height,opacity] duration-300 ${open ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}`}
+        className={`md:hidden overflow-hidden transition-[max-height,opacity] duration-300 absolute top-full left-0 right-0 bg-[#0054a6] shadow-lg ${open ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}`}
       >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-2 flex flex-col gap-2 bg-[#0054a6] text-white">
           <button
@@ -76,7 +76,7 @@ export default function Header() {
               key={item.href}
               href={item.href}
               onClick={() => setOpen(false)}
-              className="px-3 py-2 rounded-md hover:bg白/10 transition-colors"
+              className="px-3 py-2 rounded-md hover:bg-white/10 transition-colors"
             >
               {item.label}
             </Link>

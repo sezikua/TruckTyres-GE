@@ -6,6 +6,7 @@ import { fetchProductById, Product, getProductImageUrl } from '@/lib/api';
 import { ShoppingCart, ArrowLeft, Truck, Shield, Clock } from 'lucide-react';
 import Link from 'next/link';
 import { Loader2, Package } from 'lucide-react';
+import SimilarProducts from '@/components/SimilarProducts';
 
 export default function ProductPage() {
   const params = useParams();
@@ -38,13 +39,13 @@ export default function ProductPage() {
   const getWarehouseStatus = (warehouse: string) => {
     switch (warehouse.toLowerCase()) {
       case 'in stock':
-        return { text: 'В наявності', color: 'text-green-600 dark:text-green-400', bg: 'bg-green-100 dark:bg-green-900/30', icon: '✓' };
+        return { text: 'В наявності', color: 'text-black', bg: 'bg-green-500', icon: '✓' };
       case 'on order':
-        return { text: 'Під замовлення', color: 'text-blue-600 dark:text-blue-400', bg: 'bg-blue-100 dark:bg-blue-900/30', icon: '⏳' };
+        return { text: 'Під замовлення', color: 'text-black', bg: 'bg-blue-500', icon: '⏳' };
       case 'out of stock':
-        return { text: 'Немає в наявності', color: 'text-red-600 dark:text-red-400', bg: 'bg-red-100 dark:bg-red-900/30', icon: '✗' };
+        return { text: 'Немає в наявності', color: 'text-black', bg: 'bg-red-500', icon: '✗' };
       default:
-        return { text: warehouse, color: 'text-foreground/70', bg: 'bg-foreground/10', icon: '?' };
+        return { text: warehouse, color: 'text-black', bg: 'bg-gray-500', icon: '?' };
     }
   };
 
@@ -241,6 +242,12 @@ export default function ProductPage() {
             </div>
           </div>
         )}
+
+        {/* Similar Products */}
+        <SimilarProducts 
+          currentProductId={product.id} 
+          size={product.size} 
+        />
       </div>
     </div>
   );

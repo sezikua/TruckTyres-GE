@@ -35,3 +35,12 @@ a { transition: color .2s ease, background-color .2s ease, opacity .2s ease; }
 /* Nice focus ring */
 *:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
 
+/* Fixed header styles */
+header {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 9999 !important;
+}
+

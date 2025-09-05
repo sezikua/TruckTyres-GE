@@ -21,7 +21,7 @@ export default function CategoryGrid() {
     const loadProducts = async () => {
       try {
         const data = await fetchProducts();
-        setProducts(data);
+        setProducts(data.data);
       } catch (error) {
         console.error('Error loading products for categories:', error);
       } finally {

@@ -57,7 +57,7 @@ export default function SearchBar() {
               title: product.product_name,
               description: `${product.model} - ${product.size}`,
               url: `/products/${product.id}`,
-              image: product.product_image
+              image: product.product_image || undefined
             });
           });
         }

@@ -21,7 +21,7 @@ export default function CategoryPage() {
         setLoading(true);
         const category = decodeURIComponent(params.category as string);
         const data = await fetchProductsByCategory(category);
-        setProducts(data);
+        setProducts(data.data);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Помилка завантаження товарів');
       } finally {

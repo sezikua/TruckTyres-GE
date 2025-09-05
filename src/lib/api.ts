@@ -103,6 +103,99 @@ export async function fetchProductsByCategory(category: string, page: number = 1
   }
 }
 
+export interface FilterOptions {
+  categories?: string[];
+  segments?: string[];
+  search?: string;
+  minPrice?: string;
+  maxPrice?: string;
+  warehouse?: string;
+  page?: number;
+  limit?: number;
+}
+
+export async function fetchFilteredProducts(filters: FilterOptions): Promise<ProductsResponse> {
+  try {
+    const params = new URLSearchParams();
+    
+    if (filters.categories && filters.categories.length > 0) {
+      params.append('categories', filters.categories.join(','));
+    }
+    
+    if (filters.segments && filters.segments.length > 0) {
+      params.append('segments', filters.segments.join(','));
+    }
+    
+    if (filters.search) {
+      params.append('search', filters.search);
+    }
+    
+    if (filters.minPrice) {
+      params.append('minPrice', filters.minPrice);
+    }
+    
+    if (filters.maxPrice) {
+      params.append('maxPrice', filters.maxPrice);
+    }
+    
+    if (filters.warehouse) {
+      params.append('warehouse', filters.warehouse);
+    }
+    
+    params.append('page', (filters.page || 1).toString());
+    params.append('limit', (filters.limit || 30).toString());
+
+    const response = await fetch(`/api/products?${params.toString()}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    
+    if (!data.data || !Array.isArray(data.data)) {
+      throw new Error('Invalid data format received from API');
+    }
+
+    return data;
+  } catch (error) {
+    console.error('Error fetching filtered products:', error);
+    throw new Error('Помилка отримання відфільтрованих товарів');
+  }
+}
+
+// Fetch similar products by size
+export async function fetchSimilarProducts(size: string): Promise<Product[]> {
+  try {
+    const response = await fetch(`/api/products/similar/${encodeURIComponent(size)}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    
+    if (!data.data || !Array.isArray(data.data)) {
+      throw new Error('Invalid data format received from API');
+    }
+
+    return data.data;
+  } catch (error) {
+    console.error('Error fetching similar products:', error);
+    throw new Error('Помилка отримання схожих товарів');
+  }
+}
+
 // Формування прямого URL до Directus Assets
 export function getProductImageUrl(imageId: string | null): string {
   if (!imageId) return '/placeholder-image.svg';

@@ -19,21 +19,24 @@ export default function ProductCard({ product }: ProductCardProps) {
   const getWarehouseStatus = (warehouse: string) => {
     switch (warehouse.toLowerCase()) {
       case 'in stock':
-        return { text: 'В наявності', color: 'text-green-700 dark:text-green-300', bg: 'bg-green-100 dark:bg-green-900/30' };
+        return { text: 'В наявності', color: 'text-black', bg: 'bg-green-500' };
       case 'on order':
-        return { text: 'Під замовлення', color: 'text-blue-700 dark:text-blue-300', bg: 'bg-blue-100 dark:bg-blue-900/30' };
+        return { text: 'Під замовлення', color: 'text-black', bg: 'bg-blue-500' };
       case 'out of stock':
-        return { text: 'Немає в наявності', color: 'text-red-700 dark:text-red-300', bg: 'bg-red-100 dark:bg-red-900/30' };
+        return { text: 'Немає в наявності', color: 'text-black', bg: 'bg-red-500' };
       default:
-        return { text: warehouse, color: 'text-foreground/70', bg: 'bg-foreground/10' };
+        return { text: warehouse, color: 'text-black', bg: 'bg-gray-500' };
     }
   };
 
   const warehouseStatus = getWarehouseStatus(product.warehouse);
 
   const handleAddToCart = () => {
-    if (typeof window !== 'undefined' && (window as Window & { addToCart?: (product: Product) => void }).addToCart) {
-      (window as Window & { addToCart?: (product: Product) => void }).addToCart(product);
+    if (typeof window !== 'undefined') {
+      const windowWithCart = window as Window & { addToCart?: (product: Product) => void };
+      if (windowWithCart.addToCart) {
+        windowWithCart.addToCart(product);
+      }
     }
   };
 
