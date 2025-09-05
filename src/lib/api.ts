@@ -199,5 +199,8 @@ export async function fetchSimilarProducts(size: string): Promise<Product[]> {
 // Формування прямого URL до Directus Assets
 export function getProductImageUrl(imageId: string | null): string {
   if (!imageId) return '/placeholder-image.svg';
-  return `http://173.212.215.18:8055/assets/${imageId}`;
+  
+  // Use environment variable for Directus URL, fallback to hardcoded
+  const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL || 'http://173.212.215.18:8055';
+  return `${directusUrl}/assets/${imageId}`;
 }
