@@ -1,36 +1,155 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CEAT Каталог - Сільськогосподарські шини
 
-## Getting Started
+![CEAT Logo](public/cstl-logo-eu-as.avif)
 
-First, run the development server:
+Современный веб-каталог сельскохозяйственных шин CEAT, построенный на Next.js 15 с TypeScript. Проект готов к деплою на Vercel.
+
+## 🚀 Особенности
+
+- **Next.js 15** - Последняя версия с App Router
+- **TypeScript** - Строгая типизация без `any` типов
+- **Tailwind CSS** - Современный дизайн
+- **Responsive Design** - Адаптивный дизайн для всех устройств
+- **API Routes** - Серверные API для работы с данными
+- **Фильтрация** - Продвинутая система фильтров товаров
+- **Поиск** - Быстрый поиск по каталогу
+- **Корзина** - Функциональность добавления в корзину
+
+## 🛠 Технологии
+
+- **Frontend**: Next.js 15, React 18, TypeScript
+- **Styling**: Tailwind CSS
+- **Backend**: Next.js API Routes
+- **Database**: Directus CMS
+- **Deployment**: Vercel Ready
+
+## 📦 Установка
 
 ```bash
+# Клонировать репозиторий
+git clone https://github.com/sezikua/ceat-katalog.git
+cd ceat-katalog
+
+# Установить зависимости
+npm install
+
+# Запустить в режиме разработки
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🚀 Команды
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run dev      # Запуск в режиме разработки
+npm run build    # Сборка для продакшена
+npm run start    # Запуск продакшен версии
+npm run lint     # Проверка кода ESLint
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🌐 Деплой на Vercel
 
-## Learn More
+1. Подключите репозиторий к Vercel
+2. Настройте переменные окружения (если нужны)
+3. Деплой автоматически запустится
 
-To learn more about Next.js, take a look at the following resources:
+Проект готов к деплою без дополнительных настроек!
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📁 Структура проекта
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+src/
+├── app/                    # App Router (Next.js 15)
+│   ├── api/               # API Routes
+│   │   ├── categories/    # API для категорий
+│   │   ├── products/      # API для товаров
+│   │   └── segments/      # API для сегментов
+│   ├── products/          # Страницы товаров
+│   ├── categories/        # Страницы категорий
+│   └── globals.css        # Глобальные стили
+├── components/            # React компоненты
+│   ├── ProductCard.tsx    # Карточка товара
+│   ├── ProductFilters.tsx # Фильтры товаров
+│   ├── SearchBar.tsx      # Поиск
+│   └── SimilarProducts.tsx # Похожие товары
+└── lib/                   # Утилиты и API
+    └── api.ts            # API функции
+```
 
-## Deploy on Vercel
+## 🎯 Основные функции
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Каталог товаров
+- Просмотр всех товаров с пагинацией
+- Фильтрация по категориям и сегментам
+- Поиск по названию и характеристикам
+- Сортировка по статусу наличия
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Детальная страница товара
+- Полная информация о товаре
+- Список похожих товаров по размеру
+- Статус наличия (В наличии/Под заказ/Нет в наличии)
+
+### Фильтры
+- Категории (выпадающий список)
+- Сегменты (выпадающий список)
+- Диапазон цен
+- Статус наличия
+- Отображение активных фильтров
+
+## 🔧 API Endpoints
+
+- `GET /api/products` - Список товаров с фильтрацией
+- `GET /api/products/[id]` - Детальная информация о товаре
+- `GET /api/products/similar/[size]` - Похожие товары по размеру
+- `GET /api/categories` - Список всех категорий
+- `GET /api/segments` - Список всех сегментов
+
+## 🎨 Дизайн
+
+- Современный и чистый интерфейс
+- Адаптивный дизайн для всех устройств
+- Темная и светлая темы
+- Анимации и переходы
+- Цветовая схема CEAT
+
+## 📱 Адаптивность
+
+- **Desktop**: Полная функциональность
+- **Tablet**: Адаптированный интерфейс
+- **Mobile**: Оптимизированный для мобильных устройств
+
+## 🔒 Безопасность
+
+- TypeScript для типобезопасности
+- Валидация данных на сервере
+- Защита от XSS атак
+- Безопасные API endpoints
+
+## 📊 Производительность
+
+- Server-Side Rendering (SSR)
+- Статическая генерация где возможно
+- Оптимизация изображений
+- Ленивая загрузка компонентов
+
+## 🤝 Вклад в проект
+
+1. Fork репозиторий
+2. Создайте feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit изменения (`git commit -m 'Add some AmazingFeature'`)
+4. Push в branch (`git push origin feature/AmazingFeature`)
+5. Откройте Pull Request
+
+## 📄 Лицензия
+
+Этот проект лицензирован под MIT License.
+
+## 📞 Контакты
+
+- **GitHub**: [@sezikua](https://github.com/sezikua)
+- **Проект**: [CEAT Каталог](https://github.com/sezikua/ceat-katalog)
+
+---
+
+**Статус**: ✅ Готов к деплою на Vercel  
+**Версия**: 2.0  
+**Последнее обновление**: 05.09.2025
