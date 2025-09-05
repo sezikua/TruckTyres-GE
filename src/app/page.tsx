@@ -1,5 +1,44 @@
 import Image from "next/image";
 import Link from "next/link";
+import type { Metadata } from "next";
+import { headers } from "next/headers";
+
+async function getBaseUrl(): Promise<string> {
+  const envUrl = process.env.NEXT_PUBLIC_SITE_URL;
+  if (envUrl) return envUrl.replace(/\/$/, "");
+  const h = await headers();
+  const host = h.get("x-forwarded-host") || h.get("host");
+  const proto = h.get("x-forwarded-proto") || "https";
+  return `${proto}://${host}`;
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const baseUrl = await getBaseUrl();
+  const title = "CEAT Каталог — Сільськогосподарські шини";
+  const description = "Офіційний імпортер шин CEAT в Україні. Каталог шин для тракторів, комбайнів, навантажувачів, обприскувачів та причепів.";
+  const canonical = `${baseUrl}/`;
+  const ogImage = `${baseUrl}/cstl-logo-eu-as.avif`;
+
+  return {
+    title,
+    description,
+    alternates: { canonical },
+    openGraph: {
+      title,
+      description,
+      url: canonical,
+      type: "website",
+      images: [{ url: ogImage, alt: "CEAT Україна" }],
+      siteName: "CEAT Україна",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [ogImage],
+    },
+  };
+}
 
 export default function Home() {
   return (

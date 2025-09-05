@@ -1,9 +1,38 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 
-export const metadata: Metadata = {
-  title: "Контакти — CEAT Україна",
-  description: "Адреса, телефон та email офіційного імпортера шин CEAT в Україні.",
-};
+// Метадані формуються динамічно через generateMetadata нижче
+
+function getBaseUrl(): string {
+  const envUrl = process.env.NEXT_PUBLIC_SITE_URL;
+  if (envUrl) return envUrl.replace(/\/$/, "");
+  const h = headers();
+  const host = h.get("x-forwarded-host") || h.get("host");
+  const proto = h.get("x-forwarded-proto") || "https";
+  return `${proto}://${host}`;
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const baseUrl = await getBaseUrl();
+  const canonical = `${baseUrl}/contacts`;
+  return {
+    title: "Контакти — CEAT Україна",
+    description: "Адреса, телефон та email офіційного імпортера шин CEAT в Україні.",
+    alternates: { canonical },
+    openGraph: {
+      title: "Контакти — CEAT Україна",
+      description: "Адреса, телефон та email офіційного імпортера шин CEAT в Україні.",
+      url: canonical,
+      type: "website",
+      siteName: "CEAT Україна",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "Контакти — CEAT Україна",
+      description: "Адреса, телефон та email офіційного імпортера шин CEAT в Україні.",
+    },
+  };
+}
 
 export default function ContactsPage() {
   return (

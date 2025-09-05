@@ -1,10 +1,41 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 
-export const metadata: Metadata = {
-  title: "Про нас — CEAT Україна",
-  description:
-    "CEAT Україна: 15+ років досвіду, 500+ позицій шин на складі, інвестиції >2 млн євро в асортимент, 200 фахівців сервісу.",
-};
+// Метадані формуються динамічно через generateMetadata нижче
+
+function getBaseUrl(): string {
+  const envUrl = process.env.NEXT_PUBLIC_SITE_URL;
+  if (envUrl) return envUrl.replace(/\/$/, "");
+  const h = headers();
+  const host = h.get("x-forwarded-host") || h.get("host");
+  const proto = h.get("x-forwarded-proto") || "https";
+  return `${proto}://${host}`;
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const baseUrl = await getBaseUrl();
+  const canonical = `${baseUrl}/about`;
+  return {
+    title: "Про нас — CEAT Україна",
+    description:
+      "CEAT Україна: 15+ років досвіду, 500+ позицій шин на складі, інвестиції >2 млн євро в асортимент, 200 фахівців сервісу.",
+    alternates: { canonical },
+    openGraph: {
+      title: "Про нас — CEAT Україна",
+      description:
+        "CEAT Україна: 15+ років досвіду, 500+ позицій шин на складі, інвестиції >2 млн євро в асортимент, 200 фахівців сервісу.",
+      url: canonical,
+      type: "website",
+      siteName: "CEAT Україна",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "Про нас — CEAT Україна",
+      description:
+        "CEAT Україна: 15+ років досвіду, 500+ позицій шин на складі, інвестиції >2 млн євро в асортимент, 200 фахівців сервісу.",
+    },
+  };
+}
 
 export default function AboutPage() {
   return (
