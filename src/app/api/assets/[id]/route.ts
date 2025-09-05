@@ -36,6 +36,8 @@ export async function GET(
     });
   } catch (error) {
     console.error('Error fetching asset:', error);
+    console.error('Asset ID:', id);
+    console.error('Directus URL:', directusUrl);
     return new NextResponse('Internal Server Error', { status: 500 });
   }
 }

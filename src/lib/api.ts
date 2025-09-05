@@ -200,7 +200,6 @@ export async function fetchSimilarProducts(size: string): Promise<Product[]> {
 export function getProductImageUrl(imageId: string | null): string {
   if (!imageId) return '/placeholder-image.svg';
   
-  // Use environment variable for Directus URL, fallback to hardcoded
-  const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL || 'http://173.212.215.18:8055';
-  return `${directusUrl}/assets/${imageId}`;
+  // Always use our API proxy for images - this ensures CORS and proper handling
+  return `/api/assets/${imageId}`;
 }
