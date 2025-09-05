@@ -11,13 +11,15 @@ interface SegmentsResponse {
 export async function GET() {
   try {
     // Получаем все уникальные сегменты из базы данных
-    const url = 'http://173.212.215.18:8055/items/Product?fields=Segment&limit=-1';
+    const directusUrl = process.env.DIRECTUS_URL || 'http://173.212.215.18:8055';
+    const directusToken = process.env.DIRECTUS_TOKEN || 'wFd_KOyK9LJEZSe98DEu8Uww5wKGg1qD';
+    const url = `${directusUrl}/items/Product?fields=Segment&limit=-1`;
     
     const response = await fetch(url, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer wFd_KOyK9LJEZSe98DEu8Uww5wKGg1qD',
+        'Authorization': `Bearer ${directusToken}`,
       },
     });
 

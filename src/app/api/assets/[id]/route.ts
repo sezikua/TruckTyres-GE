@@ -6,12 +6,14 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-    const url = `http://173.212.215.18:8055/assets/${id}`;
+    const directusUrl = process.env.DIRECTUS_URL || 'http://173.212.215.18:8055';
+    const directusToken = process.env.DIRECTUS_TOKEN || 'wFd_KOyK9LJEZSe98DEu8Uww5wKGg1qD';
+    const url = `${directusUrl}/assets/${id}`;
 
     const response = await fetch(url, {
       method: 'GET',
       headers: {
-        'Authorization': 'Bearer wFd_KOyK9LJEZSe98DEu8Uww5wKGg1qD',
+        'Authorization': `Bearer ${directusToken}`,
       },
     });
 

@@ -79,14 +79,14 @@ export async function GET(request: Request) {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer wFd_KOyK9LJEZSe98DEu8Uww5wKGg1qD',
+          'Authorization': `Bearer ${directusToken}`,
         },
       }),
       fetch(totalUrl, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer wFd_KOyK9LJEZSe98DEu8Uww5wKGg1qD',
+          'Authorization': `Bearer ${directusToken}`,
         },
       })
     ]);

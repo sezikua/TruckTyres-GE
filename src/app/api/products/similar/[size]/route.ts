@@ -18,14 +18,16 @@ export async function GET(
   try {
     const { size: sizeParam } = await params;
     const size = decodeURIComponent(sizeParam);
+    const directusUrl = process.env.DIRECTUS_URL || 'http://173.212.215.18:8055';
+    const directusToken = process.env.DIRECTUS_TOKEN || 'wFd_KOyK9LJEZSe98DEu8Uww5wKGg1qD';
     
     // Fetch products with the same size, sorted by warehouse status
     // Priority: in stock > on order > out of stock
-    const response = await fetch(`http://173.212.215.18:8055/items/Product?filter[size][_eq]=${encodeURIComponent(size)}&sort[]=warehouse&limit=12`, {
+    const response = await fetch(`${directusUrl}/items/Product?filter[size][_eq]=${encodeURIComponent(size)}&sort[]=warehouse&limit=12`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer wFd_KOyK9LJEZSe98DEu8Uww5wKGg1qD',
+        'Authorization': `Bearer ${directusToken}`,
       },
     });
 
