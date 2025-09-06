@@ -1,0 +1,36 @@
+{
+  "name": "CEAT Каталог — Сільськогосподарські шини",
+  "short_name": "CEAT Україна",
+  "description": "Офіційний імпортер шин CEAT в Україні. Каталог шин для тракторів, комбайнів, навантажувачів, обприскувачів та причепів.",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/apple-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon0.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "/icon1.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ],
+  "theme_color": "#0054a6",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "start_url": "/",
+  "scope": "/",
+  "lang": "uk",
+  "categories": ["business", "shopping", "productivity"]
+}

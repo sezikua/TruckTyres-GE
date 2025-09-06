@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import ThemeProvider from "@/providers/ThemeProvider";
@@ -16,12 +16,49 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://ceat-katalog.vercel.app'),
   title: "CEAT Каталог — Сільськогосподарські шини",
   description:
     "Офіційний імпортер шин CEAT в Україні. Каталог шин для тракторів, комбайнів, навантажувачів, обприскувачів та причепів.",
+  manifest: "/manifest.json",
   icons: {
-    icon: "/icon-as.png",
+    icon: [
+      { url: "/favicon.ico", sizes: "48x48", type: "image/x-icon" },
+      { url: "/icon0.svg", sizes: "any", type: "image/svg+xml" },
+      { url: "/icon1.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [
+      { url: "/apple-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+    shortcut: "/favicon.ico",
   },
+  robots: "index, follow",
+  openGraph: {
+    type: "website",
+    siteName: "CEAT Україна",
+    title: "CEAT Каталог — Сільськогосподарські шини",
+    description: "Офіційний імпортер шин CEAT в Україні. Каталог шин для тракторів, комбайнів, навантажувачів, обприскувачів та причепів.",
+    images: [
+      {
+        url: "/cstl-logo-eu-as.avif",
+        width: 1200,
+        height: 630,
+        alt: "CEAT Україна",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "CEAT Каталог — Сільськогосподарські шини",
+    description: "Офіційний імпортер шин CEAT в Україні. Каталог шин для тракторів, комбайнів, навантажувачів, обприскувачів та причепів.",
+    images: ["/cstl-logo-eu-as.avif"],
+  },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#0054a6",
 };
 
 export default function RootLayout({
