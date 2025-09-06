@@ -125,7 +125,7 @@ export default async function Home() {
             <p className="text-foreground/70">Спеціальні пропозиції на шини CEAT</p>
           </div>
           
-          <div className="grid grid-cols-5 gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-5 gap-6">
             {discountedProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
@@ -145,33 +145,62 @@ function CategoriesGrid() {
     { title: "Шини для причіпної техніки", image: "/trailer-caregory.avif", href: "/categories/Flotation%2FAgri%20Transport" },
   ];
 
+  const [firstCategory, ...otherCategories] = categories;
+
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-      {categories.map(({ title, image, href }) => (
-        <Link
-          key={title}
-          href={href}
-          className="group rounded-lg border border-black/10 dark:border-white/10 overflow-hidden hover:shadow-md transition-all hover:-translate-y-0.5 bg-white dark:bg-black/20"
-        >
-          <div className="relative aspect-square w-full">
-            {image ? (
-              <Image
-                src={image}
-                alt={title}
-                fill
-                sizes="(max-width: 1024px) 50vw, 18vw"
-                className="object-cover"
-                priority
-              />
-            ) : (
-              <div className="h-full w-full bg-[#0054a6]/15" />
-            )}
-          </div>
-          <div className="p-4">
-            <p className="font-medium group-hover:text-[#0054a6] transition-colors">{title}</p>
-          </div>
-        </Link>
-      ))}
+    <div className="space-y-4">
+      {/* Перша категорія - на всю ширину на мобільних */}
+      <Link
+        href={firstCategory.href}
+        className="group block rounded-lg border border-black/10 dark:border-white/10 overflow-hidden hover:shadow-md transition-all hover:-translate-y-0.5 bg-white dark:bg-black/20"
+      >
+        <div className="relative aspect-square w-full">
+          {firstCategory.image ? (
+            <Image
+              src={firstCategory.image}
+              alt={firstCategory.title}
+              fill
+              sizes="(max-width: 1024px) 100vw, 18vw"
+              className="object-cover"
+              priority
+            />
+          ) : (
+            <div className="h-full w-full bg-[#0054a6]/15" />
+          )}
+        </div>
+        <div className="p-4">
+          <p className="font-medium group-hover:text-[#0054a6] transition-colors">{firstCategory.title}</p>
+        </div>
+      </Link>
+
+      {/* Решта категорій - по 2 в ряд на мобільних */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        {otherCategories.map(({ title, image, href }) => (
+          <Link
+            key={title}
+            href={href}
+            className="group rounded-lg border border-black/10 dark:border-white/10 overflow-hidden hover:shadow-md transition-all hover:-translate-y-0.5 bg-white dark:bg-black/20"
+          >
+            <div className="relative aspect-square w-full">
+              {image ? (
+                <Image
+                  src={image}
+                  alt={title}
+                  fill
+                  sizes="(max-width: 1024px) 50vw, 18vw"
+                  className="object-cover"
+                  priority
+                />
+              ) : (
+                <div className="h-full w-full bg-[#0054a6]/15" />
+              )}
+            </div>
+            <div className="p-4">
+              <p className="font-medium group-hover:text-[#0054a6] transition-colors">{title}</p>
+            </div>
+          </Link>
+        ))}
+      </div>
     </div>
   );
 }

@@ -24,7 +24,15 @@ export default function Header() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <Link href="/" className="flex items-center gap-3">
-            <Image src="/cstl-logo-eu-as.avif" alt="CEAT" width={120} height={32} priority />
+            <Image 
+              src="/cstl-logo-eu-as.avif" 
+              alt="CEAT" 
+              width={120} 
+              height={32} 
+              className="h-8 w-auto"
+              style={{ width: 'auto', height: 'auto' }}
+              priority 
+            />
             <span className="sr-only">CEAT Каталог</span>
           </Link>
 
