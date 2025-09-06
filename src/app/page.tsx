@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { headers } from "next/headers";
-import { fetchProducts } from "@/lib/api";
 import ProductCard from "@/components/ProductCard";
 
 async function getBaseUrl(): Promise<string> {
@@ -65,7 +64,8 @@ async function getDiscountedProducts() {
     }
 
     const data = await response.json();
-    const discountedProducts = data.data || [];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const discountedProducts: any[] = data.data || [];
     
     // Перемішуємо та беремо перші 20
     const shuffled = discountedProducts.sort(() => Math.random() - 0.5);
