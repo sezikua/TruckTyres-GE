@@ -40,7 +40,7 @@ export default function Footer() {
 
         <div className="text-sm">
           <p className="font-semibold mb-3">Контакти</p>
-          <p>Київська обл. смт. Глеваха, вул. Сулими, 11</p>
+          <p>Україна, Київська обл. смт. Глеваха, вул. Сулими, 11</p>
           <p className="mt-2"><a href="tel:+380504249510" className="hover:underline">+38 050 424 95 10 (Сергій)</a></p>
           <p className="mt-1"><a href="mailto:s.kostrov@agrosolar.com.ua" className="hover:underline">s.kostrov@agrosolar.com.ua</a></p>
         </div>

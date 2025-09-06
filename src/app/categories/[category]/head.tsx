@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { headers } from 'next/headers';
 
 async function getBaseUrl(): Promise<string> {
@@ -7,6 +8,31 @@ async function getBaseUrl(): Promise<string> {
   const host = h.get('x-forwarded-host') || h.get('host');
   const proto = h.get('x-forwarded-proto') || 'https';
   return `${proto}://${host}`;
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ category: string }> }): Promise<Metadata> {
+  const { category } = await params;
+  const baseUrl = await getBaseUrl();
+  const decodedCategory = decodeURIComponent(category);
+  const canonical = `${baseUrl}/categories/${category}`;
+  
+  return {
+    title: `${decodedCategory} — CEAT Україна`,
+    description: `Шини CEAT категорії ${decodedCategory}. Високоякісні сільськогосподарські шини з офіційного складу в Україні. Швидка доставка, гарантія якості.`,
+    alternates: { canonical },
+    openGraph: {
+      title: `${decodedCategory} — CEAT Україна`,
+      description: `Шини CEAT категорії ${decodedCategory}. Високоякісні сільськогосподарські шини з офіційного складу в Україні.`,
+      url: canonical,
+      type: "website",
+      siteName: "CEAT Україна",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${decodedCategory} — CEAT Україна`,
+      description: `Шини CEAT категорії ${decodedCategory}. Високоякісні сільськогосподарські шини з офіційного складу в Україні.`,
+    },
+  };
 }
 
 export default async function Head({ params }: { params: Promise<{ category: string }> }) {

@@ -59,11 +59,11 @@ export default function ContactsPage() {
         <div className="space-y-6 text-lg">
           <div>
             <p className="font-semibold">Центральний склад, Київська область</p>
-            <p>смт Глеваха, вул. Сулими, 11</p>
+            <p>Україна, смт Глеваха, вул. Сулими, 11</p>
           </div>
           <div>
             <p className="font-semibold">Склад, м. Хмельницький</p>
-            <p>вул. Романа Шухевича, 123</p>
+            <p>Україна, м. Хмельницький, вул. Романа Шухевича, 123</p>
           </div>
         </div>
       </div>

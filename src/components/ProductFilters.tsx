@@ -7,41 +7,52 @@ import { Product, fetchFilteredProducts, FilterOptions, PaginationInfo } from '@
 interface ProductFiltersProps {
   onFiltersChange: (filteredProducts: Product[], pagination?: PaginationInfo) => void;
   onLoadingChange?: (loading: boolean) => void;
+  currentCategory?: string;
+  currentSize?: string;
 }
 
-export default function ProductFilters({ onFiltersChange, onLoadingChange }: ProductFiltersProps) {
+export default function ProductFilters({ onFiltersChange, onLoadingChange, currentCategory, currentSize }: ProductFiltersProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string>('');
-  const [selectedSegment, setSelectedSegment] = useState<string>('');
-  const [priceRange, setPriceRange] = useState({ min: '', max: '' });
+  const [selectedDiameter, setSelectedDiameter] = useState<string>('');
+  const [selectedSize, setSelectedSize] = useState<string>('');
   const [warehouseFilter, setWarehouseFilter] = useState<string>('all');
   const [allCategories, setAllCategories] = useState<string[]>([]);
-  const [allSegments, setAllSegments] = useState<string[]>([]);
+  const [allDiameters, setAllDiameters] = useState<string[]>([]);
+  const [availableCategories, setAvailableCategories] = useState<string[]>([]);
+  const [availableDiameters, setAvailableDiameters] = useState<string[]>([]);
+  const [availableSizes, setAvailableSizes] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Load all categories and segments from API
+  // Load all categories and diameters from API
   useEffect(() => {
     const loadFilterOptions = async () => {
       try {
         setLoading(true);
-        const [categoriesResponse, segmentsResponse] = await Promise.all([
+        const [categoriesResponse, productsResponse] = await Promise.all([
           fetch('/api/categories'),
-          fetch('/api/segments')
+          fetch('/api/products?limit=1000') // Get all products to extract diameters
         ]);
 
-        if (categoriesResponse.ok && segmentsResponse.ok) {
-          const [categoriesData, segmentsData] = await Promise.all([
+        if (categoriesResponse.ok && productsResponse.ok) {
+          const [categoriesData, productsData] = await Promise.all([
             categoriesResponse.json(),
-            segmentsResponse.json()
+            productsResponse.json()
           ]);
           
           setAllCategories(categoriesData.categories || []);
-          setAllSegments(segmentsData.segments || []);
+          setAvailableCategories(categoriesData.categories || []);
+          
+          // Extract unique diameters from products
+          const diameters = [...new Set(productsData.data.map((product: any) => product.diameter).filter(Boolean))];
+          const sortedDiameters = diameters.sort((a, b) => parseFloat(a) - parseFloat(b));
+          setAllDiameters(sortedDiameters);
+          setAvailableDiameters(sortedDiameters);
         }
       } catch (error) {
         console.error('Error loading filter options:', error);
         setAllCategories([]);
-        setAllSegments([]);
+        setAllDiameters([]);
       } finally {
         setLoading(false);
       }
@@ -50,8 +61,91 @@ export default function ProductFilters({ onFiltersChange, onLoadingChange }: Pro
     loadFilterOptions();
   }, []);
 
+  // Initialize filters based on current category and size
+  useEffect(() => {
+    if (currentCategory) {
+      setSelectedCategory(currentCategory);
+    }
+    if (currentSize) {
+      setSelectedSize(currentSize);
+      // Extract diameter from size (e.g., "710/70R42" -> "42")
+      const diameterMatch = currentSize.match(/R(\d+)/);
+      if (diameterMatch) {
+        setSelectedDiameter(diameterMatch[1]);
+      }
+    }
+  }, [currentCategory, currentSize]);
+
+  // Update available options based on selected filters
+  useEffect(() => {
+    const updateAvailableOptions = async () => {
+      if (!selectedCategory && !selectedDiameter) {
+        // No filters selected, show all options
+        setAvailableCategories(allCategories);
+        setAvailableDiameters(allDiameters);
+        setAvailableSizes([]);
+        return;
+      }
+
+      try {
+        const filters: FilterOptions = {
+          page: 1,
+          limit: 1000,
+        };
+
+        if (selectedCategory) {
+          filters.categories = [selectedCategory];
+        }
+
+        const response = await fetchFilteredProducts(filters);
+        const products = response.data;
+
+        // Get unique categories, diameters, and sizes from filtered products
+        const uniqueCategories = [...new Set(products.map(p => p.Category))];
+        const uniqueDiameters = [...new Set(products.map(p => p.diameter).filter(Boolean))];
+        const sortedDiameters = uniqueDiameters.sort((a, b) => parseFloat(a) - parseFloat(b));
+
+        if (selectedCategory) {
+          // If category is selected, show only diameters that exist with this category
+          setAvailableDiameters(sortedDiameters);
+          setAvailableCategories(allCategories); // Keep all categories available
+          setAvailableSizes([]); // Clear sizes
+        } else if (selectedDiameter) {
+          // If diameter is selected, show only categories and sizes that exist with this diameter
+          setAvailableCategories(uniqueCategories);
+          setAvailableDiameters(allDiameters); // Keep all diameters available
+          
+          // Get sizes for selected diameter
+          const diameterProducts = products.filter(p => p.diameter === selectedDiameter);
+          const uniqueSizes = [...new Set(diameterProducts.map(p => p.size).filter(Boolean))];
+          setAvailableSizes(uniqueSizes);
+        }
+      } catch (error) {
+        console.error('Error updating available options:', error);
+        setAvailableCategories(allCategories);
+        setAvailableDiameters(allDiameters);
+        setAvailableSizes([]);
+      }
+    };
+
+    updateAvailableOptions();
+  }, [selectedCategory, selectedDiameter, allCategories, allDiameters]);
+
   // Apply filters function (called manually)
   const applyFilters = useCallback(async () => {
+    // If only category is selected and we're not already on that category page, navigate to category page
+    if (selectedCategory && !selectedDiameter && !selectedSize && warehouseFilter === 'all' && selectedCategory !== currentCategory) {
+      window.location.href = `/categories/${encodeURIComponent(selectedCategory)}`;
+      return;
+    }
+
+    // If size is selected, navigate to size page (but not if we're already on that page)
+    if (selectedSize && selectedDiameter && selectedSize !== currentSize) {
+      window.location.href = `/sizes/${encodeURIComponent(selectedSize)}`;
+      return;
+    }
+
+    // For any other combination, use client-side filtering
     try {
       if (onLoadingChange) {
         onLoadingChange(true);
@@ -66,25 +160,24 @@ export default function ProductFilters({ onFiltersChange, onLoadingChange }: Pro
         filters.categories = [selectedCategory];
       }
 
-      if (selectedSegment) {
-        filters.segments = [selectedSegment];
-      }
-
-
-      if (priceRange.min) {
-        filters.minPrice = priceRange.min;
-      }
-
-      if (priceRange.max) {
-        filters.maxPrice = priceRange.max;
-      }
-
       if (warehouseFilter !== 'all') {
         filters.warehouse = warehouseFilter;
       }
 
       const response = await fetchFilteredProducts(filters);
-      onFiltersChange(response.data, response.pagination);
+      let filteredProducts = response.data;
+
+      // Apply diameter filter on client side since it's not in the API
+      if (selectedDiameter) {
+        filteredProducts = filteredProducts.filter(product => product.diameter === selectedDiameter);
+      }
+
+      // Apply size filter on client side
+      if (selectedSize) {
+        filteredProducts = filteredProducts.filter(product => product.size === selectedSize);
+      }
+
+      onFiltersChange(filteredProducts, response.pagination);
     } catch (error) {
       console.error('Error applying filters:', error);
       onFiltersChange([]);
@@ -93,18 +186,19 @@ export default function ProductFilters({ onFiltersChange, onLoadingChange }: Pro
         onLoadingChange(false);
       }
     }
-  }, [selectedCategory, selectedSegment, priceRange, warehouseFilter, onFiltersChange, onLoadingChange]);
+  }, [selectedCategory, selectedDiameter, selectedSize, warehouseFilter, currentCategory, onFiltersChange, onLoadingChange]);
 
 
   const clearFilters = () => {
     setSelectedCategory('');
-    setSelectedSegment('');
-    setPriceRange({ min: '', max: '' });
+    setSelectedDiameter('');
+    setSelectedSize('');
     setWarehouseFilter('all');
-  };
-
-  const handlePriceChange = (field: 'min' | 'max', value: string) => {
-    setPriceRange(prev => ({ ...prev, [field]: value }));
+    
+    // If we're on a category or size page, navigate back to products page
+    if (currentCategory || currentSize) {
+      window.location.href = '/products';
+    }
   };
 
   const handleWarehouseChange = (value: string) => {
@@ -113,17 +207,31 @@ export default function ProductFilters({ onFiltersChange, onLoadingChange }: Pro
 
   const handleCategoryChange = (value: string) => {
     setSelectedCategory(value);
+    // If diameter is selected and not compatible with new category, clear it
+    if (value && selectedDiameter && !availableDiameters.includes(selectedDiameter)) {
+      setSelectedDiameter('');
+      setSelectedSize(''); // Also clear size
+    }
   };
 
-  const handleSegmentChange = (value: string) => {
-    setSelectedSegment(value);
+  const handleDiameterChange = (value: string) => {
+    setSelectedDiameter(value);
+    setSelectedSize(''); // Clear size when diameter changes
+    // If category is selected and not compatible with new diameter, clear it
+    if (value && selectedCategory && !availableCategories.includes(selectedCategory)) {
+      setSelectedCategory('');
+    }
   };
 
-  const activeFiltersCount = (selectedCategory ? 1 : 0) + (selectedSegment ? 1 : 0) + 
-    (priceRange.min || priceRange.max ? 1 : 0) + (warehouseFilter !== 'all' ? 1 : 0);
+  const handleSizeChange = (value: string) => {
+    setSelectedSize(value);
+  };
+
+  const activeFiltersCount = (selectedCategory ? 1 : 0) + (selectedDiameter ? 1 : 0) + 
+    (selectedSize ? 1 : 0) + (warehouseFilter !== 'all' ? 1 : 0);
 
   return (
-    <div className="mb-6">
+    <div className="lg:sticky lg:top-4 lg:h-fit">
       {/* Mobile Filter Toggle */}
       <div className="lg:hidden mb-4">
         <button
@@ -148,6 +256,56 @@ export default function ProductFilters({ onFiltersChange, onLoadingChange }: Pro
             <h3 className="text-lg font-semibold text-white">Фільтри</h3>
           </div>
 
+          {/* Diameter */}
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-white/90 mb-3">
+              Діаметр
+            </label>
+            <select
+              value={selectedDiameter}
+              onChange={(e) => handleDiameterChange(e.target.value)}
+              className="w-full px-3 py-2 border border-white/20 rounded-lg bg-white/10 text-white placeholder-white/70 focus:ring-2 focus:ring-white/50 focus:border-transparent"
+            >
+              <option value="" className="text-black">Всі діаметри</option>
+              {loading ? (
+                <option value="" className="text-black">Завантаження...</option>
+              ) : (
+                availableDiameters.map((diameter) => (
+                  <option key={diameter} value={diameter} className="text-black">
+                    {diameter}"
+                  </option>
+                ))
+              )}
+            </select>
+          </div>
+
+          {/* Size */}
+          <div className="mb-6">
+            <label className="block text-sm font-medium text-white/90 mb-3">
+              Розмір шини
+            </label>
+            <select
+              value={selectedSize}
+              onChange={(e) => handleSizeChange(e.target.value)}
+              disabled={!selectedDiameter}
+              className={`w-full px-3 py-2 border border-white/20 rounded-lg bg-white/10 text-white placeholder-white/70 focus:ring-2 focus:ring-white/50 focus:border-transparent ${
+                !selectedDiameter ? 'opacity-50 cursor-not-allowed' : ''
+              }`}
+            >
+              <option value="" className="text-black">
+                {!selectedDiameter ? 'Виберіть діаметр' : 'Всі розміри'}
+              </option>
+              {loading ? (
+                <option value="" className="text-black">Завантаження...</option>
+              ) : (
+                availableSizes.map((size) => (
+                  <option key={size} value={size} className="text-black">
+                    {size}
+                  </option>
+                ))
+              )}
+            </select>
+          </div>
 
           {/* Categories */}
           <div className="mb-6">
@@ -163,7 +321,7 @@ export default function ProductFilters({ onFiltersChange, onLoadingChange }: Pro
               {loading ? (
                 <option value="" className="text-black">Завантаження...</option>
               ) : (
-                allCategories.map((category) => (
+                availableCategories.map((category) => (
                   <option key={category} value={category} className="text-black">
                     {category}
                   </option>
@@ -172,51 +330,6 @@ export default function ProductFilters({ onFiltersChange, onLoadingChange }: Pro
             </select>
           </div>
 
-          {/* Segments */}
-          <div className="mb-6">
-            <label className="block text-sm font-medium text-white/90 mb-3">
-              Сегмент
-            </label>
-            <select
-              value={selectedSegment}
-              onChange={(e) => handleSegmentChange(e.target.value)}
-              className="w-full px-3 py-2 border border-white/20 rounded-lg bg-white/10 text-white placeholder-white/70 focus:ring-2 focus:ring-white/50 focus:border-transparent"
-            >
-              <option value="" className="text-black">Всі сегменти</option>
-              {loading ? (
-                <option value="" className="text-black">Завантаження...</option>
-              ) : (
-                allSegments.map((segment) => (
-                  <option key={segment} value={segment} className="text-black">
-                    {segment}
-                  </option>
-                ))
-              )}
-            </select>
-          </div>
-
-          {/* Price Range */}
-          <div className="mb-6">
-            <label className="block text-sm font-medium text-white/90 mb-3">
-              Діапазон цін (грн)
-            </label>
-            <div className="grid grid-cols-2 gap-3">
-              <input
-                type="number"
-                placeholder="Від"
-                value={priceRange.min}
-                onChange={(e) => handlePriceChange('min', e.target.value)}
-                className="px-3 py-2 border border-white/20 rounded-lg bg-white/10 text-white placeholder-white/70 focus:ring-2 focus:ring-white/50 focus:border-transparent"
-              />
-              <input
-                type="number"
-                placeholder="До"
-                value={priceRange.max}
-                onChange={(e) => handlePriceChange('max', e.target.value)}
-                className="px-3 py-2 border border-white/20 rounded-lg bg-white/10 text-white placeholder-white/70 focus:ring-2 focus:ring-white/50 focus:border-transparent"
-              />
-            </div>
-          </div>
 
           {/* Warehouse Status */}
           <div className="mb-6">
@@ -244,38 +357,41 @@ export default function ProductFilters({ onFiltersChange, onLoadingChange }: Pro
                 </span>
               </div>
               <div className="flex flex-wrap gap-2">
+                {selectedDiameter && (
+                  <span className="inline-flex items-center gap-2 bg-[#008E4E]/20 text-white text-sm px-3 py-2 rounded-lg border border-[#008E4E]/30">
+                    <span className="font-medium">Діаметр:</span>
+                    <span>{selectedDiameter}"</span>
+                    <button
+                      onClick={() => {
+                        setSelectedDiameter('');
+                        setSelectedSize('');
+                      }}
+                      className="hover:bg-[#008E4E]/30 rounded-full p-1 transition-colors"
+                      title="Видалити фільтр"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </span>
+                )}
+                {selectedSize && (
+                  <span className="inline-flex items-center gap-2 bg-[#008E4E]/20 text-white text-sm px-3 py-2 rounded-lg border border-[#008E4E]/30">
+                    <span className="font-medium">Розмір:</span>
+                    <span>{selectedSize}</span>
+                    <button
+                      onClick={() => setSelectedSize('')}
+                      className="hover:bg-[#008E4E]/30 rounded-full p-1 transition-colors"
+                      title="Видалити фільтр"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </span>
+                )}
                 {selectedCategory && (
                   <span className="inline-flex items-center gap-2 bg-[#008E4E]/20 text-white text-sm px-3 py-2 rounded-lg border border-[#008E4E]/30">
                     <span className="font-medium">Категорія:</span>
                     <span>{selectedCategory}</span>
                     <button
                       onClick={() => setSelectedCategory('')}
-                      className="hover:bg-[#008E4E]/30 rounded-full p-1 transition-colors"
-                      title="Видалити фільтр"
-                    >
-                      <X className="w-4 h-4" />
-                    </button>
-                  </span>
-                )}
-                {selectedSegment && (
-                  <span className="inline-flex items-center gap-2 bg-[#008E4E]/20 text-white text-sm px-3 py-2 rounded-lg border border-[#008E4E]/30">
-                    <span className="font-medium">Сегмент:</span>
-                    <span>{selectedSegment}</span>
-                    <button
-                      onClick={() => setSelectedSegment('')}
-                      className="hover:bg-[#008E4E]/30 rounded-full p-1 transition-colors"
-                      title="Видалити фільтр"
-                    >
-                      <X className="w-4 h-4" />
-                    </button>
-                  </span>
-                )}
-                {(priceRange.min || priceRange.max) && (
-                  <span className="inline-flex items-center gap-2 bg-[#008E4E]/20 text-white text-sm px-3 py-2 rounded-lg border border-[#008E4E]/30">
-                    <span className="font-medium">Ціна:</span>
-                    <span>{priceRange.min || '0'} - {priceRange.max || '∞'} грн</span>
-                    <button
-                      onClick={() => setPriceRange({ min: '', max: '' })}
                       className="hover:bg-[#008E4E]/30 rounded-full p-1 transition-colors"
                       title="Видалити фільтр"
                     >

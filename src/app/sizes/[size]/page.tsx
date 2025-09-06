@@ -2,13 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
-import { fetchProductsByCategory, Product } from '@/lib/api';
+import { fetchProductsBySize, Product } from '@/lib/api';
 import ProductCard from '@/components/ProductCard';
 import ProductFilters from '@/components/ProductFilters';
 import { Loader2, Package, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 
-export default function CategoryPage() {
+export default function SizePage() {
   const params = useParams();
   const [products, setProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
@@ -17,12 +17,12 @@ export default function CategoryPage() {
 
   useEffect(() => {
     const loadProducts = async () => {
-      if (!params.category) return;
+      if (!params.size) return;
       
       try {
         setLoading(true);
-        const category = decodeURIComponent(params.category as string);
-        const data = await fetchProductsByCategory(category);
+        const size = decodeURIComponent(params.size as string);
+        const data = await fetchProductsBySize(size);
         setProducts(data.data);
         setFilteredProducts(data.data);
       } catch (err) {
@@ -33,7 +33,7 @@ export default function CategoryPage() {
     };
 
     loadProducts();
-  }, [params.category]);
+  }, [params.size]);
 
   const handleFiltersChange = (filtered: Product[]) => {
     setFilteredProducts(filtered);
@@ -61,18 +61,18 @@ export default function CategoryPage() {
           <Package className="w-16 h-16 mx-auto mb-4 text-red-500" />
           <h2 className="text-xl font-semibold text-foreground mb-2">Помилка завантаження</h2>
           <p className="text-foreground/70 mb-4">{error}</p>
-          <Link
-            href="/products"
+          <button
+            onClick={() => window.location.reload()}
             className="bg-primary text-background px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors"
           >
-            Повернутися до каталогу
-          </Link>
+            Спробувати знову
+          </button>
         </div>
       </div>
     );
   }
 
-  const categoryName = decodeURIComponent(params.category as string);
+  const sizeName = decodeURIComponent(params.size as string);
 
   return (
     <div className="min-h-screen bg-background">
@@ -90,10 +90,10 @@ export default function CategoryPage() {
           </nav>
           
           <h1 className="text-3xl font-bold text-foreground mb-2">
-            Категорія: {categoryName}
+            Розмір: {sizeName}
           </h1>
           <p className="text-foreground/70">
-            Знайдено {filteredProducts.length} товарів у категорії &ldquo;{categoryName}&rdquo;
+            Знайдено {filteredProducts.length} товарів розміру &ldquo;{sizeName}&rdquo;
           </p>
         </div>
 
@@ -103,7 +103,7 @@ export default function CategoryPage() {
             <ProductFilters 
               onFiltersChange={handleFiltersChange}
               onLoadingChange={handleLoadingChange}
-              currentCategory={categoryName}
+              currentSize={sizeName}
             />
           </div>
 
@@ -114,7 +114,7 @@ export default function CategoryPage() {
                 <Package className="w-16 h-16 mx-auto mb-4 text-foreground/40" />
                 <h3 className="text-lg font-medium text-foreground mb-2">Товари не знайдено</h3>
                 <p className="text-foreground/70">
-                  У цій категорії поки немає товарів
+                  У цьому розмірі поки немає товарів
                 </p>
               </div>
             ) : (
@@ -130,4 +130,3 @@ export default function CategoryPage() {
     </div>
   );
 }
-

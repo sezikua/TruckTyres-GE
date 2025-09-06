@@ -103,6 +103,58 @@ export async function fetchProductsByCategory(category: string, page: number = 1
   }
 }
 
+export async function fetchProductsBySegment(segment: string, page: number = 1, limit: number = 30): Promise<ProductsResponse> {
+  try {
+    const response = await fetch(`/api/products/segment/${encodeURIComponent(segment)}?page=${page}&limit=${limit}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    
+    if (!data.data || !Array.isArray(data.data)) {
+      throw new Error('Invalid data format received from API');
+    }
+
+    return data;
+  } catch (error) {
+    console.error('Error fetching products by segment:', error);
+    throw new Error('Помилка отримання товарів за сегментом');
+  }
+}
+
+export async function fetchProductsBySize(size: string, page: number = 1, limit: number = 30): Promise<ProductsResponse> {
+  try {
+    const response = await fetch(`/api/products/size/${encodeURIComponent(size)}?page=${page}&limit=${limit}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    
+    if (!data.data || !Array.isArray(data.data)) {
+      throw new Error('Invalid data format received from API');
+    }
+
+    return data;
+  } catch (error) {
+    console.error('Error fetching products by size:', error);
+    throw new Error('Помилка отримання товарів за розміром');
+  }
+}
+
 export interface FilterOptions {
   categories?: string[];
   segments?: string[];
@@ -145,7 +197,7 @@ export async function fetchFilteredProducts(filters: FilterOptions): Promise<Pro
     params.append('page', (filters.page || 1).toString());
     params.append('limit', (filters.limit || 30).toString());
 
-    const response = await fetch(`/api/products?${params.toString()}`, {
+    const response = await fetch(`/api/products/filtered?${params.toString()}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

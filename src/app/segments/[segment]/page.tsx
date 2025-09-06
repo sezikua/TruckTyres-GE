@@ -2,13 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
-import { fetchProductsByCategory, Product } from '@/lib/api';
+import { fetchProductsBySegment, Product } from '@/lib/api';
 import ProductCard from '@/components/ProductCard';
 import ProductFilters from '@/components/ProductFilters';
 import { Loader2, Package, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 
-export default function CategoryPage() {
+export default function SegmentPage() {
   const params = useParams();
   const [products, setProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
@@ -17,12 +17,12 @@ export default function CategoryPage() {
 
   useEffect(() => {
     const loadProducts = async () => {
-      if (!params.category) return;
+      if (!params.segment) return;
       
       try {
         setLoading(true);
-        const category = decodeURIComponent(params.category as string);
-        const data = await fetchProductsByCategory(category);
+        const segment = decodeURIComponent(params.segment as string);
+        const data = await fetchProductsBySegment(segment);
         setProducts(data.data);
         setFilteredProducts(data.data);
       } catch (err) {
@@ -33,7 +33,7 @@ export default function CategoryPage() {
     };
 
     loadProducts();
-  }, [params.category]);
+  }, [params.segment]);
 
   const handleFiltersChange = (filtered: Product[]) => {
     setFilteredProducts(filtered);
@@ -72,7 +72,7 @@ export default function CategoryPage() {
     );
   }
 
-  const categoryName = decodeURIComponent(params.category as string);
+  const segmentName = decodeURIComponent(params.segment as string);
 
   return (
     <div className="min-h-screen bg-background">
@@ -90,10 +90,10 @@ export default function CategoryPage() {
           </nav>
           
           <h1 className="text-3xl font-bold text-foreground mb-2">
-            Категорія: {categoryName}
+            Сегмент: {segmentName}
           </h1>
           <p className="text-foreground/70">
-            Знайдено {filteredProducts.length} товарів у категорії &ldquo;{categoryName}&rdquo;
+            Знайдено {filteredProducts.length} товарів у сегменті &ldquo;{segmentName}&rdquo;
           </p>
         </div>
 
@@ -103,7 +103,6 @@ export default function CategoryPage() {
             <ProductFilters 
               onFiltersChange={handleFiltersChange}
               onLoadingChange={handleLoadingChange}
-              currentCategory={categoryName}
             />
           </div>
 
@@ -114,7 +113,7 @@ export default function CategoryPage() {
                 <Package className="w-16 h-16 mx-auto mb-4 text-foreground/40" />
                 <h3 className="text-lg font-medium text-foreground mb-2">Товари не знайдено</h3>
                 <p className="text-foreground/70">
-                  У цій категорії поки немає товарів
+                  У цьому сегменті поки немає товарів
                 </p>
               </div>
             ) : (
@@ -130,4 +129,3 @@ export default function CategoryPage() {
     </div>
   );
 }
-
