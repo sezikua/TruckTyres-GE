@@ -2,6 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { headers } from "next/headers";
+import { fetchProducts } from "@/lib/api";
+import ProductCard from "@/components/ProductCard";
 
 async function getBaseUrl(): Promise<string> {
   const envUrl = process.env.NEXT_PUBLIC_SITE_URL;
@@ -40,7 +42,43 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default function Home() {
+async function getDiscountedProducts() {
+  try {
+    // Отримуємо товари напряму з Directus API на сервері
+    const directusUrl = process.env.DIRECTUS_URL || 'http://173.212.215.18:8055';
+    const directusToken = process.env.DIRECTUS_TOKEN || 'wFd_KOyK9LJEZSe98DEu8Uww5wKGg1qD';
+    
+    // Запит саме по товарах зі знижкою (discount_price не null і менше за regular_price)
+    const url = `${directusUrl}/items/Product?filter[discount_price][_nnull]=true&filter[discount_price][_lt]=regular_price&page=1&limit=100&meta=total_count`;
+    
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${directusToken}`,
+      },
+      next: { revalidate: 300 } // Revalidate every 5 minutes
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    const discountedProducts = data.data || [];
+    
+    // Перемішуємо та беремо перші 20
+    const shuffled = discountedProducts.sort(() => Math.random() - 0.5);
+    return shuffled.slice(0, 20);
+  } catch (error) {
+    console.error('Error fetching discounted products:', error);
+    return [];
+  }
+}
+
+export default async function Home() {
+  const discountedProducts = await getDiscountedProducts();
+
   return (
     <section>
       <div className="relative overflow-hidden">
@@ -78,25 +116,41 @@ export default function Home() {
         <h2 className="text-2xl font-bold mb-6">Категорії</h2>
         <CategoriesGrid />
       </div>
+
+      {/* Discounted Products Section */}
+      {discountedProducts.length > 0 && (
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 bg-foreground/5">
+          <div className="mb-8">
+            <h2 className="text-2xl font-bold mb-2">Товари зі знижкою</h2>
+            <p className="text-foreground/70">Спеціальні пропозиції на шини CEAT</p>
+          </div>
+          
+          <div className="grid grid-cols-5 gap-6">
+            {discountedProducts.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        </div>
+      )}
     </section>
   );
 }
 
 function CategoriesGrid() {
-  const categories: { title: string; image?: string }[] = [
-    { title: "Шини для тракторів", image: "/tractor-caregory.avif" },
-    { title: "Шини для комбайнів", image: "/harvest-caregory.avif" },
-    { title: "Шини для навантажувачів", image: "/loader-caregory.avif" },
-    { title: "Шини для обприскувачів", image: "/splayer-caregory.avif" },
-    { title: "Шини для причіпної техніки", image: "/trailer-caregory.avif" },
+  const categories: { title: string; image?: string; href: string }[] = [
+    { title: "Шини для тракторів", image: "/tractor-caregory.avif", href: "/categories/High%20Power%20Tractor" },
+    { title: "Шини для комбайнів", image: "/harvest-caregory.avif", href: "/categories/Harvester" },
+    { title: "Шини для навантажувачів", image: "/loader-caregory.avif", href: "/categories/THL%2FCompact%20Loader" },
+    { title: "Шини для обприскувачів", image: "/splayer-caregory.avif", href: "/categories/Sprayer" },
+    { title: "Шини для причіпної техніки", image: "/trailer-caregory.avif", href: "/categories/Flotation%2FAgri%20Transport" },
   ];
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-      {categories.map(({ title, image }) => (
+      {categories.map(({ title, image, href }) => (
         <Link
           key={title}
-          href="/products"
+          href={href}
           className="group rounded-lg border border-black/10 dark:border-white/10 overflow-hidden hover:shadow-md transition-all hover:-translate-y-0.5 bg-white dark:bg-black/20"
         >
           <div className="relative aspect-square w-full">
