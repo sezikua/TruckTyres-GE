@@ -44,7 +44,7 @@ export default function ProductFilters({ onFiltersChange, onLoadingChange, curre
           setAvailableCategories(categoriesData.categories || []);
           
           // Extract unique diameters from products
-          const diameters = [...new Set(productsData.data.map((product: any) => product.diameter).filter(Boolean))];
+          const diameters = [...new Set(productsData.data.map((product: Product) => product.diameter).filter(Boolean))] as string[];
           const sortedDiameters = diameters.sort((a, b) => parseFloat(a) - parseFloat(b));
           setAllDiameters(sortedDiameters);
           setAvailableDiameters(sortedDiameters);
@@ -186,7 +186,7 @@ export default function ProductFilters({ onFiltersChange, onLoadingChange, curre
         onLoadingChange(false);
       }
     }
-  }, [selectedCategory, selectedDiameter, selectedSize, warehouseFilter, currentCategory, onFiltersChange, onLoadingChange]);
+  }, [selectedCategory, selectedDiameter, selectedSize, warehouseFilter, currentCategory, currentSize, onFiltersChange, onLoadingChange]);
 
 
   const clearFilters = () => {
@@ -272,7 +272,7 @@ export default function ProductFilters({ onFiltersChange, onLoadingChange, curre
               ) : (
                 availableDiameters.map((diameter) => (
                   <option key={diameter} value={diameter} className="text-black">
-                    {diameter}"
+                    {diameter}&ldquo;
                   </option>
                 ))
               )}
@@ -360,7 +360,7 @@ export default function ProductFilters({ onFiltersChange, onLoadingChange, curre
                 {selectedDiameter && (
                   <span className="inline-flex items-center gap-2 bg-[#008E4E]/20 text-white text-sm px-3 py-2 rounded-lg border border-[#008E4E]/30">
                     <span className="font-medium">Діаметр:</span>
-                    <span>{selectedDiameter}"</span>
+                    <span>{selectedDiameter}&ldquo;</span>
                     <button
                       onClick={() => {
                         setSelectedDiameter('');

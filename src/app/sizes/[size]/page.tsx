@@ -10,7 +10,7 @@ import Link from 'next/link';
 
 export default function SizePage() {
   const params = useParams();
-  const [products, setProducts] = useState<Product[]>([]);
+  const [, setProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
