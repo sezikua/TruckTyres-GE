@@ -149,33 +149,65 @@ function CategoriesGrid() {
 
   return (
     <div className="space-y-4">
-      {/* Перша категорія - на всю ширину на мобільних */}
-      <Link
-        href={firstCategory.href}
-        className="group block rounded-lg border border-black/10 dark:border-white/10 overflow-hidden hover:shadow-md transition-all hover:-translate-y-0.5 bg-white dark:bg-black/20"
-      >
-        <div className="relative aspect-square w-full">
-          {firstCategory.image ? (
-            <Image
-              src={firstCategory.image}
-              alt={firstCategory.title}
-              fill
-              sizes="(max-width: 1024px) 100vw, 18vw"
-              className="object-cover"
-              priority
-            />
-          ) : (
-            <div className="h-full w-full bg-[#0054a6]/15" />
-          )}
-        </div>
-        <div className="p-4">
-          <p className="font-medium group-hover:text-[#0054a6] transition-colors">{firstCategory.title}</p>
-        </div>
-      </Link>
+      {/* Мобільна версія: перша категорія на всю ширину, решта по 2 */}
+      <div className="lg:hidden space-y-4">
+        {/* Перша категорія - на всю ширину на мобільних */}
+        <Link
+          href={firstCategory.href}
+          className="group block rounded-lg border border-black/10 dark:border-white/10 overflow-hidden hover:shadow-md transition-all hover:-translate-y-0.5 bg-white dark:bg-black/20"
+        >
+          <div className="relative aspect-square w-full">
+            {firstCategory.image ? (
+              <Image
+                src={firstCategory.image}
+                alt={firstCategory.title}
+                fill
+                sizes="100vw"
+                className="object-cover"
+                priority
+              />
+            ) : (
+              <div className="h-full w-full bg-[#0054a6]/15" />
+            )}
+          </div>
+          <div className="p-4">
+            <p className="font-medium group-hover:text-[#0054a6] transition-colors">{firstCategory.title}</p>
+          </div>
+        </Link>
 
-      {/* Решта категорій - по 2 в ряд на мобільних */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {otherCategories.map(({ title, image, href }) => (
+        {/* Решта категорій - по 2 в ряд на мобільних */}
+        <div className="grid grid-cols-2 gap-4">
+          {otherCategories.map(({ title, image, href }) => (
+            <Link
+              key={title}
+              href={href}
+              className="group rounded-lg border border-black/10 dark:border-white/10 overflow-hidden hover:shadow-md transition-all hover:-translate-y-0.5 bg-white dark:bg-black/20"
+            >
+              <div className="relative aspect-square w-full">
+                {image ? (
+                  <Image
+                    src={image}
+                    alt={title}
+                    fill
+                    sizes="50vw"
+                    className="object-cover"
+                    priority
+                  />
+                ) : (
+                  <div className="h-full w-full bg-[#0054a6]/15" />
+                )}
+              </div>
+              <div className="p-4">
+                <p className="font-medium group-hover:text-[#0054a6] transition-colors">{title}</p>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+
+      {/* Десктопна версія: всі 5 категорій в одному рядку */}
+      <div className="hidden lg:grid lg:grid-cols-5 gap-4">
+        {categories.map(({ title, image, href }) => (
           <Link
             key={title}
             href={href}
@@ -187,7 +219,7 @@ function CategoriesGrid() {
                   src={image}
                   alt={title}
                   fill
-                  sizes="(max-width: 1024px) 50vw, 18vw"
+                  sizes="18vw"
                   className="object-cover"
                   priority
                 />
