@@ -34,7 +34,7 @@ export async function generateMetadata(
   } catch {}
 
   const title = `Категорія: ${decoded} — CEAT Україна`;
-  const description = `Каталог шин CEAT у категорії "${decoded}". Доступно ${total} товарів.`;
+  const description = `Магазин шин CEAT у категорії "${decoded}". Доступно ${total} товарів.`;
   const keywords = `${decoded}, CEAT, шини, агро`;
   const canonical = `${baseUrl}/categories/${encodeURIComponent(category)}`;
 

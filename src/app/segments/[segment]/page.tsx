@@ -85,7 +85,7 @@ export default function SegmentPage() {
               className="inline-flex items-center text-sm text-foreground/70 hover:text-foreground transition-colors"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
-              Повернутися до каталогу
+              Повернутися до магазину
             </Link>
           </nav>
           

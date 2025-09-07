@@ -15,8 +15,8 @@ async function getBaseUrl(): Promise<string> {
 
 export async function generateMetadata(): Promise<Metadata> {
   const baseUrl = await getBaseUrl();
-  const title = "CEAT Каталог — Сільськогосподарські шини";
-  const description = "Офіційний імпортер шин CEAT в Україні. Каталог шин для тракторів, комбайнів, навантажувачів, обприскувачів та причепів.";
+  const title = "CEAT Магазин — Сільськогосподарські шини";
+  const description = "Офіційний імпортер шин CEAT в Україні. Магазин шин для тракторів, комбайнів, навантажувачів, обприскувачів та причепів.";
   const canonical = `${baseUrl}/`;
   const ogImage = `${baseUrl}/cstl-logo-eu-as.avif`;
 
@@ -116,7 +116,7 @@ export default async function Home() {
             </p>
             <div className="mt-8 flex items-center gap-4">
               <Link href="/products" className="inline-flex h-11 items-center rounded-md bg-[#0054a6] px-6 text-white shadow-sm transition hover:opacity-90">
-                Перейти в каталог
+                Перейти в магазин
               </Link>
               <Link href="/contacts" className="inline-flex h-11 items-center rounded-md border px-6 border-white/30 hover:bg-white/10 transition text-white">
                 Консультація

@@ -66,7 +66,7 @@ export default function CategoryPage() {
             href="/products"
             className="bg-primary text-background px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors"
           >
-            Повернутися до каталогу
+            Повернутися до магазину
           </Link>
         </div>
       </div>
@@ -87,7 +87,7 @@ export default function CategoryPage() {
               className="inline-flex items-center text-sm text-foreground/70 hover:text-foreground transition-colors"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
-              Повернутися до каталогу
+              Повернутися до магазину
             </Link>
           </nav>
           
@@ -101,7 +101,7 @@ export default function CategoryPage() {
 
         {/* Category Description Section */}
         {categoryDesc && (
-          <div className="mb-12 bg-white dark:bg-gray-800 rounded-lg p-8 shadow-sm border border-gray-200 dark:border-gray-700">
+          <div className="mb-12 bg-white dark:bg-black/20 rounded-lg p-8 shadow-sm border border-black/10 dark:border-white/10">
             <div className="grid lg:grid-cols-2 gap-8">
               {/* Main Description */}
               <div>

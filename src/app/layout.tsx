@@ -17,9 +17,9 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://ceat-katalog.vercel.app'),
-  title: "CEAT Каталог — Сільськогосподарські шини",
+  title: "CEAT Магазин — Сільськогосподарські шини",
   description:
-    "Офіційний імпортер шин CEAT в Україні. Каталог шин для тракторів, комбайнів, навантажувачів, обприскувачів та причепів.",
+    "Офіційний імпортер шин CEAT в Україні. Магазин шин для тракторів, комбайнів, навантажувачів, обприскувачів та причепів.",
   manifest: "/manifest.json",
   icons: {
     icon: [
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     siteName: "CEAT Україна",
-    title: "CEAT Каталог — Сільськогосподарські шини",
+    title: "CEAT Магазин — Сільськогосподарські шини",
     description: "Офіційний імпортер шин CEAT в Україні. Каталог шин для тракторів, комбайнів, навантажувачів, обприскувачів та причепів.",
     images: [
       {
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "CEAT Каталог — Сільськогосподарські шини",
+    title: "CEAT Магазин — Сільськогосподарські шини",
     description: "Офіційний імпортер шин CEAT в Україні. Каталог шин для тракторів, комбайнів, навантажувачів, обприскувачів та причепів.",
     images: ["/cstl-logo-eu-as.avif"],
   },

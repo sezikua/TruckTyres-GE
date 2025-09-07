@@ -50,7 +50,7 @@ export async function generateMetadata(
     ? product.description.replace(/<[^>]*>/g, '').slice(0, 200)
     : product
       ? `Купити ${product.product_name} (${product.model}, ${product.size}) в наявності у CEAT Україна.`
-      : 'Каталог товарів CEAT Україна.';
+      : 'Магазин товарів CEAT Україна.';
 
   const keywords = product
     ? [product.product_name, product.model, product.size, product.Category, product.Segment, 'CEAT', 'шини', 'агро'].filter(Boolean).join(', ')

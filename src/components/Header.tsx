@@ -10,7 +10,7 @@ import Cart from "@/components/Cart";
 
 const navItems = [
   { href: "/", label: "Головна" },
-  { href: "/products", label: "Каталог" },
+  { href: "/products", label: "Магазин" },
   { href: "/about", label: "Про нас" },
   { href: "/contacts", label: "Контакти" },
 ];
@@ -33,7 +33,7 @@ export default function Header() {
               style={{ width: 'auto', height: 'auto' }}
               priority 
             />
-            <span className="sr-only">CEAT Каталог</span>
+            <span className="sr-only">CEAT Магазин</span>
           </Link>
 
           <nav className="hidden md:flex items-center gap-6">

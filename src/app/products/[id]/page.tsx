@@ -73,7 +73,7 @@ export default function ProductPage() {
             href="/products"
             className="bg-primary text-background px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors"
           >
-            Повернутися до каталогу
+            Повернутися до магазину
           </Link>
         </div>
       </div>
@@ -92,7 +92,7 @@ export default function ProductPage() {
             className="inline-flex items-center text-sm text-foreground/70 hover:text-foreground transition-colors"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
-            Повернутися до каталогу
+            Повернутися до магазину
           </Link>
         </nav>
 

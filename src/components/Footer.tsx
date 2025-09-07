@@ -21,7 +21,7 @@ export default function Footer() {
         <div className="text-sm">
           <p className="font-semibold mb-3">Швидкі посилання</p>
           <ul className="space-y-2">
-            <li><Link href="/products" className="hover:underline">Каталог</Link></li>
+            <li><Link href="/products" className="hover:underline">Магазин</Link></li>
             <li><Link href="/about" className="hover:underline">Про нас</Link></li>
             <li><Link href="/news" className="hover:underline">Статті</Link></li>
             <li><Link href="/contacts" className="hover:underline">Контакти</Link></li>
@@ -31,11 +31,11 @@ export default function Footer() {
         <div className="text-sm">
           <p className="font-semibold mb-3">Категорії</p>
           <ul className="space-y-2">
-            <li>Шини для тракторів</li>
-            <li>Шини для комбайнів</li>
-            <li>Шини для навантажувачів</li>
-            <li>Шини для обприскувачів</li>
-            <li>Шини для причіпної техніки</li>
+            <li><Link href="/categories/High%20Power%20Tractor" className="hover:underline">Шини для тракторів</Link></li>
+            <li><Link href="/categories/Harvester" className="hover:underline">Шини для комбайнів</Link></li>
+            <li><Link href="/categories/THL%2FCompact%20Loader" className="hover:underline">Шини для навантажувачів</Link></li>
+            <li><Link href="/categories/Sprayer" className="hover:underline">Шини для обприскувачів</Link></li>
+            <li><Link href="/categories/Flotation%2FAgri%20Transport" className="hover:underline">Шини для причіпної техніки</Link></li>
           </ul>
         </div>
 
@@ -47,7 +47,7 @@ export default function Footer() {
         </div>
       </div>
       <div className="bg-[#004a93] py-4 text-center text-xs text-white/80">
-        © {new Date().getFullYear()} CEAT Україна. Всі права захищені.
+        © {new Date().getFullYear()} ТОВ "Агро-Солар" офіційний імпортер шин CEAT в Україні. Всі права захищені.
       </div>
     </footer>
   );
