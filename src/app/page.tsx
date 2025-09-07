@@ -48,7 +48,8 @@ async function getDiscountedProducts() {
     const directusToken = process.env.DIRECTUS_TOKEN || 'wFd_KOyK9LJEZSe98DEu8Uww5wKGg1qD';
     
     // Запит саме по товарах зі знижкою (discount_price не null і менше за regular_price)
-    const url = `${directusUrl}/items/Product?filter[discount_price][_nnull]=true&filter[discount_price][_lt]=regular_price&page=1&limit=100&meta=total_count`;
+    const sortOrder = 'sort[0]=product_name';
+    const url = `${directusUrl}/items/Product?filter[discount_price][_nnull]=true&filter[discount_price][_lt]=regular_price&page=1&limit=100&meta=total_count&${sortOrder}`;
     
     const response = await fetch(url, {
       method: 'GET',
@@ -67,9 +68,22 @@ async function getDiscountedProducts() {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const discountedProducts: any[] = data.data || [];
     
-    // Перемішуємо та беремо перші 20
-    const shuffled = discountedProducts.sort(() => Math.random() - 0.5);
-    return shuffled.slice(0, 20);
+    // Кастомне сортування за наявністю: In stock -> On order -> out of stock
+    const warehouseOrder = { 'In stock': 1, 'On order': 2, 'out of stock': 3 };
+    discountedProducts.sort((a: any, b: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
+      const aOrder = warehouseOrder[a.warehouse as keyof typeof warehouseOrder] || 4;
+      const bOrder = warehouseOrder[b.warehouse as keyof typeof warehouseOrder] || 4;
+      
+      if (aOrder !== bOrder) {
+        return aOrder - bOrder;
+      }
+      
+      // Якщо наявність однакова, сортуємо за назвою
+      return a.product_name.localeCompare(b.product_name);
+    });
+    
+    // Беремо перші 20
+    return discountedProducts.slice(0, 20);
   } catch (error) {
     console.error('Error fetching discounted products:', error);
     return [];

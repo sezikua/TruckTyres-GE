@@ -3,9 +3,10 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { fetchProductsByCategory, Product } from '@/lib/api';
+import { getCategoryDescription } from '@/lib/categoryDescriptions';
 import ProductCard from '@/components/ProductCard';
 import ProductFilters from '@/components/ProductFilters';
-import { Loader2, Package, ArrowLeft } from 'lucide-react';
+import { Loader2, Package, ArrowLeft, CheckCircle, Star, Truck } from 'lucide-react';
 import Link from 'next/link';
 
 export default function CategoryPage() {
@@ -73,6 +74,7 @@ export default function CategoryPage() {
   }
 
   const categoryName = decodeURIComponent(params.category as string);
+  const categoryDesc = getCategoryDescription(categoryName);
 
   return (
     <div className="min-h-screen bg-background">
@@ -90,12 +92,77 @@ export default function CategoryPage() {
           </nav>
           
           <h1 className="text-3xl font-bold text-foreground mb-2">
-            Категорія: {categoryName}
+            {categoryDesc?.title || `Категорія: ${categoryName}`}
           </h1>
-          <p className="text-foreground/70">
-            Знайдено {filteredProducts.length} товарів у категорії &ldquo;{categoryName}&rdquo;
+          <p className="text-foreground/70 text-lg mb-4">
+            {categoryDesc?.description || `Знайдено ${filteredProducts.length} товарів у категорії "${categoryName}"`}
           </p>
         </div>
+
+        {/* Category Description Section */}
+        {categoryDesc && (
+          <div className="mb-12 bg-white dark:bg-gray-800 rounded-lg p-8 shadow-sm border border-gray-200 dark:border-gray-700">
+            <div className="grid lg:grid-cols-2 gap-8">
+              {/* Main Description */}
+              <div>
+                <h2 className="text-2xl font-semibold text-foreground mb-4">Про категорію</h2>
+                <p className="text-foreground/80 leading-relaxed mb-6">
+                  {categoryDesc.longDescription}
+                </p>
+                
+                {/* Features */}
+                <div className="mb-6">
+                  <h3 className="text-lg font-semibold text-foreground mb-3 flex items-center">
+                    <Star className="w-5 h-5 mr-2 text-primary" />
+                    Ключові особливості
+                  </h3>
+                  <ul className="space-y-2">
+                    {categoryDesc.features.map((feature, index) => (
+                      <li key={index} className="flex items-start text-foreground/80">
+                        <CheckCircle className="w-4 h-4 mr-2 mt-0.5 text-green-500 flex-shrink-0" />
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              {/* Benefits & Applications */}
+              <div className="space-y-6">
+                {/* Benefits */}
+                <div>
+                  <h3 className="text-lg font-semibold text-foreground mb-3 flex items-center">
+                    <Truck className="w-5 h-5 mr-2 text-primary" />
+                    Переваги
+                  </h3>
+                  <ul className="space-y-2">
+                    {categoryDesc.benefits.map((benefit, index) => (
+                      <li key={index} className="flex items-start text-foreground/80">
+                        <CheckCircle className="w-4 h-4 mr-2 mt-0.5 text-green-500 flex-shrink-0" />
+                        {benefit}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Applications */}
+                <div>
+                  <h3 className="text-lg font-semibold text-foreground mb-3">Сфери застосування</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {categoryDesc.applications.map((app, index) => (
+                      <span 
+                        key={index}
+                        className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm"
+                      >
+                        {app}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
         <div className="lg:grid lg:grid-cols-4 lg:gap-8">
           {/* Filters Sidebar */}

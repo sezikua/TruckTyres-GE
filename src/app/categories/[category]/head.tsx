@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { headers } from 'next/headers';
+import { getCategoryDescription } from '@/lib/categoryDescriptions';
 
 async function getBaseUrl(): Promise<string> {
   const envUrl = process.env.NEXT_PUBLIC_SITE_URL;
@@ -16,21 +17,27 @@ export async function generateMetadata({ params }: { params: Promise<{ category:
   const decodedCategory = decodeURIComponent(category);
   const canonical = `${baseUrl}/categories/${category}`;
   
+  // Отримуємо детальний опис категорії
+  const categoryDesc = getCategoryDescription(decodedCategory);
+  const title = categoryDesc ? categoryDesc.title : `${decodedCategory} — CEAT Україна`;
+  const description = categoryDesc ? categoryDesc.description : `Шини CEAT категорії ${decodedCategory}. Високоякісні сільськогосподарські шини з офіційного складу в Україні. Швидка доставка, гарантія якості.`;
+  
   return {
-    title: `${decodedCategory} — CEAT Україна`,
-    description: `Шини CEAT категорії ${decodedCategory}. Високоякісні сільськогосподарські шини з офіційного складу в Україні. Швидка доставка, гарантія якості.`,
+    title,
+    description,
+    keywords: categoryDesc?.keywords.join(', ') || `${decodedCategory}, CEAT, сільгоспшини, шини для тракторів, агрошини`,
     alternates: { canonical },
     openGraph: {
-      title: `${decodedCategory} — CEAT Україна`,
-      description: `Шини CEAT категорії ${decodedCategory}. Високоякісні сільськогосподарські шини з офіційного складу в Україні.`,
+      title,
+      description,
       url: canonical,
       type: "website",
       siteName: "CEAT Україна",
     },
     twitter: {
       card: "summary_large_image",
-      title: `${decodedCategory} — CEAT Україна`,
-      description: `Шини CEAT категорії ${decodedCategory}. Високоякісні сільськогосподарські шини з офіційного складу в Україні.`,
+      title,
+      description,
     },
   };
 }

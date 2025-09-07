@@ -14,7 +14,9 @@ export async function GET(
     const directusToken = process.env.DIRECTUS_TOKEN || 'wFd_KOyK9LJEZSe98DEu8Uww5wKGg1qD';
 
     const encodedSize = encodeURIComponent(size);
-    const url = `${directusUrl}/items/Product?filter[size][_eq]=${encodedSize}&page=${page}&limit=${limit}&meta=total_count`;
+    
+    // Отримуємо всі товари для правильного сортування
+    const url = `${directusUrl}/items/Product?filter[size][_eq]=${encodedSize}&limit=-1&meta=total_count`;
 
     const response = await fetch(url, {
       method: 'GET',
@@ -30,13 +32,39 @@ export async function GET(
     }
 
     const data = await response.json();
+    
+    // Кастомне сортування за наявністю: In stock -> On order -> out of stock
+    const warehouseOrder = { 'In stock': 1, 'On order': 2, 'out of stock': 3 };
+    const allProducts = data.data || [];
+    
+    if (Array.isArray(allProducts)) {
+      allProducts.sort((a: any, b: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
+        const aOrder = warehouseOrder[a.warehouse as keyof typeof warehouseOrder] || 4;
+        const bOrder = warehouseOrder[b.warehouse as keyof typeof warehouseOrder] || 4;
+        
+        if (aOrder !== bOrder) {
+          return aOrder - bOrder;
+        }
+        
+        // Якщо наявність однакова, сортуємо за назвою
+        return a.product_name.localeCompare(b.product_name);
+      });
+    }
+    
+    // Тепер ділимо на сторінки після сортування
+    const totalItems = allProducts.length;
+    const totalPages = Math.ceil(totalItems / limit);
+    const startIndex = (page - 1) * limit;
+    const endIndex = startIndex + limit;
+    const paginatedProducts = allProducts.slice(startIndex, endIndex);
+    
     return NextResponse.json({
-      data: data.data,
+      data: paginatedProducts,
       pagination: {
-        total: data.meta.total_count,
+        total: totalItems,
         page,
         limit,
-        totalPages: Math.ceil(data.meta.total_count / limit),
+        totalPages,
       },
     });
   } catch (error) {

@@ -15,7 +15,8 @@ export async function GET(request: Request) {
     const directusUrl = process.env.DIRECTUS_URL || 'http://173.212.215.18:8055';
     const directusToken = process.env.DIRECTUS_TOKEN || 'wFd_KOyK9LJEZSe98DEu8Uww5wKGg1qD';
     
-    let url = `${directusUrl}/items/Product?page=${page}&limit=${limit}&meta=total_count`;
+    // Отримуємо всі товари для правильного сортування
+    let url = `${directusUrl}/items/Product?limit=-1&meta=total_count`;
     const filters: string[] = [];
     
     // Multiple categories filter
@@ -70,14 +71,39 @@ export async function GET(request: Request) {
 
     const data = await response.json();
     
+    // Кастомне сортування за наявністю: In stock -> On order -> out of stock
+    const warehouseOrder = { 'In stock': 1, 'On order': 2, 'out of stock': 3 };
+    const allProducts = data.data || [];
+    
+    if (Array.isArray(allProducts)) {
+      allProducts.sort((a: any, b: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
+        const aOrder = warehouseOrder[a.warehouse as keyof typeof warehouseOrder] || 4;
+        const bOrder = warehouseOrder[b.warehouse as keyof typeof warehouseOrder] || 4;
+        
+        if (aOrder !== bOrder) {
+          return aOrder - bOrder;
+        }
+        
+        // Якщо наявність однакова, сортуємо за назвою
+        return a.product_name.localeCompare(b.product_name);
+      });
+    }
+    
+    // Тепер ділимо на сторінки після сортування
+    const totalItems = allProducts.length;
+    const totalPages = Math.ceil(totalItems / limit);
+    const startIndex = (page - 1) * limit;
+    const endIndex = startIndex + limit;
+    const paginatedProducts = allProducts.slice(startIndex, endIndex);
+    
     // Transform the response to match our expected format
     const transformedData = {
-      data: data.data || [],
+      data: paginatedProducts,
       pagination: {
-        page: data.meta?.page || page,
-        limit: data.meta?.limit || limit,
-        total: data.meta?.total_count || 0,
-        totalPages: Math.ceil((data.meta?.total_count || 0) / (data.meta?.limit || limit))
+        page,
+        limit,
+        total: totalItems,
+        totalPages
       }
     };
 
