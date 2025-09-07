@@ -47,7 +47,7 @@ export default function Footer() {
         </div>
       </div>
       <div className="bg-[#004a93] py-4 text-center text-xs text-white/80">
-        © {new Date().getFullYear()} ТОВ "Агро-Солар" офіційний імпортер шин CEAT в Україні. Всі права захищені.
+        © {new Date().getFullYear()} ТОВ &ldquo;Агро-Солар&rdquo; офіційний імпортер шин CEAT в Україні. Всі права захищені.
       </div>
     </footer>
   );
