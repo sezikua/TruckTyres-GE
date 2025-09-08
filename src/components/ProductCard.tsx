@@ -32,6 +32,13 @@ export default function ProductCard({ product }: ProductCardProps) {
 
   const warehouseStatus = getWarehouseStatus(product.warehouse);
 
+  const formatDiameterLabel = (diameter?: string | null) => {
+    if (!diameter) return null;
+    const num = parseFloat(diameter);
+    if (Number.isNaN(num)) return `Ø${diameter}\"`;
+    return `Ø${num.toString()}\"`;
+  };
+
   const handleAddToCart = () => {
     if (typeof window !== 'undefined') {
       const windowWithCart = window as Window & { addToCart?: (product: Product) => void };
@@ -114,7 +121,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           {product.diameter && (
             <>
               <span className="text-foreground/40">•</span>
-              <span>Ø{product.diameter}&quot;</span>
+              <span>{formatDiameterLabel(product.diameter)}</span>
             </>
           )}
         </div>

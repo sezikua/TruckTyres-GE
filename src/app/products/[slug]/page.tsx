@@ -52,6 +52,13 @@ export default function ProductPageBySlug() {
     }
   };
 
+  const formatDiameter = (diameter?: string | null) => {
+    if (!diameter) return '';
+    const num = parseFloat(diameter);
+    if (Number.isNaN(num)) return diameter;
+    return num.toString();
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
@@ -133,7 +140,7 @@ export default function ProductPageBySlug() {
                 <span><strong className="text-foreground">Модель:</strong> <span className="text-foreground/70">{product.model}</span></span>
                 <span><strong className="text-foreground">Розмір:</strong> <span className="text-foreground/70">{product.size}</span></span>
                 {product.diameter && (
-                  <span><strong className="text-foreground">Діаметр:</strong> <span className="text-foreground/70">Ø{product.diameter}&quot;</span></span>
+                  <span><strong className="text-foreground">Діаметр:</strong> <span className="text-foreground/70">{formatDiameter(product.diameter)}&quot;</span></span>
                 )}
               </div>
             </div>
@@ -190,8 +197,8 @@ export default function ProductPageBySlug() {
               <div className="flex items-center gap-3 p-3 bg-foreground/5 rounded-lg">
                 <Clock className="w-5 h5 text-orange-600" />
                 <div>
-                  <p className="text-sm font-medium text-foreground">Швидка обробка</p>
-                  <p className="text-xs text-foreground/70">Замовлення за 24 години</p>
+                  <p className="text-sm font-medium text-foreground">Офіційний імпортер</p>
+                  <p className="text-xs text-foreground/70">→ Прямі поставки від CEAT, без посередників</p>
                 </div>
               </div>
             </div>

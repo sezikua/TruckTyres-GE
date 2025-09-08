@@ -230,6 +230,12 @@ export default function ProductFilters({ onFiltersChange, onLoadingChange, curre
   const activeFiltersCount = (selectedCategory ? 1 : 0) + (selectedDiameter ? 1 : 0) + 
     (selectedSize ? 1 : 0) + (warehouseFilter !== 'all' ? 1 : 0);
 
+  const formatDiameterLabel = (value: string) => {
+    const num = parseFloat(value);
+    if (Number.isNaN(num)) return value + '"';
+    return num.toString() + '"';
+  };
+
   return (
     <div className="lg:sticky lg:top-4 lg:h-fit">
       {/* Mobile Filter Toggle */}
@@ -272,7 +278,7 @@ export default function ProductFilters({ onFiltersChange, onLoadingChange, curre
               ) : (
                 availableDiameters.map((diameter) => (
                   <option key={diameter} value={diameter} className="text-black">
-                    {diameter}&ldquo;
+                    {formatDiameterLabel(diameter)}
                   </option>
                 ))
               )}
@@ -360,7 +366,7 @@ export default function ProductFilters({ onFiltersChange, onLoadingChange, curre
                 {selectedDiameter && (
                   <span className="inline-flex items-center gap-2 bg-[#008E4E]/20 text-white text-sm px-3 py-2 rounded-lg border border-[#008E4E]/30">
                     <span className="font-medium">Діаметр:</span>
-                    <span>{selectedDiameter}&ldquo;</span>
+                    <span>{formatDiameterLabel(selectedDiameter)}</span>
                     <button
                       onClick={() => {
                         setSelectedDiameter('');
