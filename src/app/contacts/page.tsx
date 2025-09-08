@@ -16,20 +16,20 @@ export async function generateMetadata(): Promise<Metadata> {
   const baseUrl = await getBaseUrl();
   const canonical = `${baseUrl}/contacts`;
   return {
-    title: "Контакти — CEAT Україна",
-    description: "Адреса, телефон та email офіційного імпортера шин CEAT в Україні.",
+    title: "Контакти — CEAT — офіційний імпортер в Україні",
+    description: "Адреса, телефон та email офіційного імпортера шин CEAT в Україні. CEAT — офіційний імпортер в Україні.",
     alternates: { canonical },
     openGraph: {
-      title: "Контакти — CEAT Україна",
-      description: "Адреса, телефон та email офіційного імпортера шин CEAT в Україні.",
+      title: "Контакти — CEAT — офіційний імпортер в Україні",
+      description: "Адреса, телефон та email офіційного імпортера шин CEAT в Україні. CEAT — офіційний імпортер в Україні.",
       url: canonical,
       type: "website",
-      siteName: "CEAT Україна",
+      siteName: "CEAT — офіційний імпортер в Україні",
     },
     twitter: {
       card: "summary_large_image",
-      title: "Контакти — CEAT Україна",
-      description: "Адреса, телефон та email офіційного імпортера шин CEAT в Україні.",
+      title: "Контакти — CEAT — офіційний імпортер в Україні",
+      description: "Адреса, телефон та email офіційного імпортера шин CEAT в Україні. CEAT — офіційний імпортер в Україні.",
     },
   };
 }

@@ -33,8 +33,8 @@ export async function generateMetadata(
     }
   } catch {}
 
-  const title = `Категорія: ${decoded} — CEAT Україна`;
-  const description = `Магазин шин CEAT у категорії "${decoded}". Доступно ${total} товарів.`;
+  const title = `Категорія: ${decoded} — CEAT — офіційний імпортер в Україні`;
+  const description = `Магазин шин CEAT у категорії "${decoded}". Доступно ${total} товарів. CEAT — офіційний імпортер в Україні.`;
   const keywords = `${decoded}, CEAT, шини, агро`;
   const canonical = `${baseUrl}/categories/${encodeURIComponent(category)}`;
 
@@ -51,7 +51,7 @@ export async function generateMetadata(
       type: 'website',
       url: canonical,
       images: [{ url: firstImage, alt: `Категорія: ${decoded}` }],
-      siteName: 'CEAT Україна',
+      siteName: 'CEAT — офіційний імпортер в Україні',
       locale: 'uk_UA',
     },
     twitter: {

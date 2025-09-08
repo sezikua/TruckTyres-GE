@@ -15,8 +15,8 @@ async function getBaseUrl(): Promise<string> {
 
 export async function generateMetadata(): Promise<Metadata> {
   const baseUrl = await getBaseUrl();
-  const title = "CEAT Магазин — Сільськогосподарські шини";
-  const description = "Офіційний імпортер шин CEAT в Україні. Магазин шин для тракторів, комбайнів, навантажувачів, обприскувачів та причепів.";
+  const title = "CEAT — офіційний імпортер в Україні | Сільськогосподарські шини";
+  const description = "CEAT — офіційний імпортер в Україні. Магазин шин для тракторів, комбайнів, навантажувачів, обприскувачів та причепів.";
   const canonical = `${baseUrl}/`;
   const ogImage = `${baseUrl}/cstl-logo-eu-as.avif`;
 
@@ -29,8 +29,8 @@ export async function generateMetadata(): Promise<Metadata> {
       description,
       url: canonical,
       type: "website",
-      images: [{ url: ogImage, alt: "CEAT Україна" }],
-      siteName: "CEAT Україна",
+      images: [{ url: ogImage, alt: "CEAT — офіційний імпортер в Україні" }],
+      siteName: "CEAT — офіційний імпортер в Україні",
     },
     twitter: {
       card: "summary_large_image",

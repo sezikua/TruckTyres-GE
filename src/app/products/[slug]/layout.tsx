@@ -44,14 +44,14 @@ export async function generateMetadata(
   } catch {}
 
   const title = product
-    ? `${product.product_name} — CEAT Україна`
-    : 'Товар — CEAT Україна';
+    ? `${product.product_name} — CEAT — офіційний імпортер в Україні`
+    : 'Товар — CEAT — офіційний імпортер в Україні';
 
   const description = product?.description
     ? product.description.replace(/<[^>]*>/g, '').slice(0, 200)
     : product
-      ? `Купити ${product.product_name} (${product.model}, ${product.size}) в наявності у CEAT Україна.`
-      : 'Магазин товарів CEAT Україна.';
+      ? `Купити ${product.product_name} (${product.model}, ${product.size}) в наявності у CEAT — офіційний імпортер в Україні.`
+      : 'Магазин шин CEAT — офіційний імпортер в Україні.';
 
   const keywords = product
     ? [product.product_name, product.model, product.size, product.Category, product.Segment, 'CEAT', 'шини', 'агро'].filter(Boolean).join(', ')
@@ -71,7 +71,7 @@ export async function generateMetadata(
       type: 'website',
       url: canonical,
       images: [{ url: ogImage, alt: product?.product_name || 'CEAT product' }],
-      siteName: 'CEAT Україна',
+      siteName: 'CEAT — офіційний імпортер в Україні',
       locale: 'uk_UA',
     },
     twitter: {

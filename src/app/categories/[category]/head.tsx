@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: { params: Promise<{ category:
   
   // Отримуємо детальний опис категорії
   const categoryDesc = getCategoryDescription(decodedCategory);
-  const title = categoryDesc ? categoryDesc.title : `${decodedCategory} — CEAT Україна`;
+  const title = categoryDesc ? categoryDesc.title : `${decodedCategory} — CEAT — офіційний імпортер в Україні`;
   const description = categoryDesc ? categoryDesc.description : `Шини CEAT категорії ${decodedCategory}. Високоякісні сільськогосподарські шини з офіційного складу в Україні. Швидка доставка, гарантія якості.`;
   
   return {
@@ -32,7 +32,7 @@ export async function generateMetadata({ params }: { params: Promise<{ category:
       description,
       url: canonical,
       type: "website",
-      siteName: "CEAT Україна",
+      siteName: "CEAT — офіційний імпортер в Україні",
     },
     twitter: {
       card: "summary_large_image",
@@ -73,6 +73,19 @@ export default async function Head({ params }: { params: Promise<{ category: str
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+              { '@type': 'ListItem', position: 1, name: 'Головна', item: `${baseUrl}/` },
+              { '@type': 'ListItem', position: 2, name: `Категорія: ${decoded}`, item: `${baseUrl}/categories/${encodeURIComponent(category)}` },
+            ],
+          })
+        }}
+      />
     </>
   );
 }

@@ -48,6 +48,11 @@ export default async function Head({ params }: { params: Promise<{ slug: string 
       priceCurrency: 'UAH',
       price: product.discount_price || product.regular_price,
       url: `${baseUrl}/products/${encodeURIComponent(slug)}`,
+      itemCondition: 'https://schema.org/NewCondition',
+      seller: {
+        '@type': 'Organization',
+        name: 'CEAT — офіційний імпортер в Україні'
+      }
     },
   } : null;
 
@@ -56,6 +61,36 @@ export default async function Head({ params }: { params: Promise<{ slug: string 
       {jsonLd && (
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       )}
+      {/* BreadcrumbList JSON-LD */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+              {
+                '@type': 'ListItem',
+                position: 1,
+                name: 'Головна',
+                item: `${baseUrl}/`
+              },
+              {
+                '@type': 'ListItem',
+                position: 2,
+                name: 'Товари',
+                item: `${baseUrl}/products`
+              },
+              product ? {
+                '@type': 'ListItem',
+                position: 3,
+                name: product.product_name,
+                item: `${baseUrl}/products/${encodeURIComponent(slug)}`
+              } : undefined
+            ].filter(Boolean)
+          })
+        }}
+      />
     </>
   );
 }

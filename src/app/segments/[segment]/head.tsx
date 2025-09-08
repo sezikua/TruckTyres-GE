@@ -17,20 +17,20 @@ export async function generateMetadata({ params }: { params: Promise<{ segment: 
   const canonical = `${baseUrl}/segments/${segment}`;
   
   return {
-    title: `${decodedSegment} — CEAT Україна`,
-    description: `Шини CEAT для сегменту ${decodedSegment}. Високоякісні сільськогосподарські шини з офіційного складу в Україні. Швидка доставка, гарантія якості.`,
+    title: `${decodedSegment} — CEAT — офіційний імпортер в Україні`,
+    description: `Шини CEAT для сегменту ${decodedSegment}. Високоякісні сільськогосподарські шини з офіційного складу в Україні. CEAT — офіційний імпортер в Україні.`,
     alternates: { canonical },
     openGraph: {
-      title: `${decodedSegment} — CEAT Україна`,
-      description: `Шини CEAT для сегменту ${decodedSegment}. Високоякісні сільськогосподарські шини з офіційного складу в Україні.`,
+      title: `${decodedSegment} — CEAT — офіційний імпортер в Україні`,
+      description: `Шини CEAT для сегменту ${decodedSegment}. Високоякісні сільськогосподарські шини з офіційного складу в Україні. CEAT — офіційний імпортер в Україні.`,
       url: canonical,
       type: "website",
-      siteName: "CEAT Україна",
+      siteName: "CEAT — офіційний імпортер в Україні",
     },
     twitter: {
       card: "summary_large_image",
-      title: `${decodedSegment} — CEAT Україна`,
-      description: `Шини CEAT для сегменту ${decodedSegment}. Високоякісні сільськогосподарські шини з офіційного складу в Україні.`,
+      title: `${decodedSegment} — CEAT — офіційний імпортер в Україні`,
+      description: `Шини CEAT для сегменту ${decodedSegment}. Високоякісні сільськогосподарські шини з офіційного складу в Україні. CEAT — офіційний імпортер в Україні.`,
     },
   };
 }
@@ -66,6 +66,19 @@ export default async function Head({ params }: { params: Promise<{ segment: stri
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+              { '@type': 'ListItem', position: 1, name: 'Головна', item: `${baseUrl}/` },
+              { '@type': 'ListItem', position: 2, name: `Сегмент: ${decoded}`, item: `${baseUrl}/segments/${encodeURIComponent(segment)}` },
+            ],
+          })
+        }}
+      />
     </>
   );
 }
