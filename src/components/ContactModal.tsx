@@ -50,6 +50,39 @@ export default function ContactModal({ open, onClose }: Props) {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
+  // Phone mask: +38 (___) ___-__-__
+  const formatUaPhone = (raw: string) => {
+    const digits = raw.replace(/\D/g, '');
+    let d = digits;
+    // Ensure country code 38
+    if (d.startsWith('380')) {
+      d = '38' + d.slice(2); // keep 38 + next 10
+    } else if (d.startsWith('38')) {
+      // ok
+    } else if (d.startsWith('0')) {
+      d = '38' + d; // prepend country code
+    } else if (d.length && !d.startsWith('38')) {
+      d = '38' + d; // prepend
+    }
+    d = d.slice(0, 12); // 38 + 10 digits
+    const cc = '+38';
+    const a = d.slice(2, 5);
+    const b = d.slice(5, 8);
+    const c = d.slice(8, 10);
+    const e2 = d.slice(10, 12);
+    let out = cc + ' ';
+    out += '(' + a.padEnd(3, '_') + ') ';
+    out += b.padEnd(3, '_');
+    out += '-' + c.padEnd(2, '_');
+    out += '-' + e2.padEnd(2, '_');
+    return out;
+  };
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const masked = formatUaPhone(e.target.value);
+    setFormData(prev => ({ ...prev, phone: masked }));
+  };
+
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setIsSubmitting(true);
@@ -135,11 +168,14 @@ export default function ContactModal({ open, onClose }: Props) {
                   id="phone" 
                   name="phone" 
                   value={formData.phone}
-                  onChange={handleInputChange}
+                  onChange={handlePhoneChange}
                   required 
                   type="tel"
                   className="h-11 rounded-md border border-white/20 bg-white/10 px-3 text-white placeholder:text-white/70 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent" 
-                  placeholder="+38 (0XX) XXX-XX-XX"
+                  placeholder="+38 (___) ___-__-__"
+                  inputMode="tel"
+                  autoComplete="tel"
+                  pattern="^\+38 \(\d{3}\) \d{3}-\d{2}-\d{2}$"
                 />
               </div>
               

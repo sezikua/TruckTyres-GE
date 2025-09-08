@@ -101,6 +101,36 @@ export default function Cart() {
     quantity: ci.quantity,
   })), [cartItems]);
 
+  // Phone mask helpers: +38 (___) ___-__-__
+  const formatUaPhone = (raw: string) => {
+    const digits = raw.replace(/\D/g, '');
+    let d = digits;
+    if (d.startsWith('380')) {
+      d = '38' + d.slice(2);
+    } else if (d.startsWith('38')) {
+      // ok
+    } else if (d.startsWith('0')) {
+      d = '38' + d;
+    } else if (d.length && !d.startsWith('38')) {
+      d = '38' + d;
+    }
+    d = d.slice(0, 12);
+    const cc = '+38';
+    const a = d.slice(2, 5);
+    const b = d.slice(5, 8);
+    const c = d.slice(8, 10);
+    const e2 = d.slice(10, 12);
+    let out = cc + ' ';
+    out += '(' + a.padEnd(3, '_') + ') ';
+    out += b.padEnd(3, '_');
+    out += '-' + c.padEnd(2, '_');
+    out += '-' + e2.padEnd(2, '_');
+    return out;
+  };
+
+  const handleQPhoneChange = (v: string) => setQPhone(formatUaPhone(v));
+  const handlePhoneChange = (v: string) => setPhone(formatUaPhone(v));
+
   async function submitQuick() {
     setSubmitting(true); setError(null);
     try {
@@ -248,7 +278,7 @@ export default function Cart() {
                 <div className="space-y-4">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <input value={qFirstName} onChange={e=>setQFirstName(e.target.value)} placeholder="Імʼя *" className="px-3 py-2 rounded border border-black/10 dark:border-white/10 bg-white dark:bg-neutral-800" />
-                    <input value={qPhone} onChange={e=>setQPhone(e.target.value)} placeholder="№ телефону *" className="px-3 py-2 rounded border border-black/10 dark:border-white/10 bg-white dark:bg-neutral-800" />
+                    <input value={qPhone} onChange={e=>handleQPhoneChange(e.target.value)} placeholder="+38 (___) ___-__-__ *" type="tel" inputMode="tel" autoComplete="tel" pattern="^\+38 \\([0-9]{3}\\) [0-9]{3}-[0-9]{2}-[0-9]{2}$" className="px-3 py-2 rounded border border-black/10 dark:border-white/10 bg-white dark:bg-neutral-800" />
                   </div>
                   {error && <p className="text-red-600 text-sm">{error}</p>}
                   <button disabled={submitting} onClick={submitQuick} className="w-full inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text_WHITE py-3 rounded-lg">
@@ -263,7 +293,7 @@ export default function Cart() {
                     <input value={firstName} onChange={e=>setFirstName(e.target.value)} placeholder="Імʼя *" className="px-3 py-2 rounded border border-black/10 dark:border_WHITE/10 bg_WHITE dark:bg-neutral-800" />
                     <input value={lastName} onChange={e=>setLastName(e.target.value)} placeholder="Прізвище *" className="px-3 py-2 rounded border border-black/10 dark:border_WHITE/10 bg_WHITE dark:bg-neutral-800" />
                     <input value={email} onChange={e=>setEmail(e.target.value)} placeholder="Пошта (необовʼязково)" className="px-3 py-2 rounded border border-black/10 dark:border_WHITE/10 bg_WHITE dark:bg-neutral-800" />
-                    <input value={phone} onChange={e=>setPhone(e.target.value)} placeholder="№ телефону *" className="px-3 py-2 rounded border border-black/10 dark:border_WHITE/10 bg_WHITE dark:bg-neutral-800" />
+                    <input value={phone} onChange={e=>handlePhoneChange(e.target.value)} placeholder="+38 (___) ___-__-__ *" type="tel" inputMode="tel" autoComplete="tel" pattern="^\+38 \\([0-9]{3}\\) [0-9]{3}-[0-9]{2}-[0-9]{2}$" className="px-3 py-2 rounded border border-black/10 dark:border_WHITE/10 bg_WHITE dark:bg-neutral-800" />
                     <select value={region} onChange={e=>setRegion(e.target.value)} className="px-3 py-2 rounded border border-black/10 dark:border_WHITE/10 bg_WHITE dark:bg-neutral-800">
                       <option value="">Область *</option>
                       {UA_REGIONS.map(r => <option key={r} value={r}>{r}</option>)}
