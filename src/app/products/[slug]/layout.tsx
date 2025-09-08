@@ -15,6 +15,7 @@ type ProductApiResponse = {
     regular_price: string;
     discount_price: string | null;
     warehouse: string;
+    slug?: string;
   } | null;
 };
 
@@ -28,14 +29,14 @@ async function getBaseUrl(): Promise<string> {
 }
 
 export async function generateMetadata(
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ slug: string }> }
 ): Promise<Metadata> {
-  const { id } = await params;
+  const { slug } = await params;
   const baseUrl = await getBaseUrl();
 
   let product: ProductApiResponse['data'] = null;
   try {
-    const res = await fetch(`${baseUrl}/api/products/${id}`, { next: { revalidate: 300 } });
+    const res = await fetch(`${baseUrl}/api/products/slug/${encodeURIComponent(slug)}`, { next: { revalidate: 300 } });
     if (res.ok) {
       const json: ProductApiResponse = await res.json();
       product = json.data;
@@ -56,7 +57,7 @@ export async function generateMetadata(
     ? [product.product_name, product.model, product.size, product.Category, product.Segment, 'CEAT', 'шини', 'агро'].filter(Boolean).join(', ')
     : 'CEAT, шини, агро, тракторні шини';
 
-  const canonical = `${baseUrl}/products/${id}`;
+  const canonical = `${baseUrl}/products/${encodeURIComponent(slug)}`;
   const ogImage = product?.product_image ? `${baseUrl}/api/assets/${product.product_image}` : `${baseUrl}/placeholder-image.svg`;
 
   return {

@@ -62,16 +62,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   if (productsRes.status === 'fulfilled' && productsRes.value.ok) {
     try {
       const productsJson = await productsRes.value.json();
-      const products: Array<{ id: number; size?: string }> = productsJson?.data || [];
+      const products: Array<{ id: number; slug?: string; size?: string }> = productsJson?.data || [];
       
       // Add product pages
       products.forEach((p) => {
-        urls.push({
-          url: `${baseUrl}/products/${p.id}`,
-          lastModified: new Date(),
-          changeFrequency: 'daily',
-          priority: 0.9,
-        });
+        if (p.slug) {
+          urls.push({
+            url: `${baseUrl}/products/${encodeURIComponent(p.slug)}`,
+            lastModified: new Date(),
+            changeFrequency: 'daily',
+            priority: 0.9,
+          });
+        }
       });
 
       // Extract unique sizes for size pages

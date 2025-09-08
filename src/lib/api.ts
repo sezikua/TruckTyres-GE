@@ -14,6 +14,7 @@ export interface Product {
   Category: string;
   Segment: string;
   warehouse: string;
+  slug?: string;
 }
 
 export interface PaginationInfo {
@@ -74,6 +75,27 @@ export async function fetchProductById(id: number): Promise<Product | null> {
   } catch (error) {
     console.error('Error fetching product:', error);
     throw new Error('Помилка отримання товару з сервера');
+  }
+}
+
+export async function fetchProductBySlug(slug: string): Promise<Product | null> {
+  try {
+    const response = await fetch(`/api/products/slug/${encodeURIComponent(slug)}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data.data || null;
+  } catch (error) {
+    console.error('Error fetching product by slug:', error);
+    throw new Error('Помилка отримання товару за slug з сервера');
   }
 }
 

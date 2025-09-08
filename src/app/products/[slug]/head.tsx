@@ -9,11 +9,10 @@ async function getBaseUrl(): Promise<string> {
   return `${proto}://${host}`;
 }
 
-export default async function Head({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params;
+export default async function Head({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
   const baseUrl = await getBaseUrl();
 
-  // Fetch minimal product data for JSON-LD
   type ProductForHead = {
     id: number;
     product_name: string;
@@ -28,7 +27,7 @@ export default async function Head({ params }: { params: Promise<{ id: string }>
   };
   let product: ProductForHead | null = null;
   try {
-    const res = await fetch(`${baseUrl}/api/products/${id}`, { next: { revalidate: 300 } });
+    const res = await fetch(`${baseUrl}/api/products/slug/${encodeURIComponent(slug)}`, { next: { revalidate: 300 } });
     if (res.ok) {
       const json: { data: ProductForHead | null } = await res.json();
       product = json.data ?? null;
@@ -48,7 +47,7 @@ export default async function Head({ params }: { params: Promise<{ id: string }>
       availability: product.warehouse?.toLowerCase() === 'in stock' ? 'https://schema.org/InStock' : (product.warehouse?.toLowerCase() === 'on order' ? 'https://schema.org/PreOrder' : 'https://schema.org/OutOfStock'),
       priceCurrency: 'UAH',
       price: product.discount_price || product.regular_price,
-      url: `${baseUrl}/products/${product.id}`,
+      url: `${baseUrl}/products/${encodeURIComponent(slug)}`,
     },
   } : null;
 

@@ -116,7 +116,7 @@ export default function SimilarProducts({ currentProductId, size }: SimilarProdu
               key={product.id}
               className="bg-background border border-foreground/10 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group"
             >
-              <Link href={`/products/${product.id}`}>
+              <Link href={`/products/${encodeURIComponent(product.slug || String(product.id))}`}>
                 <div className="aspect-square bg-background overflow-hidden relative">
                   <Image
                     src={getProductImageUrl(product.product_image)}
@@ -138,7 +138,7 @@ export default function SimilarProducts({ currentProductId, size }: SimilarProdu
                 </div>
 
                 {/* Product Info */}
-                <Link href={`/products/${product.id}`}>
+                <Link href={`/products/${encodeURIComponent(product.slug || String(product.id))}`}>
                   <h3 className="font-semibold text-foreground mb-2 line-clamp-2 group-hover:text-primary transition-colors">
                     {product.product_name}
                   </h3>

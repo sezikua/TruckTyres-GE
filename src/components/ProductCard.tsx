@@ -48,7 +48,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Clickable area to open product */}
-      <Link href={`/products/${product.id}`} className="block">
+      <Link href={`/products/${encodeURIComponent(product.slug || String(product.id))}`} className="block">
         <div className="relative aspect-square overflow-hidden bg-foreground/5">
           <Image
             src={getProductImageUrl(product.product_image)}
@@ -100,7 +100,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         </div>
 
         {/* Product Name */}
-        <Link href={`/products/${product.id}`} className="block">
+        <Link href={`/products/${encodeURIComponent(product.slug || String(product.id))}`} className="block">
           <h3 className="font-semibold text-foreground mb-2 line-clamp-2 group-hover:text-primary transition-colors">
             {product.product_name}
           </h3>
