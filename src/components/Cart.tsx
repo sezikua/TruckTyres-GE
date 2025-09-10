@@ -281,7 +281,7 @@ export default function Cart() {
                     <input value={qPhone} onChange={e=>handleQPhoneChange(e.target.value)} placeholder="+38 (___) ___-__-__ *" type="tel" inputMode="tel" autoComplete="tel" pattern="^\+38 \\([0-9]{3}\\) [0-9]{3}-[0-9]{2}-[0-9]{2}$" className="px-3 py-2 rounded border border-black/10 dark:border-white/10 bg-white dark:bg-neutral-800" />
                   </div>
                   {error && <p className="text-red-600 text-sm">{error}</p>}
-                  <button disabled={submitting} onClick={submitQuick} className="w-full inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text_WHITE py-3 rounded-lg">
+                  <button disabled={submitting} onClick={submitQuick} className="w-full inline-flex items-center justify-center gap-2 bg-[#008E4E] hover:bg-[#007A42] text-white py-3 rounded-lg">
                     <Send className="w-4 h-4" /> Відправити замовлення
                   </button>
                 </div>
@@ -290,15 +290,15 @@ export default function Cart() {
               {tab === 'checkout' && (
                 <div className="space-y-4">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <input value={firstName} onChange={e=>setFirstName(e.target.value)} placeholder="Імʼя *" className="px-3 py-2 rounded border border-black/10 dark:border_WHITE/10 bg_WHITE dark:bg-neutral-800" />
-                    <input value={lastName} onChange={e=>setLastName(e.target.value)} placeholder="Прізвище *" className="px-3 py-2 rounded border border-black/10 dark:border_WHITE/10 bg_WHITE dark:bg-neutral-800" />
-                    <input value={email} onChange={e=>setEmail(e.target.value)} placeholder="Пошта (необовʼязково)" className="px-3 py-2 rounded border border-black/10 dark:border_WHITE/10 bg_WHITE dark:bg-neutral-800" />
-                    <input value={phone} onChange={e=>handlePhoneChange(e.target.value)} placeholder="+38 (___) ___-__-__ *" type="tel" inputMode="tel" autoComplete="tel" pattern="^\+38 \\([0-9]{3}\\) [0-9]{3}-[0-9]{2}-[0-9]{2}$" className="px-3 py-2 rounded border border-black/10 dark:border_WHITE/10 bg_WHITE dark:bg-neutral-800" />
-                    <select value={region} onChange={e=>setRegion(e.target.value)} className="px-3 py-2 rounded border border-black/10 dark:border_WHITE/10 bg_WHITE dark:bg-neutral-800">
+                    <input value={firstName} onChange={e=>setFirstName(e.target.value)} placeholder="Імʼя *" className="px-3 py-2 rounded border border-black/10 dark:border-white/10 bg-white dark:bg-neutral-800" />
+                    <input value={lastName} onChange={e=>setLastName(e.target.value)} placeholder="Прізвище *" className="px-3 py-2 rounded border border-black/10 dark:border-white/10 bg-white dark:bg-neutral-800" />
+                    <input value={email} onChange={e=>setEmail(e.target.value)} placeholder="Пошта (необовʼязково)" className="px-3 py-2 rounded border border-black/10 dark:border-white/10 bg-white dark:bg-neutral-800" />
+                    <input value={phone} onChange={e=>handlePhoneChange(e.target.value)} placeholder="+38 (___) ___-__-__ *" type="tel" inputMode="tel" autoComplete="tel" pattern="^\+38 \\([0-9]{3}\\) [0-9]{3}-[0-9]{2}-[0-9]{2}$" className="px-3 py-2 rounded border border-black/10 dark:border-white/10 bg-white dark:bg-neutral-800" />
+                    <select value={region} onChange={e=>setRegion(e.target.value)} className="px-3 py-2 rounded border border-black/10 dark:border-white/10 bg-white dark:bg-neutral-800">
                       <option value="">Область *</option>
                       {UA_REGIONS.map(r => <option key={r} value={r}>{r}</option>)}
                     </select>
-                    <input value={city} onChange={e=>setCity(e.target.value)} placeholder="Населений пункт *" className="px-3 py-2 rounded border border-black/10 dark:border_WHITE/10 bg_WHITE dark:bg-neutral-800" />
+                    <input value={city} onChange={e=>setCity(e.target.value)} placeholder="Населений пункт *" className="px-3 py-2 rounded border border-black/10 dark:border-white/10 bg-white dark:bg-neutral-800" />
                   </div>
 
                   <div>
@@ -313,13 +313,13 @@ export default function Cart() {
                     </div>
                   </div>
 
-                  <input value={carrierWarehouse} onChange={e=>setCarrierWarehouse(e.target.value)} placeholder="Склад перевізника (необовʼязково)" className="w-full px-3 py-2 rounded border border-black/10 dark:border_WHITE/10 bg_WHITE dark:bg-neutral-800" />
+                  <input value={carrierWarehouse} onChange={e=>setCarrierWarehouse(e.target.value)} placeholder="Склад перевізника (необовʼязково)" className="w-full px-3 py-2 rounded border border-black/10 dark:border-white/10 bg-white dark:bg-neutral-800" />
 
-                  <textarea value={message} onChange={e=>setMessage(e.target.value)} placeholder="Повідомлення" className="w-full px-3 py-2 rounded border border-black/10 dark:border_WHITE/10 bg_WHITE dark:bg-neutral-800 min-h-[100px]" />
+                  <textarea value={message} onChange={e=>setMessage(e.target.value)} placeholder="Повідомлення" className="w-full px-3 py-2 rounded border border-black/10 dark:border-white/10 bg-white dark:bg-neutral-800 min-h-[100px]" />
 
                   {error && <p className="text-red-600 text-sm">{error}</p>}
 
-                  <button disabled={submitting} onClick={submitFull} className="w-full inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text_WHITE py-3 rounded-lg">
+                  <button disabled={submitting} onClick={submitFull} className="w-full inline-flex items-center justify-center gap-2 bg-[#008E4E] hover:bg-[#007A42] text-white py-3 rounded-lg">
                     <Send className="w-4 h-4" /> Оформити замовлення
                   </button>
                 </div>

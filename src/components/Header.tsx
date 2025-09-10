@@ -12,6 +12,7 @@ const navItems = [
   { href: "/", label: "Головна" },
   { href: "/products", label: "Магазин" },
   { href: "/about", label: "Про нас" },
+  { href: "/news", label: "Новини" },
   { href: "/contacts", label: "Контакти" },
 ];
 
@@ -20,12 +21,12 @@ export default function Header() {
   const [contactOpen, setContactOpen] = useState(false);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 w-full bg-[#0054a6] text-white border-b border-black/0 shadow-lg">
+    <header className="fixed top-0 left-0 right-0 z-50 w-full bg-[#008e4ed3] text-white border-b border-black/0 shadow-lg">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <Link href="/" className="flex items-center gap-3">
             <Image 
-              src="/cstl-logo-eu-as.avif" 
+              src="/logotype_en_white-1.png" 
               alt="CEAT" 
               width={120} 
               height={32} 
@@ -70,9 +71,9 @@ export default function Header() {
 
       {/* Mobile menu */}
       <div
-        className={`md:hidden overflow-hidden transition-[max-height,opacity] duration-300 absolute top-full left-0 right-0 bg-[#0054a6] shadow-lg ${open ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}`}
+        className={`md:hidden overflow-hidden transition-[max-height,opacity] duration-300 absolute top-full left-0 right-0 bg-[#008e4ed3] shadow-lg ${open ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}`}
       >
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-2 flex flex-col gap-2 bg-[#0054a6] text-white">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-2 flex flex-col gap-2 bg-[#008e4ed3] text-white">
           <button
             onClick={() => { setContactOpen(true); setOpen(false); }}
             className="px-3 py-2 rounded-md hover:bg-white/10 text-left"

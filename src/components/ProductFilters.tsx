@@ -242,12 +242,12 @@ export default function ProductFilters({ onFiltersChange, onLoadingChange, curre
       <div className="lg:hidden mb-4">
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="flex items-center gap-2 bg-[#0054a6] border border-white/20 rounded-lg px-4 py-2 text-sm font-medium text-white hover:bg-[#0054a6]/90"
+          className="flex items-center gap-2 bg-[#008e4ed3] border border-white/20 rounded-lg px-4 py-2 text-sm font-medium text-white hover:bg-[#008e4ed3]/90"
         >
           <Filter className="w-4 h-4" />
           Фільтри
           {activeFiltersCount > 0 && (
-            <span className="bg-white text-[#0054a6] text-xs rounded-full px-2 py-1">
+            <span className="bg-white text-[#008e4ed3] text-xs rounded-full px-2 py-1">
               {activeFiltersCount}
             </span>
           )}
@@ -256,7 +256,7 @@ export default function ProductFilters({ onFiltersChange, onLoadingChange, curre
 
       {/* Filters Panel */}
       <div className={`lg:block ${isOpen ? 'block' : 'hidden'}`}>
-        <div className="bg-[#0054a6] text-white border border-white/20 rounded-lg p-4 lg:p-6">
+        <div className="bg-[#008e4ed3] text-white border border-white/20 rounded-lg p-4 lg:p-6">
           {/* Header */}
           <div className="mb-4">
             <h3 className="text-lg font-semibold text-white">Фільтри</h3>

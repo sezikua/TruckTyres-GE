@@ -115,7 +115,7 @@ export default async function Home() {
               обприскувачів і причепів.
             </p>
             <div className="mt-8 flex items-center gap-4">
-              <Link href="/products" className="inline-flex h-11 items-center rounded-md bg-[#0054a6] px-6 text-white shadow-sm transition hover:opacity-90">
+              <Link href="/products" className="inline-flex h-11 items-center rounded-md bg-[#008e4ed3] px-6 text-white shadow-sm transition hover:opacity-90">
                 Перейти в магазин
               </Link>
               <Link href="/contacts" className="inline-flex h-11 items-center rounded-md border px-6 border-white/30 hover:bg-white/10 transition text-white">
@@ -181,11 +181,11 @@ function CategoriesGrid() {
                 priority
               />
             ) : (
-              <div className="h-full w-full bg-[#0054a6]/15" />
+              <div className="h-full w-full bg-[#008e4ed3]/15" />
             )}
           </div>
           <div className="p-4">
-            <p className="font-medium group-hover:text-[#0054a6] transition-colors">{firstCategory.title}</p>
+            <p className="font-medium group-hover:text-[#008e4ed3] transition-colors">{firstCategory.title}</p>
           </div>
         </Link>
 
@@ -208,11 +208,11 @@ function CategoriesGrid() {
                     priority
                   />
                 ) : (
-                  <div className="h-full w-full bg-[#0054a6]/15" />
+                  <div className="h-full w-full bg-[#008e4ed3]/15" />
                 )}
               </div>
               <div className="p-4">
-                <p className="font-medium group-hover:text-[#0054a6] transition-colors">{title}</p>
+                <p className="font-medium group-hover:text-[#008e4ed3] transition-colors">{title}</p>
               </div>
             </Link>
           ))}
@@ -238,7 +238,7 @@ function CategoriesGrid() {
                   priority
                 />
               ) : (
-                <div className="h-full w-full bg-[#0054a6]/15" />
+                <div className="h-full w-full bg-[#008e4ed3]/15" />
               )}
             </div>
             <div className="p-4">

@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export default function Footer() {
   return (
-    <footer className="bg-[#0054a6] text-white">
+    <footer className="bg-[#008e4ed3] text-white">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 grid grid-cols-1 md:grid-cols-4 gap-8">
         <div className="text-sm leading-6">
           <Image
@@ -46,7 +46,7 @@ export default function Footer() {
           <p className="mt-1"><a href="mailto:s.kostrov@agrosolar.com.ua" className="hover:underline">s.kostrov@agrosolar.com.ua</a></p>
         </div>
       </div>
-      <div className="bg-[#004a93] py-4 text-center text-xs text-white/80">
+      <div className="bg-[#008E4E] py-4 text-center text-xs text-white/80">
         © {new Date().getFullYear()} ТОВ &ldquo;Агро-Солар&rdquo; офіційний імпортер шин CEAT в Україні. Всі права захищені.
       </div>
     </footer>

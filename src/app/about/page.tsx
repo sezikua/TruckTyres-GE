@@ -71,9 +71,9 @@ function FeatureCard({ icon, title, description }: { icon: string; title: string
 
   return (
     <div className="group relative overflow-hidden rounded-2xl border border-black/10 dark:border-white/10 bg-white dark:bg-black/20 p-6 hover:shadow-lg transition-all duration-300">
-      <div className="absolute inset-0 bg-gradient-to-br from-[#0054a6]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      <div className="absolute inset-0 bg-gradient-to-br from-[#008e4ed3]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       <div className="relative text-center">
-        <div className="w-16 h-16 bg-[#0054a6] rounded-full flex items-center justify-center mx-auto mb-4 text-white group-hover:scale-110 transition-transform duration-300">
+        <div className="w-16 h-16 bg-[#008e4ed3] rounded-full flex items-center justify-center mx-auto mb-4 text-white group-hover:scale-110 transition-transform duration-300">
           {getIcon(icon)}
         </div>
         <h3 className="text-xl font-semibold mb-3">{title}</h3>
@@ -86,9 +86,9 @@ function FeatureCard({ icon, title, description }: { icon: string; title: string
 function StatCard({ value, title, text }: { value: string; title: string; text: string }) {
   return (
     <div className="group relative overflow-hidden rounded-2xl border border-black/10 dark:border-white/10 bg-white dark:bg-black/20 p-8 hover:shadow-lg transition-all duration-300">
-      <div className="absolute inset-0 bg-gradient-to-br from-[#0054a6]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      <div className="absolute inset-0 bg-gradient-to-br from-[#008e4ed3]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       <div className="relative">
-        <div className="text-4xl font-extrabold tracking-tight text-[#0054a6] mb-2">{value}</div>
+        <div className="text-4xl font-extrabold tracking-tight text-[#008e4ed3] mb-2">{value}</div>
         <div className="text-lg font-semibold mb-3">{title}</div>
         <p className="text-sm text-foreground/80 leading-relaxed">{text}</p>
       </div>
@@ -101,10 +101,10 @@ export default function AboutPage() {
     <div className="bg-background">
       {/* Hero Section */}
       <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#0054a6]/10 via-transparent to-[#0054a6]/5" />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#008e4ed3]/10 via-transparent to-[#008e4ed3]/5" />
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20">
           <div className="text-center">
-            <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight bg-gradient-to-r from-[#0054a6] to-[#003d7a] bg-clip-text text-transparent">
+            <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight bg-gradient-to-r from-[#008e4ed3] to-[#008E4E] bg-clip-text text-transparent">
               Про нас
             </h1>
             <p className="mt-6 max-w-3xl mx-auto text-xl text-foreground/80 leading-relaxed">
@@ -149,9 +149,9 @@ export default function AboutPage() {
               Наші основні склади, стратегічно розташовані у Києві, Хмельницькому, дозволяють нам оперативно доставляти сільгосп шини до будь-якої точки України. Ми розуміємо, наскільки критичним є час для аграріїв, особливо в сезон, тому гарантуємо максимально швидке та надійне постачання, щоб ваша техніка не простоювала.
             </p>
           </div>
-          <div className="bg-gradient-to-br from-[#0054a6]/10 to-[#003d7a]/5 rounded-2xl p-8">
+          <div className="bg-gradient-to-br from-[#008e4ed3]/10 to-[#008E4E]/5 rounded-2xl p-8">
             <div className="text-center">
-              <div className="w-16 h-16 bg-[#0054a6] rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="w-16 h-16 bg-[#008e4ed3] rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                 </svg>
@@ -167,7 +167,7 @@ export default function AboutPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div className="bg-gradient-to-br from-[#0054a6]/10 to-[#003d7a]/5 rounded-2xl p-8 order-2 lg:order-1">
             <div className="text-center">
-              <div className="w-16 h-16 bg-[#0054a6] rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="w-16 h-16 bg-[#008e4ed3] rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                 </svg>

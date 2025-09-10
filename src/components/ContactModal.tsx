@@ -104,7 +104,7 @@ export default function ContactModal({ open, onClose }: Props) {
         setSubmitStatus('success');
         setTimeout(() => {
           onClose();
-        }, 2000);
+        }, 5000);
       } else {
         setSubmitStatus('error');
         setErrorMessage(result.error || 'Помилка відправки повідомлення');
@@ -121,7 +121,7 @@ export default function ContactModal({ open, onClose }: Props) {
     <div className="fixed inset-0 z-[60]">
       <div className="absolute inset-0 bg-black/50" onClick={onClose} />
       <div className="absolute inset-0 flex items-center justify-center p-4">
-        <div className="w-full max-w-lg rounded-xl bg-[#0054a6] text-white shadow-xl border border-white/20">
+        <div className="w-full max-w-lg rounded-xl bg-[#008E4E] text-white shadow-xl border border-white/20">
           <div className="px-6 py-4 border-b border-white/20 flex items-center justify-between">
             <h3 className="text-lg font-semibold text-white">Зворотний зв&apos;язок</h3>
             <button
