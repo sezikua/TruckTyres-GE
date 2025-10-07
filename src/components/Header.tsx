@@ -51,7 +51,7 @@ export default function Header() {
 
           <div className="flex items-center gap-2">
             <button
-              className="hidden md:inline-flex h-10 items-center rounded-md bg-white/10 hover:bg-white/20 text-white px-4 transition"
+              className="hidden md:inline-flex h-10 items-center rounded-xl bg-[#FFD700] text-[#2d3748] px-4 font-semibold shadow-md hover:bg-[#FFED4E] hover:shadow-lg transition-transform duration-200 hover:-translate-y-0.5"
               onClick={() => setContactOpen(true)}
             >
               Зворотний зв&apos;язок
@@ -76,7 +76,7 @@ export default function Header() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-2 flex flex-col gap-2 bg-[#008e4ed3] text-white">
           <button
             onClick={() => { setContactOpen(true); setOpen(false); }}
-            className="px-3 py-2 rounded-md hover:bg-white/10 text-left"
+            className="px-3 py-2 rounded-xl bg-[#FFD700] text-[#2d3748] font-semibold shadow-md hover:bg-[#FFED4E] hover:shadow-lg transition"
           >
             Зворотний зв&apos;язок
           </button>

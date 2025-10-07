@@ -121,20 +121,23 @@ export default function ContactModal({ open, onClose }: Props) {
     <div className="fixed inset-0 z-[60]">
       <div className="absolute inset-0 bg-black/50" onClick={onClose} />
       <div className="absolute inset-0 flex items-center justify-center p-4">
-        <div className="w-full max-w-lg rounded-xl bg-[#008E4E] text-white shadow-xl border border-white/20">
-          <div className="px-6 py-4 border-b border-white/20 flex items-center justify-between">
-            <h3 className="text-lg font-semibold text-white">Зворотний зв&apos;язок</h3>
-            <button
-              type="button"
-              onClick={onClose}
-              className="h-8 px-3 rounded-md bg-white/10 text-white hover:bg-white/20 transition-colors"
-            >
-              Закрити
-            </button>
+        <div className="w-full max-w-xl rounded-2xl bg-[#008e4ed3] text-white shadow-[0_20px_60px_rgba(0,142,78,0.3)] border border-white/20 backdrop-blur-md">
+          <div className="px-8 pt-8">
+            <div className="flex items-center justify-between">
+              <h3 className="text-2xl font-semibold text-white text-center w-full drop-shadow">Зворотний зв&apos;язок</h3>
+              <button
+                type="button"
+                onClick={onClose}
+                className="ml-auto h-9 px-3 rounded-xl bg-white/10 text-white hover:bg-white/20 transition"
+              >
+                Закрити
+              </button>
+            </div>
+            <p className="mt-2 text-center text-sm text-[#E6F7EF]">Заповніть форму і ми зв&apos;яжемося з вами найближчим часом</p>
           </div>
-          
+
           {submitStatus === 'success' ? (
-            <div className="px-6 py-8 text-center">
+            <div className="px-8 py-10 text-center">
               <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -144,10 +147,10 @@ export default function ContactModal({ open, onClose }: Props) {
               <p className="text-white/80">Ми з Вами зв&apos;яжемось найближчим часом.</p>
             </div>
           ) : (
-            <form className="px-6 py-5 grid gap-4" onSubmit={handleSubmit}>
-              <div className="grid gap-1">
-                <label htmlFor="name" className="text-sm font-medium text-white">
-                  Ім&apos;я <span className="text-red-300">*</span>
+            <form className="px-8 py-6 grid gap-4" onSubmit={handleSubmit}>
+              <div className="grid gap-2">
+                <label htmlFor="name" className="text-sm font-semibold text-white uppercase tracking-wide">
+                  Ім&apos;я <span className="text-[#FFD700]">*</span>
                 </label>
                 <input 
                   id="name" 
@@ -155,14 +158,14 @@ export default function ContactModal({ open, onClose }: Props) {
                   value={formData.name}
                   onChange={handleInputChange}
                   required 
-                  className="h-11 rounded-md border border-white/20 bg-white/10 px-3 text-white placeholder:text-white/70 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent" 
+                  className="h-12 rounded-xl border-0 bg-white px-4 text-[#2d3748] placeholder:text-[#a0aec0] shadow-md focus:outline-none focus:ring-2 focus:ring-[#008E4E]/40" 
                   placeholder="Введіть ваше ім'я"
                 />
               </div>
               
-              <div className="grid gap-1">
-                <label htmlFor="phone" className="text-sm font-medium text-white">
-                  Телефон <span className="text-red-300">*</span>
+              <div className="grid gap-2">
+                <label htmlFor="phone" className="text-sm font-semibold text-white uppercase tracking-wide">
+                  Телефон <span className="text-[#FFD700]">*</span>
                 </label>
                 <input 
                   id="phone" 
@@ -171,7 +174,7 @@ export default function ContactModal({ open, onClose }: Props) {
                   onChange={handlePhoneChange}
                   required 
                   type="tel"
-                  className="h-11 rounded-md border border-white/20 bg-white/10 px-3 text-white placeholder:text-white/70 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent" 
+                  className="h-12 rounded-xl border-0 bg-white px-4 text-[#2d3748] placeholder:text-[#a0aec0] shadow-md focus:outline-none focus:ring-2 focus:ring-[#008E4E]/40" 
                   placeholder="+38 (___) ___-__-__"
                   inputMode="tel"
                   autoComplete="tel"
@@ -179,8 +182,8 @@ export default function ContactModal({ open, onClose }: Props) {
                 />
               </div>
               
-              <div className="grid gap-1">
-                <label htmlFor="email" className="text-sm font-medium text-white">
+              <div className="grid gap-2">
+                <label htmlFor="email" className="text-sm font-semibold text-white uppercase tracking-wide">
                   Email
                 </label>
                 <input 
@@ -189,13 +192,13 @@ export default function ContactModal({ open, onClose }: Props) {
                   value={formData.email}
                   onChange={handleInputChange}
                   type="email" 
-                  className="h-11 rounded-md border border-white/20 bg-white/10 px-3 text-white placeholder:text-white/70 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent" 
+                  className="h-12 rounded-xl border-0 bg-white px-4 text-[#2d3748] placeholder:text-[#a0aec0] shadow-md focus:outline-none focus:ring-2 focus:ring-[#008E4E]/40"
                   placeholder="your@email.com"
                 />
               </div>
               
-              <div className="grid gap-1">
-                <label htmlFor="message" className="text-sm font-medium text-white">
+              <div className="grid gap-2">
+                <label htmlFor="message" className="text-sm font-semibold text-white uppercase tracking-wide">
                   Повідомлення
                 </label>
                 <textarea 
@@ -204,29 +207,21 @@ export default function ContactModal({ open, onClose }: Props) {
                   value={formData.message}
                   onChange={handleInputChange}
                   rows={4} 
-                  className="rounded-md border border-white/20 bg-white/10 px-3 py-2 text-white placeholder:text-white/70 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-transparent resize-none" 
+                  className="rounded-xl border-0 bg-white px-4 py-3 text-[#2d3748] placeholder:text-[#a0aec0] shadow-md focus:outline-none focus:ring-2 focus:ring-[#008E4E]/40 resize-y min-h-[120px] max-h-[250px]" 
                   placeholder="Опишіть ваше питання або пропозицію..."
                 />
               </div>
 
               {submitStatus === 'error' && (
-                <div className="p-3 bg-red-500/20 border border-red-400/30 rounded-md">
-                  <p className="text-sm text-red-200">{errorMessage}</p>
+                <div className="p-3 bg-[#FFD700]/20 border border-[#FFD700]/40 rounded-xl">
+                  <p className="text-sm text-white">{errorMessage}</p>
                 </div>
               )}
               
-              <div className="pt-2 flex justify-end gap-2">
-                <button 
-                  type="button" 
-                  onClick={onClose} 
-                  className="h-11 px-5 rounded-md border border-white/20 hover:bg-white/10 transition-colors text-white"
-                  disabled={isSubmitting}
-                >
-                  Скасувати
-                </button>
+              <div className="pt-2 flex flex-col sm:flex-row gap-3">
                 <button 
                   type="submit" 
-                  className="h-11 px-5 rounded-md bg-white/10 text-white hover:bg-white/20 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                  className="flex-1 h-12 px-5 rounded-xl bg-[#FFD700] text-[#2d3748] font-semibold shadow-md hover:bg-[#FFED4E] hover:shadow-lg transition-transform duration-200 hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? (
@@ -241,7 +236,16 @@ export default function ContactModal({ open, onClose }: Props) {
                     'Надіслати'
                   )}
                 </button>
+                <button 
+                  type="button" 
+                  onClick={onClose} 
+                  className="flex-1 h-12 px-5 rounded-xl bg-white text-[#008E4E] font-semibold shadow-md hover:bg-[#F7FAFC] hover:shadow-lg transition"
+                  disabled={isSubmitting}
+                >
+                  Скасувати
+                </button>
               </div>
+              <p className="mt-2 text-center text-xs text-[#E6F7EF] italic">Поля, позначені * — обов&apos;язкові</p>
             </form>
           )}
         </div>

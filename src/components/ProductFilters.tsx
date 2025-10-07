@@ -201,8 +201,9 @@ export default function ProductFilters({ onFiltersChange, onLoadingChange, curre
     }
   };
 
-  const handleWarehouseChange = (value: string) => {
-    setWarehouseFilter(value);
+  // Видалено інтерфейс "Наявність", тож обробник залишено порожнім на випадок майбутнього повернення
+  const handleWarehouseChange = (_value: string) => {
+    // no-op
   };
 
   const handleCategoryChange = (value: string) => {
@@ -228,7 +229,7 @@ export default function ProductFilters({ onFiltersChange, onLoadingChange, curre
   };
 
   const activeFiltersCount = (selectedCategory ? 1 : 0) + (selectedDiameter ? 1 : 0) + 
-    (selectedSize ? 1 : 0) + (warehouseFilter !== 'all' ? 1 : 0);
+    (selectedSize ? 1 : 0);
 
   const formatDiameterLabel = (value: string) => {
     const num = parseFloat(value);
@@ -256,21 +257,21 @@ export default function ProductFilters({ onFiltersChange, onLoadingChange, curre
 
       {/* Filters Panel */}
       <div className={`lg:block ${isOpen ? 'block' : 'hidden'}`}>
-        <div className="bg-[#008e4ed3] text-white border border-white/20 rounded-lg p-4 lg:p-6">
+        <div className="bg-[#008e4ed3] text-white border border-white/20 rounded-2xl p-6 lg:p-8 shadow-2xl backdrop-blur-md">
           {/* Header */}
-          <div className="mb-4">
-            <h3 className="text-lg font-semibold text-white">Фільтри</h3>
+          <div className="mb-6">
+            <h3 className="text-2xl font-semibold text-white text-center drop-shadow">Фільтр продукції</h3>
           </div>
 
           {/* Diameter */}
           <div className="mb-6">
-            <label className="block text-sm font-medium text-white/90 mb-3">
+            <label className="block text-sm font-semibold text-white/90 mb-3 tracking-wide uppercase">
               Діаметр
             </label>
             <select
               value={selectedDiameter}
               onChange={(e) => handleDiameterChange(e.target.value)}
-              className="w-full px-3 py-2 border border-white/20 rounded-lg bg-white/10 text-white placeholder-white/70 focus:ring-2 focus:ring-white/50 focus:border-transparent"
+              className="w-full px-4 py-3 rounded-xl bg-white text-[#2d3748] border-0 shadow-md outline-none focus:ring-2 focus:ring-[#008E4E]/40 transition disabled:bg-gray-200 disabled:text-gray-400"
             >
               <option value="" className="text-black">Всі діаметри</option>
               {loading ? (
@@ -287,15 +288,15 @@ export default function ProductFilters({ onFiltersChange, onLoadingChange, curre
 
           {/* Size */}
           <div className="mb-6">
-            <label className="block text-sm font-medium text-white/90 mb-3">
+            <label className="block text-sm font-semibold text-white/90 mb-3 tracking-wide uppercase">
               Розмір шини
             </label>
             <select
               value={selectedSize}
               onChange={(e) => handleSizeChange(e.target.value)}
               disabled={!selectedDiameter}
-              className={`w-full px-3 py-2 border border-white/20 rounded-lg bg-white/10 text-white placeholder-white/70 focus:ring-2 focus:ring-white/50 focus:border-transparent ${
-                !selectedDiameter ? 'opacity-50 cursor-not-allowed' : ''
+              className={`w-full px-4 py-3 rounded-xl bg-white text-[#2d3748] border-0 shadow-md outline-none focus:ring-2 focus:ring-[#008E4E]/40 transition ${
+                !selectedDiameter ? 'opacity-70 cursor-not-allowed' : ''
               }`}
             >
               <option value="" className="text-black">
@@ -315,13 +316,13 @@ export default function ProductFilters({ onFiltersChange, onLoadingChange, curre
 
           {/* Categories */}
           <div className="mb-6">
-            <label className="block text-sm font-medium text-white/90 mb-3">
+            <label className="block text-sm font-semibold text-white/90 mb-3 tracking-wide uppercase">
               Категорія
             </label>
             <select
               value={selectedCategory}
               onChange={(e) => handleCategoryChange(e.target.value)}
-              className="w-full px-3 py-2 border border-white/20 rounded-lg bg-white/10 text-white placeholder-white/70 focus:ring-2 focus:ring-white/50 focus:border-transparent"
+              className="w-full px-4 py-3 rounded-xl bg-white text-[#2d3748] border-0 shadow-md outline-none focus:ring-2 focus:ring-[#008E4E]/40 transition"
             >
               <option value="" className="text-black">Всі категорії</option>
               {loading ? (
@@ -336,27 +337,11 @@ export default function ProductFilters({ onFiltersChange, onLoadingChange, curre
             </select>
           </div>
 
-
-          {/* Warehouse Status */}
-          <div className="mb-6">
-            <label className="block text-sm font-medium text-white/90 mb-3">
-              Наявність
-            </label>
-            <select
-              value={warehouseFilter}
-              onChange={(e) => handleWarehouseChange(e.target.value)}
-              className="w-full px-3 py-2 border border-white/20 rounded-lg bg-white/10 text-white placeholder-white/70 focus:ring-2 focus:ring-white/50 focus:border-transparent"
-            >
-              <option value="all" className="text-black">Всі товари</option>
-              <option value="in stock" className="text-black">В наявності</option>
-              <option value="on order" className="text-black">Під замовлення</option>
-              <option value="out of stock" className="text-black">Немає в наявності</option>
-            </select>
-          </div>
+          
 
           {/* Active Filters Display */}
           {activeFiltersCount > 0 && (
-            <div className="mb-6 p-4 bg-white/5 rounded-lg border border-white/10">
+            <div className="mb-6 p-4 bg-white/10 rounded-xl border border-white/20 shadow-inner">
               <div className="flex items-center justify-between mb-3">
                 <span className="text-sm font-semibold text-white">
                   Застосовані фільтри ({activeFiltersCount})
@@ -364,7 +349,7 @@ export default function ProductFilters({ onFiltersChange, onLoadingChange, curre
               </div>
               <div className="flex flex-wrap gap-2">
                 {selectedDiameter && (
-                  <span className="inline-flex items-center gap-2 bg-[#008E4E]/20 text-white text-sm px-3 py-2 rounded-lg border border-[#008E4E]/30">
+                  <span className="inline-flex items-center gap-2 bg-[#008E4E]/20 text-white text-sm px-3 py-2 rounded-xl border border-[#008E4E]/30">
                     <span className="font-medium">Діаметр:</span>
                     <span>{formatDiameterLabel(selectedDiameter)}</span>
                     <button
@@ -380,7 +365,7 @@ export default function ProductFilters({ onFiltersChange, onLoadingChange, curre
                   </span>
                 )}
                 {selectedSize && (
-                  <span className="inline-flex items-center gap-2 bg-[#008E4E]/20 text-white text-sm px-3 py-2 rounded-lg border border-[#008E4E]/30">
+                  <span className="inline-flex items-center gap-2 bg-[#008E4E]/20 text-white text-sm px-3 py-2 rounded-xl border border-[#008E4E]/30">
                     <span className="font-medium">Розмір:</span>
                     <span>{selectedSize}</span>
                     <button
@@ -393,7 +378,7 @@ export default function ProductFilters({ onFiltersChange, onLoadingChange, curre
                   </span>
                 )}
                 {selectedCategory && (
-                  <span className="inline-flex items-center gap-2 bg-[#008E4E]/20 text-white text-sm px-3 py-2 rounded-lg border border-[#008E4E]/30">
+                  <span className="inline-flex items-center gap-2 bg-[#008E4E]/20 text-white text-sm px-3 py-2 rounded-xl border border-[#008E4E]/30">
                     <span className="font-medium">Категорія:</span>
                     <span>{selectedCategory}</span>
                     <button
@@ -405,47 +390,33 @@ export default function ProductFilters({ onFiltersChange, onLoadingChange, curre
                     </button>
                   </span>
                 )}
-                {warehouseFilter !== 'all' && (
-                  <span className="inline-flex items-center gap-2 bg-[#008E4E]/20 text-white text-sm px-3 py-2 rounded-lg border border-[#008E4E]/30">
-                    <span className="font-medium">Наявність:</span>
-                    <span>
-                      {warehouseFilter === 'in stock' ? 'В наявності' : 
-                       warehouseFilter === 'on order' ? 'Під замовлення' : 'Немає в наявності'}
-                    </span>
-                    <button
-                      onClick={() => setWarehouseFilter('all')}
-                      className="hover:bg-[#008E4E]/30 rounded-full p-1 transition-colors"
-                      title="Видалити фільтр"
-                    >
-                      <X className="w-4 h-4" />
-                    </button>
-                  </span>
-                )}
+                
               </div>
             </div>
           )}
 
           {/* Action Buttons */}
           <div className="pt-4 border-t border-white/20 mt-6">
-            <div className="space-y-3">
+            <div className="flex flex-col sm:flex-row gap-3">
               <button
                 onClick={applyFilters}
-                className="w-full bg-[#008E4E] hover:bg-[#007A42] text-white px-4 py-3 rounded-lg font-medium transition-colors"
+                className="flex-1 bg-[#FFD700] text-[#2d3748] px-4 py-3 rounded-xl font-semibold shadow-md hover:bg-[#FFED4E] hover:shadow-lg transition-transform duration-200 hover:-translate-y-0.5"
               >
-                Застосувати фільтри
+                Застосувати
               </button>
               <button
                 onClick={clearFilters}
-                className={`w-full px-4 py-3 rounded-lg font-medium transition-colors ${
+                className={`flex-1 px-4 py-3 rounded-xl font-semibold transition ${
                   activeFiltersCount > 0 
-                    ? 'bg-white/10 hover:bg-white/20 text-white' 
-                    : 'bg-white/5 text-white/50 cursor-not-allowed'
+                    ? 'bg-white text-[#008E4E] shadow-md hover:bg-[#F7FAFC] hover:shadow-lg hover:-translate-y-0.5' 
+                    : 'bg-white/60 text-white/70 cursor-not-allowed'
                 }`}
                 disabled={activeFiltersCount === 0}
               >
-                Скинути фільтри {activeFiltersCount > 0 && `(${activeFiltersCount})`}
+                Скинути
               </button>
             </div>
+            <p className="mt-3 text-center text-sm text-[#E6F7EF] italic">Оберіть параметри для фільтрації</p>
           </div>
         </div>
       </div>
