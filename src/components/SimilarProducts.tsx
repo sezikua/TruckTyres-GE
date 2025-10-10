@@ -54,6 +54,18 @@ export default function SimilarProducts({ currentProductId, size }: SimilarProdu
     }
   };
 
+  const getBrandLogo = (brand?: string) => {
+    if (!brand) return null;
+    switch (brand.toUpperCase()) {
+      case 'CEAT':
+        return '/CEAT_Logo.svg';
+      case 'TRELLEBORG':
+        return '/Trelleborg_Logo.svg';
+      default:
+        return null;
+    }
+  };
+
   if (loading) {
     return (
       <div className="mt-16">
@@ -128,6 +140,19 @@ export default function SimilarProducts({ currentProductId, size }: SimilarProdu
                       target.src = '/placeholder-image.svg';
                     }}
                   />
+                  
+                  {/* Brand Logo - top right */}
+                  {getBrandLogo(product.brand) && (
+                    <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm rounded-lg p-1.5 shadow-lg">
+                      <Image
+                        src={getBrandLogo(product.brand)!}
+                        alt={product.brand || 'Brand'}
+                        width={30}
+                        height={15}
+                        className="object-contain"
+                      />
+                    </div>
+                  )}
                 </div>
               </Link>
 
@@ -145,6 +170,18 @@ export default function SimilarProducts({ currentProductId, size }: SimilarProdu
                 </Link>
 
                 <div className="text-sm text-foreground/70 mb-3">
+                  {product.brand && (
+                    <div className="flex items-center gap-1 mb-2">
+                      <Image
+                        src={getBrandLogo(product.brand)!}
+                        alt={product.brand}
+                        width={16}
+                        height={8}
+                        className="object-contain"
+                      />
+                      <span><strong>Бренд:</strong> {product.brand}</span>
+                    </div>
+                  )}
                   <p><strong>Модель:</strong> {product.model}</p>
                   <p><strong>Категорія:</strong> {product.Category}</p>
                   <p><strong>Сегмент:</strong> {product.Segment}</p>

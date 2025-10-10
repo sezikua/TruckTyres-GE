@@ -59,6 +59,18 @@ export default function ProductPageBySlug() {
     return num.toString();
   };
 
+  const getBrandLogo = (brand?: string) => {
+    if (!brand) return null;
+    switch (brand.toUpperCase()) {
+      case 'CEAT':
+        return '/CEAT_Logo.svg';
+      case 'TRELLEBORG':
+        return '/Trelleborg_Logo.svg';
+      default:
+        return null;
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
@@ -116,6 +128,19 @@ export default function ProductPageBySlug() {
                   target.src = '/placeholder-image.svg';
                 }}
               />
+              
+              {/* Brand Logo - top right */}
+              {getBrandLogo(product.brand) && (
+                <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-lg p-2 shadow-lg">
+                  <Image
+                    src={getBrandLogo(product.brand)!}
+                    alt={product.brand || 'Brand'}
+                    width={50}
+                    height={25}
+                    className="object-contain"
+                  />
+                </div>
+              )}
             </div>
             <div className={`inline-flex items-center gap-2 px-3 py-2 rounded-full text-sm font-medium ${warehouseStatus.bg} ${warehouseStatus.color}`}>
               <span>{warehouseStatus.icon}</span>
@@ -125,7 +150,19 @@ export default function ProductPageBySlug() {
 
           <div>
             <div className="mb-6">
-              <div className="flex items-center gap-2 mb-3">
+              <div className="flex items-center gap-2 mb-3 flex-wrap">
+                {product.brand && (
+                  <div className="flex items-center gap-1 text-sm text-foreground/70 bg-yellow-100 px-2 py-1 rounded-full">
+                    <Image
+                      src={getBrandLogo(product.brand)!}
+                      alt={product.brand}
+                      width={20}
+                      height={10}
+                      className="object-contain"
+                    />
+                    <span>{product.brand}</span>
+                  </div>
+                )}
                 <span className="text-sm text-foreground/70 bg-foreground/10 px-2 py-1 rounded-full">
                   {product.Category}
                 </span>

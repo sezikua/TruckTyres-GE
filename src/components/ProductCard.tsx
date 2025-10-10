@@ -48,6 +48,18 @@ export default function ProductCard({ product }: ProductCardProps) {
     }
   };
 
+  const getBrandLogo = (brand?: string) => {
+    if (!brand) return null;
+    switch (brand.toUpperCase()) {
+      case 'CEAT':
+        return '/CEAT_Logo.svg';
+      case 'TRELLEBORG':
+        return '/Trelleborg_Logo.svg';
+      default:
+        return null;
+    }
+  };
+
   return (
     <div
       className="bg-background text-foreground rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group border border-foreground/10"
@@ -76,18 +88,31 @@ export default function ProductCard({ product }: ProductCardProps) {
             {warehouseStatus.text}
           </div>
 
+          {/* Brand Logo - top right */}
+          {getBrandLogo(product.brand) && (
+            <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm rounded-lg p-2 shadow-lg">
+              <Image
+                src={getBrandLogo(product.brand)!}
+                alt={product.brand || 'Brand'}
+                width={40}
+                height={20}
+                className="object-contain"
+              />
+            </div>
+          )}
+
           {/* Quick Actions (no link to avoid nested <a>) */}
           <div className={`absolute top-3 right-3 flex flex-col gap-2 transition-all duration-300 ${
             isHovered ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-4'
-          }`}>
+          } ${getBrandLogo(product.brand) ? 'mt-12' : ''}`}>
             <div className="w-8 h-8 bg-background rounded-full shadow-lg flex items-center justify-center">
               <Eye className="w-4 h-4 text-foreground/70" />
             </div>
           </div>
 
-          {/* Discount Badge - moved to bottom left */}
+          {/* Discount Badge - moved to bottom right if brand logo exists */}
           {product.discount_price && (
-            <div className="absolute bottom-3 left-3 bg-red-500 text-white px-2 py-1 rounded-full text-xs font-bold shadow-lg">
+            <div className={`absolute bottom-3 ${getBrandLogo(product.brand) ? 'right-3' : 'left-3'} bg-red-500 text-white px-2 py-1 rounded-full text-xs font-bold shadow-lg`}>
               -{Math.round(((parseFloat(product.regular_price) - parseFloat(product.discount_price)) / parseFloat(product.regular_price)) * 100)}%
             </div>
           )}
@@ -96,8 +121,8 @@ export default function ProductCard({ product }: ProductCardProps) {
 
       {/* Content */}
       <div className="p-4">
-        {/* Category */}
-        <div className="flex items-center gap-2 mb-2">
+        {/* Category & Segment */}
+        <div className="flex items-center gap-2 mb-2 flex-wrap">
           <span className="text-xs text-foreground/70 bg-foreground/10 px-2 py-1 rounded-full">
             {product.Category}
           </span>

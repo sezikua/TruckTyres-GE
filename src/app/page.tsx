@@ -150,12 +150,80 @@ export default async function Home() {
   );
 }
 
+interface CategoryItem {
+  title: string;
+  image?: string;
+  video?: string;
+  href: string;
+  isSpecial?: boolean;
+}
+
+function CategoryCard({ category, isMobile = false }: { category: CategoryItem; isMobile?: boolean }) {
+  const hasVideo = category.video && category.isSpecial;
+  
+  return (
+    <Link
+      href={category.href}
+      className="group block rounded-lg border border-black/10 dark:border-white/10 overflow-hidden hover:shadow-md transition-all hover:-translate-y-0.5 bg-white dark:bg-black/20"
+    >
+      <div className="relative aspect-square w-full overflow-hidden">
+        {hasVideo ? (
+          <>
+            {/* Мобільна версія: показуємо картинку */}
+            {isMobile && (
+              <Image
+                src={category.image!}
+                alt={category.title}
+                fill
+                sizes={isMobile ? "100vw" : "50vw"}
+                className="object-cover"
+                priority
+              />
+            )}
+            {/* Десктопна версія: показуємо відео */}
+            {!isMobile && (
+              <video
+                className="absolute inset-0 w-full h-full object-cover"
+                src={category.video}
+                autoPlay
+                muted
+                loop
+                playsInline
+              />
+            )}
+          </>
+        ) : (
+          <>
+            {category.image ? (
+              <Image
+                src={category.image}
+                alt={category.title}
+                fill
+                sizes={isMobile ? "100vw" : "50vw"}
+                className="object-cover"
+                priority
+              />
+            ) : (
+              <div className="h-full w-full bg-[#008e4ed3]/15" />
+            )}
+          </>
+        )}
+      </div>
+      <div className="p-4 text-center">
+        <p className="bg-yellow-400 text-black px-3 py-1 rounded-md inline-block font-medium">
+          {category.title}
+        </p>
+      </div>
+    </Link>
+  );
+}
+
 function CategoriesGrid() {
-  const categories: { title: string; image?: string; href: string }[] = [
-    { title: "Шини для тракторів", image: "/tractor-caregory.avif", href: "/categories/High%20Power%20Tractor" },
-    { title: "Шини для комбайнів", image: "/harvest-caregory.avif", href: "/categories/Harvester" },
+  const categories: CategoryItem[] = [
+    { title: "Шини для тракторів", image: "/tractor-caregory.avif", video: "/video-tractor-Reel.mp4", href: "/categories/High%20Power%20Tractor", isSpecial: true },
+    { title: "Шини для комбайнів", image: "/harvest-caregory.avif", video: "/website-video-harvester-reel.mp4", href: "/categories/Harvester", isSpecial: true },
     { title: "Шини для навантажувачів", image: "/loader-caregory.avif", href: "/categories/THL%2FCompact%20Loader" },
-    { title: "Шини для обприскувачів", image: "/splayer-caregory.avif", href: "/categories/Sprayer" },
+    { title: "Шини для обприскувачів", image: "/splayer-caregory.avif", video: "/website-video-sprayer-reel.mp4", href: "/categories/Sprayer", isSpecial: true },
     { title: "Шини для причіпної техніки", image: "/trailer-caregory.avif", href: "/categories/Flotation%2FAgri%20Transport" },
   ];
 
@@ -166,85 +234,20 @@ function CategoriesGrid() {
       {/* Мобільна версія: перша категорія на всю ширину, решта по 2 */}
       <div className="lg:hidden space-y-4">
         {/* Перша категорія - на всю ширину на мобільних */}
-        <Link
-          href={firstCategory.href}
-          className="group block rounded-lg border border-black/10 dark:border-white/10 overflow-hidden hover:shadow-md transition-all hover:-translate-y-0.5 bg-white dark:bg-black/20"
-        >
-          <div className="relative aspect-square w-full">
-            {firstCategory.image ? (
-              <Image
-                src={firstCategory.image}
-                alt={firstCategory.title}
-                fill
-                sizes="100vw"
-                className="object-cover"
-                priority
-              />
-            ) : (
-              <div className="h-full w-full bg-[#008e4ed3]/15" />
-            )}
-          </div>
-          <div className="p-4">
-            <p className="font-medium group-hover:text-[#008e4ed3] transition-colors">{firstCategory.title}</p>
-          </div>
-        </Link>
+        <CategoryCard category={firstCategory} isMobile={true} />
 
         {/* Решта категорій - по 2 в ряд на мобільних */}
         <div className="grid grid-cols-2 gap-4">
-          {otherCategories.map(({ title, image, href }) => (
-            <Link
-              key={title}
-              href={href}
-              className="group rounded-lg border border-black/10 dark:border-white/10 overflow-hidden hover:shadow-md transition-all hover:-translate-y-0.5 bg-white dark:bg-black/20"
-            >
-              <div className="relative aspect-square w-full">
-                {image ? (
-                  <Image
-                    src={image}
-                    alt={title}
-                    fill
-                    sizes="50vw"
-                    className="object-cover"
-                    priority
-                  />
-                ) : (
-                  <div className="h-full w-full bg-[#008e4ed3]/15" />
-                )}
-              </div>
-              <div className="p-4">
-                <p className="font-medium group-hover:text-[#008e4ed3] transition-colors">{title}</p>
-              </div>
-            </Link>
+          {otherCategories.map((category) => (
+            <CategoryCard key={category.title} category={category} isMobile={true} />
           ))}
         </div>
       </div>
 
       {/* Десктопна версія: всі 5 категорій в одному рядку */}
       <div className="hidden lg:grid lg:grid-cols-5 gap-4">
-        {categories.map(({ title, image, href }) => (
-          <Link
-            key={title}
-            href={href}
-            className="group rounded-lg border border-black/10 dark:border-white/10 overflow-hidden hover:shadow-md transition-all hover:-translate-y-0.5 bg-white dark:bg-black/20"
-          >
-            <div className="relative aspect-square w-full">
-              {image ? (
-                <Image
-                  src={image}
-                  alt={title}
-                  fill
-                  sizes="18vw"
-                  className="object-cover"
-                  priority
-                />
-              ) : (
-                <div className="h-full w-full bg-[#008e4ed3]/15" />
-              )}
-            </div>
-            <div className="p-4">
-              <p className="font-medium group-hover:text-[#0054a6] transition-colors">{title}</p>
-            </div>
-          </Link>
+        {categories.map((category) => (
+          <CategoryCard key={category.title} category={category} isMobile={false} />
         ))}
       </div>
     </div>

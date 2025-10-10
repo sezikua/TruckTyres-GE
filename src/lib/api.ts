@@ -15,6 +15,7 @@ export interface Product {
   Segment: string;
   warehouse: string;
   slug?: string;
+  brand?: string;
 }
 
 export interface PaginationInfo {
