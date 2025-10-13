@@ -118,9 +118,6 @@ export default async function Home() {
               <Link href="/products" className="inline-flex h-11 items-center rounded-md bg-[#008e4ed3] px-6 text-white shadow-sm transition hover:opacity-90">
                 Перейти в магазин
               </Link>
-              <Link href="/contacts" className="inline-flex h-11 items-center rounded-md border px-6 border-white/30 hover:bg-white/10 transition text-white">
-                Консультація
-              </Link>
             </div>
           </div>
         </div>

@@ -44,9 +44,9 @@ export default function SimilarProducts({ currentProductId, size }: SimilarProdu
   const getWarehouseStatus = (warehouse: string) => {
     switch (warehouse.toLowerCase()) {
       case 'in stock':
-        return { text: 'В наявності', color: 'text-black', bg: 'bg-green-500' };
+        return { text: 'В наявності', color: 'text-background', bg: 'bg-primary' };
       case 'on order':
-        return { text: 'Під замовлення', color: 'text-black', bg: 'bg-blue-500' };
+        return { text: 'Під замовлення', color: 'text-black', bg: 'bg-yellow-400' };
       case 'out of stock':
         return { text: 'Немає в наявності', color: 'text-black', bg: 'bg-red-500' };
       default:

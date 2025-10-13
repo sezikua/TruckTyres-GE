@@ -23,14 +23,14 @@ export default function Header() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 w-full bg-[#008e4ed3] text-white border-b border-black/0 shadow-lg">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-between">
+        <div className="flex h-[73px] items-center justify-between">
           <Link href="/" className="flex items-center gap-3">
             <Image 
               src="/logotype_en_white-1.png" 
               alt="CEAT" 
               width={120} 
               height={32} 
-              className="h-8 w-auto"
+              className="h-9 w-auto"
               style={{ width: 'auto', height: 'auto' }}
               priority 
             />

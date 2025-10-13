@@ -42,9 +42,9 @@ export default function ProductPageBySlug() {
   const getWarehouseStatus = (warehouse: string) => {
     switch (warehouse.toLowerCase()) {
       case 'in stock':
-        return { text: 'В наявності', color: 'text-black', bg: 'bg-green-500', icon: '✓' };
+        return { text: 'В наявності', color: 'text-background', bg: 'bg-primary', icon: '✓' };
       case 'on order':
-        return { text: 'Під замовлення', color: 'text-black', bg: 'bg-blue-500', icon: '⏳' };
+        return { text: 'Під замовлення', color: 'text-black', bg: 'bg-yellow-400', icon: '⏳' };
       case 'out of stock':
         return { text: 'Немає в наявності', color: 'text-black', bg: 'bg-red-500', icon: '✗' };
       default:
@@ -101,6 +101,9 @@ export default function ProductPageBySlug() {
   }
 
   const warehouseStatus = getWarehouseStatus(product.warehouse);
+  const brandUpper = (product.brand || '').toUpperCase();
+  const brandDisplay = brandUpper === 'TRELLEBORG' ? 'Trelleborg' : 'CEAT';
+  const warrantyYears = brandUpper === 'TRELLEBORG' ? 6 : 7;
 
   return (
     <div className="min-h-screen">
@@ -141,10 +144,12 @@ export default function ProductPageBySlug() {
                   />
                 </div>
               )}
-            </div>
-            <div className={`inline-flex items-center gap-2 px-3 py-2 rounded-full text-sm font-medium ${warehouseStatus.bg} ${warehouseStatus.color}`}>
-              <span>{warehouseStatus.icon}</span>
-              {warehouseStatus.text}
+
+              {/* Warehouse Status - top left over image */}
+              <div className={`absolute top-3 left-3 z-10 px-2 py-1 rounded-full text-xs font-medium ${warehouseStatus.bg} ${warehouseStatus.color}`}>
+                <span className="mr-1">{warehouseStatus.icon}</span>
+                {warehouseStatus.text}
+              </div>
             </div>
           </div>
 
@@ -228,14 +233,14 @@ export default function ProductPageBySlug() {
                 <Shield className="w-5 h-5 text-green-600" />
                 <div>
                   <p className="text-sm font-medium text-foreground">Гарантія якості</p>
-                  <p className="text-xs text-foreground/70">Офіційна гарантія CEAT</p>
+                  <p className="text-xs text-foreground/70">Офіційна гарантія {brandDisplay} — {warrantyYears} років</p>
                 </div>
               </div>
               <div className="flex items-center gap-3 p-3 bg-foreground/5 rounded-lg">
                 <Clock className="w-5 h5 text-orange-600" />
                 <div>
                   <p className="text-sm font-medium text-foreground">Офіційний імпортер</p>
-                  <p className="text-xs text-foreground/70">→ Прямі поставки від CEAT, без посередників</p>
+                  <p className="text-xs text-foreground/70">→ Прямі поставки від {brandDisplay}, без посередників</p>
                 </div>
               </div>
             </div>

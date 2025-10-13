@@ -6,15 +6,17 @@ export default function Footer() {
     <footer className="bg-[#008e4ed3] text-white">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 grid grid-cols-1 md:grid-cols-4 gap-8">
         <div className="text-sm leading-6">
-          <Image
-            src="/logotype_en_white-1.png"
-            alt="ТОВ Агро-Солар — офіційний імпортер CEAT"
-            width={180}
-            height={40}
-            className="h-10 w-auto"
-            style={{ width: 'auto', height: 'auto' }}
-            priority
-          />
+          <Link href="https://www.agrosolar.com.ua/" target="_blank" rel="noopener noreferrer" aria-label="Agro-Solar офіційний сайт">
+            <Image
+              src="/logotype_en_white-1.png"
+              alt="ТОВ Агро-Солар — офіційний імпортер CEAT"
+              width={180}
+              height={40}
+              className="h-10 w-auto"
+              style={{ width: 'auto', height: 'auto' }}
+              priority
+            />
+          </Link>
           <p className="mt-3">офіційний імпортер шин CEAT для сільськогосподарської техніки в Україні.</p>
         </div>
 
@@ -41,7 +43,16 @@ export default function Footer() {
 
         <div className="text-sm">
           <p className="font-semibold mb-3">Контакти</p>
-          <p>Україна, Київська обл. смт. Глеваха, вул. Сулими, 11</p>
+          <p>
+            <a
+              href="https://maps.app.goo.gl/SsKkvL7WQkVWsuXD7"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:underline"
+            >
+              Україна, Київська обл. смт. Глеваха, вул. Сулими, 11
+            </a>
+          </p>
           <p className="mt-2"><a href="tel:+380686007030" className="hover:underline">+38 068 600 70 30 (Сергій)</a></p>
           <p className="mt-1"><a href="mailto:s.kostrov@agrosolar.com.ua" className="hover:underline">s.kostrov@agrosolar.com.ua</a></p>
         </div>
