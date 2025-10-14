@@ -66,6 +66,15 @@ export default function SimilarProducts({ currentProductId, size }: SimilarProdu
     }
   };
 
+  const handleAddToCart = (product: Product) => {
+    if (typeof window !== 'undefined') {
+      const windowWithCart = window as Window & { addToCart?: (product: Product) => void };
+      if (windowWithCart.addToCart) {
+        windowWithCart.addToCart(product);
+      }
+    }
+  };
+
   if (loading) {
     return (
       <div className="mt-16">
@@ -207,6 +216,7 @@ export default function SimilarProducts({ currentProductId, size }: SimilarProdu
 
                 {/* Add to Cart Button */}
                 <button
+                  onClick={() => handleAddToCart(product)}
                   disabled={product.warehouse.toLowerCase() === 'out of stock'}
                   className={`w-full flex items-center justify-center gap-2 py-2 px-4 rounded-lg font-medium transition-colors ${
                     product.warehouse.toLowerCase() === 'out of stock'

@@ -40,11 +40,11 @@ export default function ProductCard({ product }: ProductCardProps) {
     return `Ø${num.toString()}\"`;
   };
 
-  const handleAddToCart = () => {
+  const handleAddToCart = (productToAdd: Product) => {
     if (typeof window !== 'undefined') {
       const windowWithCart = window as Window & { addToCart?: (product: Product) => void };
       if (windowWithCart.addToCart) {
-        windowWithCart.addToCart(product);
+        windowWithCart.addToCart(productToAdd);
       }
     }
   };
@@ -173,7 +173,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         {/* Actions */}
         <div className="flex gap-2">
           <button
-            onClick={handleAddToCart}
+            onClick={() => handleAddToCart(product)}
             disabled={product.warehouse.toLowerCase() === 'out of stock'}
             className={`flex-1 flex items-center justify-center gap-2 py-2 px-4 rounded-lg font-medium transition-colors ${
               product.warehouse.toLowerCase() === 'out of stock'
