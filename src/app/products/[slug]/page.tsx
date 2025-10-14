@@ -71,6 +71,15 @@ export default function ProductPageBySlug() {
     }
   };
 
+  const handleAddToCart = (productToAdd: Product) => {
+    if (typeof window !== 'undefined') {
+      const windowWithCart = window as Window & { addToCart?: (product: Product) => void };
+      if (windowWithCart.addToCart) {
+        windowWithCart.addToCart(productToAdd);
+      }
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
@@ -209,6 +218,7 @@ export default function ProductPageBySlug() {
 
             <div className="mb-8">
               <button
+                onClick={() => handleAddToCart(product)}
                 disabled={product.warehouse.toLowerCase() === 'out of stock'}
                 className={`w-full flex items-center justify-center gap-3 py-4 px-6 rounded-xl font-semibold text-lg transition-colors ${
                   product.warehouse.toLowerCase() === 'out of stock'
