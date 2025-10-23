@@ -15,8 +15,8 @@ async function getBaseUrl(): Promise<string> {
 
 export async function generateMetadata(): Promise<Metadata> {
   const baseUrl = await getBaseUrl();
-  const title = "CEAT — офіційний імпортер в Україні | Сільськогосподарські шини";
-  const description = "CEAT — офіційний імпортер в Україні. Магазин шин для тракторів, комбайнів, навантажувачів, обприскувачів та причепів.";
+  const title = "Агро-Солар — офіційний імпортер CEAT, Trelleborg в Україні | Сільськогосподарські шини";
+  const description = "Агро-Солар — офіційний імпортер CEAT, Trelleborg в Україні. Магазин шин для тракторів, комбайнів, навантажувачів, обприскувачів та причепів.";
   const canonical = `${baseUrl}/`;
   const ogImage = `${baseUrl}/cstl-logo-eu-as.avif`;
 
@@ -29,8 +29,8 @@ export async function generateMetadata(): Promise<Metadata> {
       description,
       url: canonical,
       type: "website",
-      images: [{ url: ogImage, alt: "CEAT — офіційний імпортер в Україні" }],
-      siteName: "CEAT — офіційний імпортер в Україні",
+      images: [{ url: ogImage, alt: "Агро-Солар — офіційний імпортер CEAT, Trelleborg в Україні" }],
+      siteName: "Агро-Солар — офіційний імпортер CEAT, Trelleborg в Україні",
     },
     twitter: {
       card: "summary_large_image",
@@ -108,7 +108,7 @@ export default async function Home() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-16 pb-20">
           <div className="max-w-2xl relative z-10 text-white">
             <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight drop-shadow">
-              CEAT — сільськогосподарські шини преміум якості
+              Cільськогосподарські шини преміум якості від Агро-Солар
             </h1>
             <p className="mt-4 text-base sm:text-lg text-white/90">
               Надійність, зчеплення та довговічність для тракторів, комбайнів, навантажувачів,
@@ -116,7 +116,7 @@ export default async function Home() {
             </p>
             <div className="mt-8 flex items-center gap-4">
               <Link href="/products" className="inline-flex h-11 items-center rounded-md bg-[#008e4ed3] px-6 text-white shadow-sm transition hover:opacity-90">
-                Перейти в магазин
+                До каталогу шин
               </Link>
             </div>
           </div>
@@ -133,7 +133,7 @@ export default async function Home() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 bg-foreground/5">
           <div className="mb-8">
             <h2 className="text-2xl font-bold mb-2">Товари зі знижкою</h2>
-            <p className="text-foreground/70">Спеціальні пропозиції на шини CEAT</p>
+            <p className="text-foreground/70">Спеціальні пропозиції на шини Trelleborg, CEAT</p>
           </div>
           
           <div className="grid grid-cols-2 lg:grid-cols-5 gap-6">
