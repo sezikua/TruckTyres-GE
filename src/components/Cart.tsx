@@ -254,7 +254,7 @@ export default function Cart() {
                           <p className="text-sm text-gray-600 dark:text-gray-300">{item.product.model} • {item.product.size}</p>
                         </div>
                         <div className="text-sm font-medium whitespace-nowrap">
-                          {parseFloat(item.product.regular_price).toLocaleString('uk-UA')} грн
+                          {parseFloat(item.product.regular_price).toLocaleString('uk-UA')} ₾
                         </div>
                         <div className="flex items-center gap-2">
                           <button onClick={() => updateQuantity(item.product.id, item.quantity - 1)} className="w-6 h-6 rounded bg-black/5 dark:bg-white/10">-</button>
@@ -268,7 +268,7 @@ export default function Cart() {
                     ))}
                     <div className="flex items-center justify-between pt-2">
                       <span className="font-medium">Всього:</span>
-                      <span className="text-lg font-bold">{totalPrice.toLocaleString('uk-UA')} грн</span>
+                      <span className="text-lg font-bold">{totalPrice.toLocaleString('uk-UA')} ₾</span>
                     </div>
                   </div>
                 )

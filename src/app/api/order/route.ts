@@ -93,10 +93,10 @@ function formatMessage(payload: OrderPayload): string {
   if (Array.isArray(items) && items.length) {
     lines.push(`\n📦 Товари:`);
     for (const it of items) {
-      lines.push(`• ${it.product_name} (${it.model} / ${it.size}) x${it.quantity} — ${it.regular_price} грн`);
+      lines.push(`• ${it.product_name} (${it.model} / ${it.size}) x${it.quantity} — ${it.regular_price} ₾`);
     }
   }
-  if (total) lines.push(`\n💰 Разом: ${total} грн`);
+  if (total) lines.push(`\n💰 Разом: ${total} ₾`);
   return lines.join('\n');
 }
 

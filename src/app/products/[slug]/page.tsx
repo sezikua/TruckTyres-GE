@@ -61,16 +61,8 @@ export default function ProductPageBySlug() {
     return num.toString();
   };
 
-  const getBrandLogo = (brand?: string) => {
-    if (!brand) return null;
-    switch (brand.toUpperCase()) {
-      case 'CEAT':
-        return '/CEAT_Logo.svg';
-      case 'TRELLEBORG':
-        return '/Trelleborg_Logo.svg';
-      default:
-        return null;
-    }
+  const getBrandLogo = (_brand?: string) => {
+    return null;
   };
 
   const handleAddToCart = (productToAdd: Product) => {
@@ -112,9 +104,6 @@ export default function ProductPageBySlug() {
   }
 
   const warehouseStatus = getWarehouseStatus(product.warehouse);
-  const brandUpper = (product.brand || '').toUpperCase();
-  const brandDisplay = brandUpper === 'TRELLEBORG' ? 'Trelleborg' : 'CEAT';
-  const warrantyYears = brandUpper === 'TRELLEBORG' ? 6 : 7;
 
   return (
     <div className="min-h-screen">
@@ -143,18 +132,7 @@ export default function ProductPageBySlug() {
                 }}
               />
               
-              {/* Brand Logo - top right */}
-              {getBrandLogo(product.brand) && (
-                <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-lg p-2 shadow-lg">
-                  <Image
-                    src={getBrandLogo(product.brand)!}
-                    alt={product.brand || 'Brand'}
-                    width={50}
-                    height={25}
-                    className="object-contain"
-                  />
-                </div>
-              )}
+              {/* Brand Logo removed by request */}
 
               {/* Warehouse Status - top left over image */}
               <div className={`absolute top-3 left-3 z-10 px-2 py-1 rounded-full text-xs font-medium ${warehouseStatus.bg} ${warehouseStatus.color}`}>
@@ -167,18 +145,6 @@ export default function ProductPageBySlug() {
           <div>
             <div className="mb-6">
               <div className="flex items-center gap-2 mb-3 flex-wrap">
-                {product.brand && (
-                  <div className="flex items-center gap-1 text-sm text-foreground/70 bg-yellow-100 px-2 py-1 rounded-full">
-                    <Image
-                      src={getBrandLogo(product.brand)!}
-                      alt={product.brand}
-                      width={20}
-                      height={10}
-                      className="object-contain"
-                    />
-                    <span>{product.brand}</span>
-                  </div>
-                )}
                 <span className="text-sm text-foreground/70 bg-foreground/10 px-2 py-1 rounded-full">
                   {product.Category}
                 </span>
@@ -190,10 +156,10 @@ export default function ProductPageBySlug() {
                 {product.product_name}
               </h1>
               <div className="flex flex-wrap items-center gap-4 text-sm text-foreground/70">
-                <span><strong className="text-foreground">Модель:</strong> <span className="text-foreground/70">{product.model}</span></span>
-                <span><strong className="text-foreground">Розмір:</strong> <span className="text-foreground/70">{product.size}</span></span>
+                <span><strong className="text-foreground">{t('product.model')}:</strong> <span className="text-foreground/70">{product.model}</span></span>
+                <span><strong className="text-foreground">{t('product.size')}:</strong> <span className="text-foreground/70">{product.size}</span></span>
                 {product.diameter && (
-                  <span><strong className="text-foreground">Діаметр:</strong> <span className="text-foreground/70">{formatDiameter(product.diameter)}&quot;</span></span>
+                  <span><strong className="text-foreground">{t('product.diameter')}:</strong> <span className="text-foreground/70">{formatDiameter(product.diameter)}&quot;</span></span>
                 )}
               </div>
             </div>
@@ -202,10 +168,10 @@ export default function ProductPageBySlug() {
               {product.discount_price ? (
                 <div className="flex items-center gap-4">
                   <span className="text-3xl font-bold text-red-600">
-                    {formatPrice(product.discount_price)} грн
+                    {formatPrice(product.discount_price)} ₾
                   </span>
                   <span className="text-xl text-foreground/50 line-through">
-                    {formatPrice(product.regular_price)} грн
+                    {formatPrice(product.regular_price)} ₾
                   </span>
                   <span className="bg-red-500 text-white px-2 py-1 rounded-full text-sm font-bold">
                     -{Math.round(((parseFloat(product.regular_price) - parseFloat(product.discount_price)) / parseFloat(product.regular_price)) * 100)}%
@@ -213,7 +179,7 @@ export default function ProductPageBySlug() {
                 </div>
               ) : (
                 <span className="text-3xl font-bold text-foreground">
-                  {formatPrice(product.regular_price)} грн
+                  {formatPrice(product.regular_price)} ₾
                 </span>
               )}
             </div>
@@ -237,22 +203,22 @@ export default function ProductPageBySlug() {
               <div className="flex items-center gap-3 p-3 bg-foreground/5 rounded-lg">
                 <Truck className="w-5 h-5 text-blue-600" />
                 <div>
-                  <p className="text-sm font-medium text-foreground">Безкоштовна доставка</p>
-                  <p className="text-xs text-foreground/70">При замовленні від 5000 грн</p>
+                  <p className="text-sm font-medium text-foreground">{t('product.benefits.delivery.title')}</p>
+                  <p className="text-xs text-foreground/70">{t('product.benefits.delivery.subtitle')}</p>
                 </div>
               </div>
               <div className="flex items-center gap-3 p-3 bg-foreground/5 rounded-lg">
                 <Shield className="w-5 h-5 text-green-600" />
                 <div>
-                  <p className="text-sm font-medium text-foreground">Гарантія якості</p>
-                  <p className="text-xs text-foreground/70">Офіційна гарантія {brandDisplay} — {warrantyYears} років</p>
+                  <p className="text-sm font-medium text-foreground">{t('product.benefits.warranty.title')}</p>
+                  <p className="text-xs text-foreground/70">{t('product.benefits.warranty.subtitle')}</p>
                 </div>
               </div>
               <div className="flex items-center gap-3 p-3 bg-foreground/5 rounded-lg">
                 <Clock className="w-5 h5 text-orange-600" />
                 <div>
-                  <p className="text-sm font-medium text-foreground">Офіційний імпортер</p>
-                  <p className="text-xs text-foreground/70">→ Прямі поставки від {brandDisplay}, без посередників</p>
+                  <p className="text-sm font-medium text-foreground">{t('product.benefits.importer.title')}</p>
+                  <p className="text-xs text-foreground/70">{t('product.benefits.importer.subtitle')}</p>
                 </div>
               </div>
             </div>

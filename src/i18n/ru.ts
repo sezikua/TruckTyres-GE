@@ -71,6 +71,19 @@ const ru = {
   "stock.onOrder": "Под заказ",
   "stock.out": "Нет в наличии",
 
+  // Product details labels
+  "product.model": "Модель",
+  "product.size": "Размер",
+  "product.diameter": "Диаметр",
+
+  // Product benefits
+  "product.benefits.delivery.title": "Бесплатная доставка",
+  "product.benefits.delivery.subtitle": "При заказе от 5000 ₾",
+  "product.benefits.warranty.title": "Гарантия качества",
+  "product.benefits.warranty.subtitle": "Официальная гарантия — 7 лет",
+  "product.benefits.importer.title": "Официальный импортер",
+  "product.benefits.importer.subtitle": "→ Прямые поставки, без посредников",
+
   // Contacts
   "contacts.title": "Контакты",
   "contacts.phone": "тел.",

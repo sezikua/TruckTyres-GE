@@ -71,6 +71,19 @@ const ka = {
   "stock.onOrder": "შეკვეთით",
   "stock.out": "არ არის მარაგში",
 
+  // Product details labels
+  "product.model": "მოდელი",
+  "product.size": "ზომა",
+  "product.diameter": "დიამეტრი",
+
+  // Product benefits
+  "product.benefits.delivery.title": "უფასო მიწოდება",
+  "product.benefits.delivery.subtitle": "შეკვეთაზე 5000 ₾-დან",
+  "product.benefits.warranty.title": "ხარისხის გარანტია",
+  "product.benefits.warranty.subtitle": "ოფიციალური გარანტია — 7 წელი",
+  "product.benefits.importer.title": "ოფიციალური იმპორტიორი",
+  "product.benefits.importer.subtitle": "→ პირდაპირი მიწოდება, შუამავლების გარეშე",
+
   // Contacts
   "contacts.title": "კონტაქტი",
   "contacts.phone": "ტელ.",

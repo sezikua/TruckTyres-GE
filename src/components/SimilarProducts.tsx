@@ -56,16 +56,8 @@ export default function SimilarProducts({ currentProductId, size }: SimilarProdu
     }
   };
 
-  const getBrandLogo = (brand?: string) => {
-    if (!brand) return null;
-    switch (brand.toUpperCase()) {
-      case 'CEAT':
-        return '/CEAT_Logo.svg';
-      case 'TRELLEBORG':
-        return '/Trelleborg_Logo.svg';
-      default:
-        return null;
-    }
+  const getBrandLogo = (_brand?: string) => {
+    return null;
   };
 
   const handleAddToCart = (product: Product) => {
@@ -152,18 +144,7 @@ export default function SimilarProducts({ currentProductId, size }: SimilarProdu
                     }}
                   />
                   
-                  {/* Brand Logo - top right */}
-                  {getBrandLogo(product.brand) && (
-                    <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm rounded-lg p-1.5 shadow-lg">
-                      <Image
-                        src={getBrandLogo(product.brand)!}
-                        alt={product.brand || 'Brand'}
-                        width={30}
-                        height={15}
-                        className="object-contain"
-                      />
-                    </div>
-                  )}
+                  {/* Brand Logo removed by request */}
                 </div>
               </Link>
 
@@ -181,19 +162,7 @@ export default function SimilarProducts({ currentProductId, size }: SimilarProdu
                 </Link>
 
                 <div className="text-sm text-foreground/70 mb-3">
-                  {product.brand && (
-                    <div className="flex items-center gap-1 mb-2">
-                      <Image
-                        src={getBrandLogo(product.brand)!}
-                        alt={product.brand}
-                        width={16}
-                        height={8}
-                        className="object-contain"
-                      />
-                      <span><strong>Бренд:</strong> {product.brand}</span>
-                    </div>
-                  )}
-                  <p><strong>Модель:</strong> {product.model}</p>
+                  <p><strong>{t('product.model')}:</strong> {product.model}</p>
                   <p><strong>Категорія:</strong> {product.Category}</p>
                   <p><strong>Сегмент:</strong> {product.Segment}</p>
                 </div>
@@ -203,15 +172,15 @@ export default function SimilarProducts({ currentProductId, size }: SimilarProdu
                   {product.discount_price ? (
                     <div className="flex items-center gap-2">
                       <span className="text-lg font-bold text-red-600">
-                        {formatPrice(product.discount_price)} грн
+                        {formatPrice(product.discount_price)} ₾
                       </span>
                       <span className="text-sm text-foreground/50 line-through">
-                        {formatPrice(product.regular_price)} грн
+                        {formatPrice(product.regular_price)} ₾
                       </span>
                     </div>
                   ) : (
                     <span className="text-lg font-bold text-foreground">
-                      {formatPrice(product.regular_price)} грн
+                      {formatPrice(product.regular_price)} ₾
                     </span>
                   )}
                 </div>

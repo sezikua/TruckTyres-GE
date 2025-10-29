@@ -50,16 +50,8 @@ export default function ProductCard({ product }: ProductCardProps) {
     }
   };
 
-  const getBrandLogo = (brand?: string) => {
-    if (!brand) return null;
-    switch (brand.toUpperCase()) {
-      case 'CEAT':
-        return '/CEAT_Logo.svg';
-      case 'TRELLEBORG':
-        return '/Trelleborg_Logo.svg';
-      default:
-        return null;
-    }
+  const getBrandLogo = (_brand?: string) => {
+    return null;
   };
 
   return (
@@ -90,23 +82,12 @@ export default function ProductCard({ product }: ProductCardProps) {
             {warehouseStatus.text}
           </div>
 
-          {/* Brand Logo - top right */}
-          {getBrandLogo(product.brand) && (
-            <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm rounded-lg p-2 shadow-lg">
-              <Image
-                src={getBrandLogo(product.brand)!}
-                alt={product.brand || 'Brand'}
-                width={40}
-                height={20}
-                className="object-contain"
-              />
-            </div>
-          )}
+          {/* Brand Logo removed by request */}
 
           {/* Quick Actions (no link to avoid nested <a>) */}
           <div className={`absolute top-3 right-3 flex flex-col gap-2 transition-all duration-300 ${
             isHovered ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-4'
-          } ${getBrandLogo(product.brand) ? 'mt-12' : ''}`}>
+          }`}>
             <div className="w-8 h-8 bg-background rounded-full shadow-lg flex items-center justify-center">
               <Eye className="w-4 h-4 text-foreground/70" />
             </div>
@@ -158,15 +139,15 @@ export default function ProductCard({ product }: ProductCardProps) {
           {product.discount_price ? (
             <>
               <span className="text-lg font-bold text-red-600">
-                {formatPrice(product.discount_price)} грн
+                {formatPrice(product.discount_price)} ₾
               </span>
               <span className="text-sm text-foreground/50 line-through">
-                {formatPrice(product.regular_price)} грн
+                {formatPrice(product.regular_price)} ₾
               </span>
             </>
           ) : (
             <span className="text-xl font-bold text-foreground">
-              {formatPrice(product.regular_price)} грн
+              {formatPrice(product.regular_price)} ₾
             </span>
           )}
         </div>
