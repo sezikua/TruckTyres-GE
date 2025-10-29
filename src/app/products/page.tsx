@@ -5,8 +5,10 @@ import { fetchProducts, Product, PaginationInfo } from '@/lib/api';
 import ProductCard from '@/components/ProductCard';
 import ProductFilters from '@/components/ProductFilters';
 import { Loader2, Package, Grid, List, ChevronLeft, ChevronRight, Search, X } from 'lucide-react';
+import { useI18n } from '@/providers/I18nProvider';
 
 export default function ProductsPage() {
+  const { t } = useI18n();
   const [products, setProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
@@ -99,7 +101,7 @@ export default function ProductsPage() {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <Loader2 className="w-8 h-8 animate-spin mx-auto mb-4 text-primary" />
-          <p className="text-foreground/70">Завантаження товарів...</p>
+          <p className="text-foreground/70">{t('home.discounted.sub')}</p>
         </div>
       </div>
     );
@@ -128,7 +130,7 @@ export default function ProductsPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2 text-foreground">Магазин товарів CEAT</h1>
+          <h1 className="text-3xl font-bold mb-2 text-foreground">{t('products.title')}</h1>
           
           {/* Search Bar */}
           <div className="mb-6">
@@ -136,7 +138,7 @@ export default function ProductsPage() {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-foreground/50" />
               <input
                 type="text"
-                placeholder="Пошук товарів..."
+                placeholder={t('products.search.placeholder')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyDown={(e) => {
@@ -164,7 +166,7 @@ export default function ProductsPage() {
                 disabled={isSearching}
                 className="mt-2 bg-primary text-background px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50"
               >
-                {isSearching ? 'Пошук...' : 'Знайти'}
+                {isSearching ? t('products.search.searching') : t('products.search.find')}
               </button>
             )}
           </div>
@@ -172,8 +174,11 @@ export default function ProductsPage() {
           <p className="text-foreground/70">
             {pagination && (
               <>
-                Сторінка {pagination.page} з {pagination.totalPages} • 
-                Показано {products.length} товарів з {pagination.totalItems} доступних
+                {t('products.page.info.top')
+                  .replace('{page}', String(pagination.page))
+                  .replace('{pages}', String(pagination.totalPages))
+                  .replace('{count}', String(products.length))
+                  .replace('{total}', String(pagination.totalItems))}
               </>
             )}
           </p>
@@ -196,16 +201,16 @@ export default function ProductsPage() {
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
               {/* Sort */}
               <div className="flex items-center gap-2">
-                <label className="text-sm font-medium text-foreground">Сортування:</label>
+                <label className="text-sm font-medium text-foreground">{t('products.sort.label')}</label>
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
                   className="px-3 py-2 border border-foreground/20 rounded-lg text-sm bg-background text-foreground focus:ring-2 focus:ring-primary focus:border-transparent"
                 >
-                  <option value="name">За назвою</option>
-                  <option value="price-asc">Від дешевших</option>
-                  <option value="price-desc">Від дорожчих</option>
-                  <option value="newest">Спочатку нові</option>
+                  <option value="name">{t('products.sort.name')}</option>
+                  <option value="price-asc">{t('products.sort.price.asc')}</option>
+                  <option value="price-desc">{t('products.sort.price.desc')}</option>
+                  <option value="newest">{t('products.sort.new')}</option>
                 </select>
               </div>
 
@@ -238,10 +243,8 @@ export default function ProductsPage() {
             {filteredProducts.length === 0 ? (
               <div className="text-center py-12">
                 <Package className="w-16 h-16 mx-auto mb-4 text-foreground/40" />
-                <h3 className="text-lg font-medium text-foreground mb-2">Товари не знайдено</h3>
-                <p className="text-foreground/70">
-                  Спробуйте змінити фільтри або пошуковий запит
-                </p>
+                <h3 className="text-lg font-medium text-foreground mb-2">{t('products.empty.title')}</h3>
+                <p className="text-foreground/70">{t('products.empty.text')}</p>
               </div>
             ) : (
               <div
@@ -322,10 +325,12 @@ export default function ProductsPage() {
 
             {/* Page Info */}
             {pagination && (
-                          <div className="mt-4 text-center text-sm text-foreground/70">
-              Сторінка {pagination.page} з {pagination.totalPages} • 
-              Всього товарів: {pagination.totalItems}
-            </div>
+              <div className="mt-4 text-center text-sm text-foreground/70">
+                {t('products.page.info.bottom')
+                  .replace('{page}', String(pagination.page))
+                  .replace('{pages}', String(pagination.totalPages))
+                  .replace('{total}', String(pagination.totalItems))}
+              </div>
             )}
           </div>
         </div>

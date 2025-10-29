@@ -120,26 +120,10 @@ export default async function AboutPage() {
       {/* Stats Section */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          <StatCard 
-            value="500+" 
-            title="Найменувань шин"
-            text="Ваш вибір без компромісів: наш склад налічує понад 500 найменувань с/г шин, що дозволяє швидко підібрати ідеальне рішення для будь-якої техніки." 
-          />
-          <StatCard 
-            value="2 000 000€" 
-            title="Інвестицій"
-            text="Гарантія якості та асортименту: більше 2 000 000 євро інвестицій у розширення асортименту шин — це наше зобов'язання перед вами щодо наявності найкращих пропозицій." 
-          />
-          <StatCard 
-            value="15+" 
-            title="Років досвіду"
-            text="Досвід, що вимірюється роками: 15+ років на ринку сільгоспшин – це не просто цифра, це тисячі задоволених клієнтів та успішних сезонів." 
-          />
-          <StatCard 
-            value="200" 
-            title="Співробітників"
-            text="Сила нашої команди: 200 відданих своїй справі співробітників — від консультантів до логістів — готові забезпечити першокласний сервіс." 
-          />
+          <StatCard value="500+" title={t["about.stats.items"]} text={t["about.section.range.badgeSub"]} />
+          <StatCard value="2 000 000€" title={t["about.stats.invest"]} text={t["about.section.partner.text"]} />
+          <StatCard value="15+" title={t["about.stats.years"]} text={t["about.lead"]} />
+          <StatCard value="200" title={t["about.stats.employees"]} text={t["about.features.support.text"]} />
         </div>
       </section>
 

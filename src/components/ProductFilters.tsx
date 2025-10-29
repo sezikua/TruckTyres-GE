@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Filter, X } from 'lucide-react';
 import { Product, fetchFilteredProducts, FilterOptions, PaginationInfo } from '@/lib/api';
+import { useI18n } from '@/providers/I18nProvider';
 
 interface ProductFiltersProps {
   onFiltersChange: (filteredProducts: Product[], pagination?: PaginationInfo) => void;
@@ -12,6 +13,7 @@ interface ProductFiltersProps {
 }
 
 export default function ProductFilters({ onFiltersChange, onLoadingChange, currentCategory, currentSize }: ProductFiltersProps) {
+  const { t } = useI18n();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [selectedDiameter, setSelectedDiameter] = useState<string>('');
@@ -246,7 +248,7 @@ export default function ProductFilters({ onFiltersChange, onLoadingChange, curre
           className="flex items-center gap-2 bg-[#008e4ed3] border border-white/20 rounded-lg px-4 py-2 text-sm font-medium text-white hover:bg-[#008e4ed3]/90"
         >
           <Filter className="w-4 h-4" />
-          Фільтри
+          {t('filters.toggle')}
           {activeFiltersCount > 0 && (
             <span className="bg-white text-[#008e4ed3] text-xs rounded-full px-2 py-1">
               {activeFiltersCount}
@@ -260,22 +262,22 @@ export default function ProductFilters({ onFiltersChange, onLoadingChange, curre
         <div className="bg-[#008e4ed3] text-white border border-white/20 rounded-2xl p-6 lg:p-8 shadow-2xl backdrop-blur-md">
           {/* Header */}
           <div className="mb-6">
-            <h3 className="text-2xl font-semibold text-white text-center drop-shadow">Фільтр продукції</h3>
+            <h3 className="text-2xl font-semibold text-white text-center drop-shadow">{t('filters.title')}</h3>
           </div>
 
           {/* Diameter */}
           <div className="mb-6">
             <label className="block text-sm font-semibold text-white/90 mb-3 tracking-wide uppercase">
-              Діаметр
+              {t('filters.diameter')}
             </label>
             <select
               value={selectedDiameter}
               onChange={(e) => handleDiameterChange(e.target.value)}
               className="w-full px-4 py-3 rounded-xl bg-white text-[#2d3748] border-0 shadow-md outline-none focus:ring-2 focus:ring-[#008E4E]/40 transition disabled:bg-gray-200 disabled:text-gray-400"
             >
-              <option value="" className="text-black">Всі діаметри</option>
+              <option value="" className="text-black">{t('filters.diameter.all')}</option>
               {loading ? (
-                <option value="" className="text-black">Завантаження...</option>
+                <option value="" className="text-black">{t('filters.loading')}</option>
               ) : (
                 availableDiameters.map((diameter) => (
                   <option key={diameter} value={diameter} className="text-black">
@@ -289,7 +291,7 @@ export default function ProductFilters({ onFiltersChange, onLoadingChange, curre
           {/* Size */}
           <div className="mb-6">
             <label className="block text-sm font-semibold text-white/90 mb-3 tracking-wide uppercase">
-              Розмір шини
+              {t('filters.size')}
             </label>
             <select
               value={selectedSize}
@@ -300,10 +302,10 @@ export default function ProductFilters({ onFiltersChange, onLoadingChange, curre
               }`}
             >
               <option value="" className="text-black">
-                {!selectedDiameter ? 'Виберіть діаметр' : 'Всі розміри'}
+                {!selectedDiameter ? t('filters.size.chooseDiameter') : t('filters.size.all')}
               </option>
               {loading ? (
-                <option value="" className="text-black">Завантаження...</option>
+                <option value="" className="text-black">{t('filters.loading')}</option>
               ) : (
                 availableSizes.map((size) => (
                   <option key={size} value={size} className="text-black">
@@ -317,16 +319,16 @@ export default function ProductFilters({ onFiltersChange, onLoadingChange, curre
           {/* Categories */}
           <div className="mb-6">
             <label className="block text-sm font-semibold text-white/90 mb-3 tracking-wide uppercase">
-              Категорія
+              {t('filters.category')}
             </label>
             <select
               value={selectedCategory}
               onChange={(e) => handleCategoryChange(e.target.value)}
               className="w-full px-4 py-3 rounded-xl bg-white text-[#2d3748] border-0 shadow-md outline-none focus:ring-2 focus:ring-[#008E4E]/40 transition"
             >
-              <option value="" className="text-black">Всі категорії</option>
+              <option value="" className="text-black">{t('filters.category.all')}</option>
               {loading ? (
-                <option value="" className="text-black">Завантаження...</option>
+                <option value="" className="text-black">{t('filters.loading')}</option>
               ) : (
                 availableCategories.map((category) => (
                   <option key={category} value={category} className="text-black">
@@ -344,13 +346,13 @@ export default function ProductFilters({ onFiltersChange, onLoadingChange, curre
             <div className="mb-6 p-4 bg-white/10 rounded-xl border border-white/20 shadow-inner">
               <div className="flex items-center justify-between mb-3">
                 <span className="text-sm font-semibold text-white">
-                  Застосовані фільтри ({activeFiltersCount})
+                  {t('filters.applied')} ({activeFiltersCount})
                 </span>
               </div>
               <div className="flex flex-wrap gap-2">
                 {selectedDiameter && (
                   <span className="inline-flex items-center gap-2 bg-[#008E4E]/20 text-white text-sm px-3 py-2 rounded-xl border border-[#008E4E]/30">
-                    <span className="font-medium">Діаметр:</span>
+                    <span className="font-medium">{t('filters.diameter')}:</span>
                     <span>{formatDiameterLabel(selectedDiameter)}</span>
                     <button
                       onClick={() => {
@@ -358,7 +360,7 @@ export default function ProductFilters({ onFiltersChange, onLoadingChange, curre
                         setSelectedSize('');
                       }}
                       className="hover:bg-[#008E4E]/30 rounded-full p-1 transition-colors"
-                      title="Видалити фільтр"
+                      title={t('filters.remove')}
                     >
                       <X className="w-4 h-4" />
                     </button>
@@ -366,12 +368,12 @@ export default function ProductFilters({ onFiltersChange, onLoadingChange, curre
                 )}
                 {selectedSize && (
                   <span className="inline-flex items-center gap-2 bg-[#008E4E]/20 text-white text-sm px-3 py-2 rounded-xl border border-[#008E4E]/30">
-                    <span className="font-medium">Розмір:</span>
+                    <span className="font-medium">{t('filters.size')}:</span>
                     <span>{selectedSize}</span>
                     <button
                       onClick={() => setSelectedSize('')}
                       className="hover:bg-[#008E4E]/30 rounded-full p-1 transition-colors"
-                      title="Видалити фільтр"
+                      title={t('filters.remove')}
                     >
                       <X className="w-4 h-4" />
                     </button>
@@ -379,12 +381,12 @@ export default function ProductFilters({ onFiltersChange, onLoadingChange, curre
                 )}
                 {selectedCategory && (
                   <span className="inline-flex items-center gap-2 bg-[#008E4E]/20 text-white text-sm px-3 py-2 rounded-xl border border-[#008E4E]/30">
-                    <span className="font-medium">Категорія:</span>
+                    <span className="font-medium">{t('filters.category')}:</span>
                     <span>{selectedCategory}</span>
                     <button
                       onClick={() => setSelectedCategory('')}
                       className="hover:bg-[#008E4E]/30 rounded-full p-1 transition-colors"
-                      title="Видалити фільтр"
+                      title={t('filters.remove')}
                     >
                       <X className="w-4 h-4" />
                     </button>
@@ -402,7 +404,7 @@ export default function ProductFilters({ onFiltersChange, onLoadingChange, curre
                 onClick={applyFilters}
                 className="flex-1 bg-[#FFD700] text-[#2d3748] px-4 py-3 rounded-xl font-semibold shadow-md hover:bg-[#FFED4E] hover:shadow-lg transition-transform duration-200 hover:-translate-y-0.5"
               >
-                Застосувати
+                {t('filters.apply')}
               </button>
               <button
                 onClick={clearFilters}
@@ -413,10 +415,10 @@ export default function ProductFilters({ onFiltersChange, onLoadingChange, curre
                 }`}
                 disabled={activeFiltersCount === 0}
               >
-                Скинути
+                {t('filters.reset')}
               </button>
             </div>
-            <p className="mt-3 text-center text-sm text-[#E6F7EF] italic">Оберіть параметри для фільтрації</p>
+            <p className="mt-3 text-center text-sm text-[#E6F7EF] italic">{t('filters.hint')}</p>
           </div>
         </div>
       </div>
