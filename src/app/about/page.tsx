@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { headers } from "next/headers";
+import { headers, cookies } from "next/headers";
+import { getDictionary } from "@/i18n";
 
 // Метадані формуються динамічно через generateMetadata нижче
 
@@ -16,23 +17,23 @@ export async function generateMetadata(): Promise<Metadata> {
   const baseUrl = await getBaseUrl();
   const canonical = `${baseUrl}/about`;
   return {
-    title: "Про нас — CEAT — офіційний імпортер в Україні",
+    title: "О нас — Грузовые шины Грузии",
     description:
-      "CEAT — офіційний імпортер в Україні: 15+ років досвіду, 500+ позицій шин на складі, інвестиції >2 млн євро в асортимент, 200 фахівців сервісу.",
+      "Грузовые шины Грузии — надежные шины и сервис.",
     alternates: { canonical },
     openGraph: {
-      title: "Про нас — CEAT — офіційний імпортер в Україні",
+      title: "О нас — Грузовые шины Грузии",
       description:
-        "CEAT — офіційний імпортер в Україні: 15+ років досвіду, 500+ позицій шин на складі, інвестиції >2 млн євро в асортимент, 200 фахівців сервісу.",
+        "Грузовые шины Грузии — надежные шины и сервис.",
       url: canonical,
       type: "website",
-      siteName: "CEAT — офіційний імпортер в Україні",
+      siteName: "Грузовые шины Грузии",
     },
     twitter: {
       card: "summary_large_image",
-      title: "Про нас — CEAT — офіційний імпортер в Україні",
+      title: "О нас — Грузовые шины Грузии",
       description:
-        "CEAT — офіційний імпортер в Україні: 15+ років досвіду, 500+ позицій шин на складі, інвестиції >2 млн євро в асортимент, 200 фахівців сервісу.",
+        "Грузовые шины Грузии — надежные шины и сервис.",
     },
   };
 }
@@ -96,7 +97,9 @@ function StatCard({ value, title, text }: { value: string; title: string; text: 
   );
 }
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const lang = (await cookies()).get("lang")?.value === "ka" ? "ka" : "ru";
+  const t = await getDictionary(lang);
   return (
     <div className="bg-background">
       {/* Hero Section */}
@@ -105,10 +108,10 @@ export default function AboutPage() {
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20">
           <div className="text-center">
             <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight bg-gradient-to-r from-[#008e4ed3] to-[#008E4E] bg-clip-text text-transparent">
-              Про нас
+              {t["about.title"]}
             </h1>
             <p className="mt-6 max-w-3xl mx-auto text-xl text-foreground/80 leading-relaxed">
-              Ласкаво просимо на наш сайт, де ТОВ &ldquo;Агро-Солар&rdquo; пропонує вам високоякісні шини CEAT для сільськогосподарських машин. Наше підприємство було засновано з метою надати ринку України високоякісні, надійні та доступні шини.
+              {t["about.lead"]}
             </p>
           </div>
         </div>
@@ -144,9 +147,9 @@ export default function AboutPage() {
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div>
-            <h2 className="text-3xl font-bold mb-6">Зручні точки видачі та швидка доставка</h2>
+            <h2 className="text-3xl font-bold mb-6">{t["about.section.delivery.title"]}</h2>
             <p className="text-lg text-foreground/80 leading-relaxed">
-              Наші основні склади, стратегічно розташовані у Києві, Хмельницькому, дозволяють нам оперативно доставляти сільгосп шини до будь-якої точки України. Ми розуміємо, наскільки критичним є час для аграріїв, особливо в сезон, тому гарантуємо максимально швидке та надійне постачання, щоб ваша техніка не простоювала.
+              {t["about.section.delivery.text"]}
             </p>
           </div>
           <div className="bg-gradient-to-br from-[#008e4ed3]/10 to-[#008E4E]/5 rounded-2xl p-8">
@@ -156,8 +159,8 @@ export default function AboutPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold mb-2">Швидка доставка</h3>
-              <p className="text-foreground/70">До будь-якої точки України</p>
+              <h3 className="text-xl font-semibold mb-2">{t["about.section.range.badge"]}</h3>
+              <p className="text-foreground/70">{t["about.section.range.badgeSub"]}</p>
             </div>
           </div>
         </div>
@@ -177,9 +180,9 @@ export default function AboutPage() {
             </div>
           </div>
           <div className="order-1 lg:order-2">
-            <h2 className="text-3xl font-bold mb-6">Широкий асортимент шин для будь-яких потреб</h2>
+            <h2 className="text-3xl font-bold mb-6">{t["about.section.range.title"]}</h2>
             <p className="text-lg text-foreground/80 leading-relaxed">
-              Ми пропонуємо величезний асортимент сільськогосподарських шин, який постійно оновлюється відповідно до новітніх технологій та вимог сучасного агровиробництва. Співпрацюємо виключно з провідними світовими виробниками, щоб ваша техніка отримувала лише найякісніші та найнадійніші шини, які витримають найскладніші польові умови.
+              {t["about.section.range.text"]}
             </p>
           </div>
         </div>
@@ -187,9 +190,9 @@ export default function AboutPage() {
 
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold mb-6">Ваш надійний партнер в агробізнесі</h2>
+          <h2 className="text-3xl font-bold mb-6">{t["about.section.partner.title"]}</h2>
           <p className="text-lg text-foreground/80 leading-relaxed max-w-4xl mx-auto">
-            Ми цінуємо кожного клієнта і прагнемо бути вашим довгостроковим партнером. Наша команда досвідчених фахівців завжди готова надати кваліфіковану консультацію, допомогти підібрати ідеальні шини саме для вашої техніки та конкретних задач, а також відповісти на будь-які питання, щоб ви могли прийняти обґрунтоване рішення та забезпечити максимальну продуктивність свого господарства.
+            {t["about.section.partner.text"]}
           </p>
         </div>
       </section>
@@ -197,32 +200,32 @@ export default function AboutPage() {
       {/* Features Section */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold mb-4">Ми знаємося на цьому бізнесі</h2>
+          <h2 className="text-3xl font-bold mb-4">{t["about.features.title"]}</h2>
           <p className="text-lg text-foreground/80 max-w-2xl mx-auto">
-            Ми розуміємо землю. Ми знаємо навантаження. Саме тому ми пропонуємо шини, які витримують найважчі умови та працюють безвідмовно — з сезону в сезон.
+            {t["about.lead"]}
           </p>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <FeatureCard 
             icon="support"
-            title="Підтримка"
-            description="Професійна консультація, швидка доставка та сервіс, якому довіряють аграрії."
+            title={t["about.features.support"]}
+            description={t["about.features.support.text"]}
           />
           <FeatureCard 
             icon="strength"
-            title="Міцність"
-            description="Розроблені для важкої техніки та екстремальних польових умов."
+            title={t["about.features.strength"]}
+            description={t["about.features.strength.text"]}
           />
           <FeatureCard 
             icon="economy"
-            title="Економія"
-            description="Менше пробуксовки — більше заощаджень на пальному та зменшення зносу."
+            title={t["about.features.economy"]}
+            description={t["about.features.economy.text"]}
           />
           <FeatureCard 
             icon="grip"
-            title="Зчеплення"
-            description="Максимальна ефективність на будь-якому ґрунті — від м'якого ґрунту до складного рельєфу."
+            title={t["about.features.grip"]}
+            description={t["about.features.grip.text"]}
           />
         </div>
       </section>

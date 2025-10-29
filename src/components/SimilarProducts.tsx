@@ -5,6 +5,7 @@ import { Product, fetchSimilarProducts, getProductImageUrl } from '@/lib/api';
 import { ShoppingCart, Package } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useI18n } from '@/providers/I18nProvider';
 import { Loader2 } from 'lucide-react';
 
 interface SimilarProductsProps {
@@ -16,6 +17,7 @@ export default function SimilarProducts({ currentProductId, size }: SimilarProdu
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { t } = useI18n();
 
   useEffect(() => {
     const loadSimilarProducts = async () => {
@@ -78,7 +80,7 @@ export default function SimilarProducts({ currentProductId, size }: SimilarProdu
   if (loading) {
     return (
       <div className="mt-16">
-        <h2 className="text-2xl font-bold text-foreground mb-6">Товари того ж розміру</h2>
+        <h2 className="text-2xl font-bold text-foreground mb-6">Товары того же размера</h2>
         <div className="flex items-center justify-center py-12">
           <div className="text-center">
             <Loader2 className="w-8 h-8 animate-spin mx-auto mb-4 text-primary" />
@@ -92,7 +94,7 @@ export default function SimilarProducts({ currentProductId, size }: SimilarProdu
   if (error) {
     return (
       <div className="mt-16">
-        <h2 className="text-2xl font-bold text-foreground mb-6">Товари того ж розміру</h2>
+        <h2 className="text-2xl font-bold text-foreground mb-6">Товары того же размера</h2>
         <div className="flex items-center justify-center py-12">
           <div className="text-center">
             <Package className="w-16 h-16 mx-auto mb-4 text-red-500" />
@@ -106,7 +108,7 @@ export default function SimilarProducts({ currentProductId, size }: SimilarProdu
   if (products.length === 0) {
     return (
       <div className="mt-16">
-        <h2 className="text-2xl font-bold text-foreground mb-6">Товари того ж розміру</h2>
+        <h2 className="text-2xl font-bold text-foreground mb-6">Товары того же размера</h2>
         <div className="flex items-center justify-center py-12">
           <div className="text-center">
             <Package className="w-16 h-16 mx-auto mb-4 text-foreground/30" />
@@ -121,7 +123,7 @@ export default function SimilarProducts({ currentProductId, size }: SimilarProdu
     <div className="mt-16">
       <div className="mb-8">
         <h2 className="text-2xl font-bold text-foreground mb-2">
-          Товари того ж розміру ({size})
+          Товары того же размера ({size})
         </h2>
         <p className="text-foreground/70">
           Знайдено {products.length} товарів того ж розміру, відсортованих за наявністю
@@ -225,7 +227,7 @@ export default function SimilarProducts({ currentProductId, size }: SimilarProdu
                   }`}
                 >
                   <ShoppingCart className="w-4 h-4" />
-                  {product.warehouse.toLowerCase() === 'out of stock' ? 'Немає в наявності' : 'Додати в кошик'}
+                  {product.warehouse.toLowerCase() === 'out of stock' ? t('btn.outOfStock') : t('btn.addToCart')}
                 </button>
               </div>
             </div>

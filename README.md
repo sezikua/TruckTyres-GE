@@ -1,4 +1,4 @@
-# CEAT Каталог - Сільськогосподарські шини
+# TruckTyres-GE
 
 ![CEAT Logo](public/cstl-logo-eu-as.avif)
 

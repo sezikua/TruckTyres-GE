@@ -5,6 +5,7 @@ import { ShoppingCart, Eye } from 'lucide-react';
 import { Product, getProductImageUrl } from '@/lib/api';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useI18n } from '@/providers/I18nProvider';
 
 interface ProductCardProps {
   product: Product;
@@ -12,6 +13,7 @@ interface ProductCardProps {
 
 export default function ProductCard({ product }: ProductCardProps) {
   const [isHovered, setIsHovered] = useState(false);
+  const { t } = useI18n();
 
   const formatPrice = (price: string) => {
     return parseFloat(price).toLocaleString('uk-UA');
@@ -20,12 +22,11 @@ export default function ProductCard({ product }: ProductCardProps) {
   const getWarehouseStatus = (warehouse: string) => {
     switch (warehouse.toLowerCase()) {
       case 'in stock':
-        // Match Add-to-cart button primary color
-        return { text: 'В наявності', color: 'text-background', bg: 'bg-primary' };
+        return { text: t('stock.in'), color: 'text-background', bg: 'bg-primary' };
       case 'on order':
-        return { text: 'Під замовлення', color: 'text-black', bg: 'bg-yellow-400' };
+        return { text: t('stock.onOrder'), color: 'text-black', bg: 'bg-yellow-400' };
       case 'out of stock':
-        return { text: 'Немає в наявності', color: 'text-black', bg: 'bg-red-500' };
+        return { text: t('stock.out'), color: 'text-black', bg: 'bg-red-500' };
       default:
         return { text: warehouse, color: 'text-black', bg: 'bg-gray-500' };
     }
@@ -182,7 +183,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             }`}
           >
             <ShoppingCart className="w-4 h-4" />
-            {product.warehouse.toLowerCase() === 'out of stock' ? 'Немає в наявності' : 'Додати в кошик'}
+            {product.warehouse.toLowerCase() === 'out of stock' ? t('btn.outOfStock') : t('btn.addToCart')}
           </button>
         </div>
 

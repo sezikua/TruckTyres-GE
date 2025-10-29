@@ -5,20 +5,23 @@ import Image from "next/image";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import ThemeToggle from "@/components/ThemeToggle";
+import LanguageToggle from "@/components/LanguageToggle";
 import ContactModal from "@/components/ContactModal";
 import Cart from "@/components/Cart";
+import { useI18n } from "@/providers/I18nProvider";
 
 const navItems = [
-  { href: "/", label: "Головна" },
-  { href: "/products", label: "Магазин" },
-  { href: "/about", label: "Про нас" },
-  { href: "/news", label: "Новини" },
-  { href: "/contacts", label: "Контакти" },
+  { href: "/", key: "nav.home" },
+  { href: "/products", key: "nav.shop" },
+  { href: "/about", key: "nav.about" },
+  { href: "/news", key: "nav.news" },
+  { href: "/contacts", key: "nav.contacts" },
 ];
 
 export default function Header() {
   const [open, setOpen] = useState(false);
   const [contactOpen, setContactOpen] = useState(false);
+  const { t } = useI18n();
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 w-full bg-[#008e4ed3] text-white border-b border-black/0 shadow-lg">
@@ -44,7 +47,7 @@ export default function Header() {
                 href={item.href}
                 className="text-sm font-medium text-white/90 hover:text-white transition-colors"
               >
-                {item.label}
+                {t(item.key)}
               </Link>
             ))}
           </nav>
@@ -54,10 +57,11 @@ export default function Header() {
               className="hidden md:inline-flex h-10 items-center rounded-xl bg-[#FFD700] text-[#2d3748] px-4 font-semibold shadow-md hover:bg-[#FFED4E] hover:shadow-lg transition-transform duration-200 hover:-translate-y-0.5"
               onClick={() => setContactOpen(true)}
             >
-              Зворотний зв&apos;язок
+              {t("nav.feedback")}
             </button>
             <Cart />
             <ThemeToggle />
+            <LanguageToggle />
             <button
               className="md:hidden inline-flex h-10 w-10 items-center justify-center rounded-md border border-white/20 hover:bg-white/10 transition-colors text-white"
               aria-label="Toggle menu"
@@ -87,7 +91,7 @@ export default function Header() {
               onClick={() => setOpen(false)}
               className="px-3 py-2 rounded-md hover:bg-white/10 transition-colors"
             >
-              {item.label}
+              {t(item.key)}
             </Link>
           ))}
         </div>

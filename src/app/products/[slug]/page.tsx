@@ -6,11 +6,13 @@ import { fetchProductBySlug, Product, getProductImageUrl } from '@/lib/api';
 import { ShoppingCart, ArrowLeft, Truck, Shield, Clock } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useI18n } from '@/providers/I18nProvider';
 import { Loader2, Package } from 'lucide-react';
 import SimilarProducts from '@/components/SimilarProducts';
 
 export default function ProductPageBySlug() {
   const params = useParams();
+  const { t } = useI18n();
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -42,11 +44,11 @@ export default function ProductPageBySlug() {
   const getWarehouseStatus = (warehouse: string) => {
     switch (warehouse.toLowerCase()) {
       case 'in stock':
-        return { text: 'В наявності', color: 'text-background', bg: 'bg-primary', icon: '✓' };
+        return { text: t('stock.in'), color: 'text-background', bg: 'bg-primary', icon: '✓' };
       case 'on order':
-        return { text: 'Під замовлення', color: 'text-black', bg: 'bg-yellow-400', icon: '⏳' };
+        return { text: t('stock.onOrder'), color: 'text-black', bg: 'bg-yellow-400', icon: '⏳' };
       case 'out of stock':
-        return { text: 'Немає в наявності', color: 'text-black', bg: 'bg-red-500', icon: '✗' };
+        return { text: t('stock.out'), color: 'text-black', bg: 'bg-red-500', icon: '✗' };
       default:
         return { text: warehouse, color: 'text-black', bg: 'bg-gray-500', icon: '?' };
     }
@@ -227,7 +229,7 @@ export default function ProductPageBySlug() {
                 }`}
               >
                 <ShoppingCart className="w-5 h-5" />
-                {product.warehouse.toLowerCase() === 'out of stock' ? 'Немає в наявності' : 'Додати в кошик'}
+                {product.warehouse.toLowerCase() === 'out of stock' ? t('btn.outOfStock') : t('btn.addToCart')}
               </button>
             </div>
 

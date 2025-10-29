@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
 
 // NOTE: У продакшені збережіть у ENV
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '8335053620:AAH7nD2cVB5wH2WkH7wSDTdBynIEZSTFP60';
@@ -51,31 +52,52 @@ function formatContactMessage(data: ContactFormData): string {
 
 export async function POST(req: Request) {
   try {
+    const langCookie = (await cookies()).get('lang')?.value;
+    const lang = langCookie === 'ka' ? 'ka' : 'ru';
+    const t = (key: string) => {
+      const ru: Record<string, string> = {
+        invalid: 'Некорректные данные формы',
+        required: 'Имя и телефон обязательны',
+        email: 'Некорректный формат email',
+        phone: 'Некорректный формат телефона',
+        tg: 'Ошибка отправки в Telegram',
+        ok: 'Сообщение успешно отправлено',
+      };
+      const ka: Record<string, string> = {
+        invalid: 'ფორმის მონაცემები არასწორია',
+        required: 'სახელი და ტელეფონი სავალდებულოა',
+        email: 'Email ფორმატი არასწორია',
+        phone: 'ტელეფონის ფორმატი არასწორია',
+        tg: 'Telegram-ზე გაგზავნის შეცდომა',
+        ok: 'შეტყობინება წარმატებით გაიგზავნა',
+      };
+      return (lang === 'ka' ? ka : ru)[key];
+    };
     const raw: unknown = await req.json();
 
     if (!isContactFormData(raw)) {
-      return NextResponse.json({ error: 'Некоректні дані форми' }, { status: 400 });
+      return NextResponse.json({ error: t('invalid') }, { status: 400 });
     }
 
     const data = raw as ContactFormData;
 
     // Валідація обов'язкових полів
     if (!data.name.trim() || !data.phone.trim()) {
-      return NextResponse.json({ error: 'Ім\'я та телефон обов\'язкові' }, { status: 400 });
+      return NextResponse.json({ error: t('required') }, { status: 400 });
     }
 
     // Валідація email якщо вказано
     if (data.email && data.email.trim()) {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(data.email)) {
-        return NextResponse.json({ error: 'Некоректний формат email' }, { status: 400 });
+        return NextResponse.json({ error: t('email') }, { status: 400 });
       }
     }
 
     // Валідація телефону (базова перевірка)
     const phoneRegex = /^[\+]?[0-9\s\-\(\)]{10,}$/;
     if (!phoneRegex.test(data.phone.replace(/\s/g, ''))) {
-      return NextResponse.json({ error: 'Некоректний формат телефону' }, { status: 400 });
+      return NextResponse.json({ error: t('phone') }, { status: 400 });
     }
 
     const message = formatContactMessage(data);
@@ -95,10 +117,10 @@ export async function POST(req: Request) {
     if (!ok) {
       const details = await tgResp.text();
       console.error('Telegram API error:', details);
-      return NextResponse.json({ error: 'Помилка надсилання в Telegram', details }, { status: 502 });
+      return NextResponse.json({ error: t('tg'), details }, { status: 502 });
     }
 
-    return NextResponse.json({ ok: true, message: 'Повідомлення успішно надіслано' });
+    return NextResponse.json({ ok: true, message: t('ok') });
   } catch (e) {
     const msg = e instanceof Error ? e.message : 'Unknown';
     console.error('Contact API error:', msg);

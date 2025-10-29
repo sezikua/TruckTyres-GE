@@ -3,6 +3,8 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { headers } from "next/headers";
 import ProductCard from "@/components/ProductCard";
+import { cookies } from "next/headers";
+import { getDictionary } from "@/i18n";
 
 async function getBaseUrl(): Promise<string> {
   const envUrl = process.env.NEXT_PUBLIC_SITE_URL;
@@ -15,8 +17,8 @@ async function getBaseUrl(): Promise<string> {
 
 export async function generateMetadata(): Promise<Metadata> {
   const baseUrl = await getBaseUrl();
-  const title = "Агро-Солар — офіційний імпортер CEAT, Trelleborg в Україні | Сільськогосподарські шини";
-  const description = "Агро-Солар — офіційний імпортер CEAT, Trelleborg в Україні. Магазин шин для тракторів, комбайнів, навантажувачів, обприскувачів та причепів.";
+  const title = "Грузовые шины Грузии | Премиальные шины для грузовиков";
+  const description = "Грузовые шины Грузии — надежные шины и сервис. Магазин шин для грузовых автомобилей и прицепов.";
   const canonical = `${baseUrl}/`;
   const ogImage = `${baseUrl}/cstl-logo-eu-as.avif`;
 
@@ -29,8 +31,8 @@ export async function generateMetadata(): Promise<Metadata> {
       description,
       url: canonical,
       type: "website",
-      images: [{ url: ogImage, alt: "Агро-Солар — офіційний імпортер CEAT, Trelleborg в Україні" }],
-      siteName: "Агро-Солар — офіційний імпортер CEAT, Trelleborg в Україні",
+      images: [{ url: ogImage, alt: "Грузовые шины Грузии" }],
+      siteName: "Грузовые шины Грузии",
     },
     twitter: {
       card: "summary_large_image",
@@ -92,6 +94,8 @@ async function getDiscountedProducts() {
 
 export default async function Home() {
   const discountedProducts = await getDiscountedProducts();
+  const lang = (await cookies()).get("lang")?.value === "ka" ? "ka" : "ru";
+  const t = (await getDictionary(lang));
 
   return (
     <section>
@@ -108,15 +112,14 @@ export default async function Home() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-16 pb-20">
           <div className="max-w-2xl relative z-10 text-white">
             <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight drop-shadow">
-              Cільськогосподарські шини преміум якості від Агро-Солар
+              {t["home.hero.title"]}
             </h1>
             <p className="mt-4 text-base sm:text-lg text-white/90">
-              Надійність, зчеплення та довговічність для тракторів, комбайнів, навантажувачів,
-              обприскувачів і причепів.
+              {t["home.hero.subtitle"]}
             </p>
             <div className="mt-8 flex items-center gap-4">
               <Link href="/products" className="inline-flex h-11 items-center rounded-md bg-[#008e4ed3] px-6 text-white shadow-sm transition hover:opacity-90">
-                До каталогу шин
+                {t["home.hero.cta"]}
               </Link>
             </div>
           </div>
@@ -124,7 +127,7 @@ export default async function Home() {
       </div>
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
-        <h2 className="text-2xl font-bold mb-6">Категорії</h2>
+        <h2 className="text-2xl font-bold mb-6">{t["home.categories"]}</h2>
         <CategoriesGrid />
       </div>
 
@@ -132,8 +135,8 @@ export default async function Home() {
       {discountedProducts.length > 0 && (
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 bg-foreground/5">
           <div className="mb-8">
-            <h2 className="text-2xl font-bold mb-2">Товари зі знижкою</h2>
-            <p className="text-foreground/70">Спеціальні пропозиції на шини Trelleborg, CEAT</p>
+            <h2 className="text-2xl font-bold mb-2">{t["home.discounted"]}</h2>
+            <p className="text-foreground/70">{t["home.discounted.sub"]}</p>
           </div>
           
           <div className="grid grid-cols-2 lg:grid-cols-5 gap-6">

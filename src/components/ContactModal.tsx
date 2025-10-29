@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useI18n } from "@/providers/I18nProvider";
 
 type Props = {
   open: boolean;
@@ -15,6 +16,7 @@ interface ContactFormData {
 }
 
 export default function ContactModal({ open, onClose }: Props) {
+  const { t } = useI18n();
   const [formData, setFormData] = useState<ContactFormData>({
     name: '',
     phone: '',
@@ -124,16 +126,16 @@ export default function ContactModal({ open, onClose }: Props) {
         <div className="w-full max-w-xl rounded-2xl bg-[#008e4ed3] text-white shadow-[0_20px_60px_rgba(0,142,78,0.3)] border border-white/20 backdrop-blur-md">
           <div className="px-8 pt-8">
             <div className="flex items-center justify-between">
-              <h3 className="text-2xl font-semibold text-white text-center w-full drop-shadow">Зворотний зв&apos;язок</h3>
+              <h3 className="text-2xl font-semibold text-white text-center w-full drop-shadow">{t('contact.modal.title')}</h3>
               <button
                 type="button"
                 onClick={onClose}
                 className="ml-auto h-9 px-3 rounded-xl bg-white/10 text-white hover:bg-white/20 transition"
               >
-                Закрити
+                {t('contact.modal.close')}
               </button>
             </div>
-            <p className="mt-2 text-center text-sm text-[#E6F7EF]">Заповніть форму і ми зв&apos;яжемося з вами найближчим часом</p>
+            <p className="mt-2 text-center text-sm text-[#E6F7EF]">{t('contact.modal.lead')}</p>
           </div>
 
           {submitStatus === 'success' ? (
@@ -143,14 +145,14 @@ export default function ContactModal({ open, onClose }: Props) {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
               </div>
-              <h4 className="text-lg font-semibold text-white mb-2">Ваше повідомлення надіслано.</h4>
-              <p className="text-white/80">Ми з Вами зв&apos;яжемось найближчим часом.</p>
+              <h4 className="text-lg font-semibold text-white mb-2">{t('contact.modal.sent')}</h4>
+              <p className="text-white/80">{t('contact.modal.soon')}</p>
             </div>
           ) : (
             <form className="px-8 py-6 grid gap-4" onSubmit={handleSubmit}>
               <div className="grid gap-2">
                 <label htmlFor="name" className="text-sm font-semibold text-white uppercase tracking-wide">
-                  Ім&apos;я <span className="text-[#FFD700]">*</span>
+                  {t('contact.modal.name')} <span className="text-[#FFD700]">*</span>
                 </label>
                 <input 
                   id="name" 
@@ -159,13 +161,13 @@ export default function ContactModal({ open, onClose }: Props) {
                   onChange={handleInputChange}
                   required 
                   className="h-12 rounded-xl border-0 bg-white px-4 text-[#2d3748] placeholder:text-[#a0aec0] shadow-md focus:outline-none focus:ring-2 focus:ring-[#008E4E]/40" 
-                  placeholder="Введіть ваше ім'я"
+                  placeholder={t('contact.modal.name.placeholder')}
                 />
               </div>
               
               <div className="grid gap-2">
                 <label htmlFor="phone" className="text-sm font-semibold text-white uppercase tracking-wide">
-                  Телефон <span className="text-[#FFD700]">*</span>
+                  {t('contact.modal.phone')} <span className="text-[#FFD700]">*</span>
                 </label>
                 <input 
                   id="phone" 
@@ -175,7 +177,7 @@ export default function ContactModal({ open, onClose }: Props) {
                   required 
                   type="tel"
                   className="h-12 rounded-xl border-0 bg-white px-4 text-[#2d3748] placeholder:text-[#a0aec0] shadow-md focus:outline-none focus:ring-2 focus:ring-[#008E4E]/40" 
-                  placeholder="+38 (___) ___-__-__"
+                  placeholder="+995 ___ ___ ___"
                   inputMode="tel"
                   autoComplete="tel"
                   pattern="^\+38 \(\d{3}\) \d{3}-\d{2}-\d{2}$"
@@ -184,7 +186,7 @@ export default function ContactModal({ open, onClose }: Props) {
               
               <div className="grid gap-2">
                 <label htmlFor="email" className="text-sm font-semibold text-white uppercase tracking-wide">
-                  Email
+                  {t('contact.modal.email')}
                 </label>
                 <input 
                   id="email" 
@@ -199,7 +201,7 @@ export default function ContactModal({ open, onClose }: Props) {
               
               <div className="grid gap-2">
                 <label htmlFor="message" className="text-sm font-semibold text-white uppercase tracking-wide">
-                  Повідомлення
+                  {t('contact.modal.message')}
                 </label>
                 <textarea 
                   id="message" 
@@ -208,7 +210,7 @@ export default function ContactModal({ open, onClose }: Props) {
                   onChange={handleInputChange}
                   rows={4} 
                   className="rounded-xl border-0 bg-white px-4 py-3 text-[#2d3748] placeholder:text-[#a0aec0] shadow-md focus:outline-none focus:ring-2 focus:ring-[#008E4E]/40 resize-y min-h-[120px] max-h-[250px]" 
-                  placeholder="Опишіть ваше питання або пропозицію..."
+                  placeholder={t('contact.modal.message.placeholder')}
                 />
               </div>
 
@@ -230,10 +232,10 @@ export default function ContactModal({ open, onClose }: Props) {
                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                       </svg>
-                      Надсилання...
+                      {t('contact.modal.sending')}
                     </>
                   ) : (
-                    'Надіслати'
+                    t('contact.modal.send')
                   )}
                 </button>
                 <button 
@@ -242,10 +244,10 @@ export default function ContactModal({ open, onClose }: Props) {
                   className="flex-1 h-12 px-5 rounded-xl bg-white text-[#008E4E] font-semibold shadow-md hover:bg-[#F7FAFC] hover:shadow-lg transition"
                   disabled={isSubmitting}
                 >
-                  Скасувати
+                  {t('contact.modal.cancel')}
                 </button>
               </div>
-              <p className="mt-2 text-center text-xs text-[#E6F7EF] italic">Поля, позначені * — обов&apos;язкові</p>
+              <p className="mt-2 text-center text-xs text-[#E6F7EF] italic">{t('contact.modal.required')}</p>
             </form>
           )}
         </div>

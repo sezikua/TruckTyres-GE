@@ -2,6 +2,9 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import ThemeProvider from "@/providers/ThemeProvider";
+import I18nProvider from "@/providers/I18nProvider";
+import { cookies } from "next/headers";
+import { getDictionary } from "@/i18n";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
@@ -17,9 +20,9 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://ceat-katalog.vercel.app'),
-  title: "CEAT — офіційний імпортер в Україні | Сільськогосподарські шини",
+  title: "Грузовые шины Грузии | Премиальные шины",
   description:
-    "CEAT — офіційний імпортер в Україні. Магазин шин для тракторів, комбайнів, навантажувачів, обприскувачів та причепів.",
+    "Грузовые шины Грузии — надежные шины и сервис. Магазин шин для грузовиков и прицепов.",
   manifest: "/manifest.json",
   icons: {
     icon: [
@@ -35,22 +38,22 @@ export const metadata: Metadata = {
   robots: "index, follow",
   openGraph: {
     type: "website",
-    siteName: "CEAT — офіційний імпортер в Україні",
-    title: "CEAT — офіційний імпортер в Україні | Сільськогосподарські шини",
-    description: "CEAT — офіційний імпортер в Україні. Каталог шин для тракторів, комбайнів, навантажувачів, обприскувачів та причепів.",
+    siteName: "Грузовые шины Грузии",
+    title: "Грузовые шины Грузии | Премиальные шины",
+    description: "Грузовые шины Грузии — надежные шины и сервис. Магазин шин для грузовиков и прицепов.",
     images: [
       {
         url: "/cstl-logo-eu-as.avif",
         width: 1200,
         height: 630,
-        alt: "CEAT — офіційний імпортер в Україні",
+        alt: "Грузовые шины Грузии",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "CEAT — офіційний імпортер в Україні | Сільськогосподарські шини",
-    description: "CEAT — офіційний імпортер в Україні. Каталог шин для тракторів, комбайнів, навантажувачів, обприскувачів та причепів.",
+    title: "Грузовые шины Грузии | Премиальные шины",
+    description: "Грузовые шины Грузии — надежные шины и сервис. Магазин шин для грузовиков и прицепов.",
     images: ["/cstl-logo-eu-as.avif"],
   },
 };
@@ -61,18 +64,24 @@ export const viewport: Viewport = {
   themeColor: "#008e4ed3",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookieStore = await cookies();
+  const langCookie = cookieStore.get("lang")?.value as "ru" | "ka" | undefined;
+  const lang = langCookie === "ka" ? "ka" : "ru";
+  const dict = await getDictionary(lang);
   return (
-    <html lang="uk" suppressHydrationWarning>
+    <html lang={lang} suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}>
         <ThemeProvider>
-          <Header />
-          <main className="flex-1 pt-[73px]">{children}</main>
-          <Footer />
+          <I18nProvider lang={lang} dict={dict}>
+            <Header />
+            <main className="flex-1 pt-[73px]">{children}</main>
+            <Footer />
+          </I18nProvider>
         </ThemeProvider>
       </body>
     </html>

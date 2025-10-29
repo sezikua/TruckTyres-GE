@@ -1,0 +1,138 @@
+const ka = {
+  // Global/brand
+  "brand.name": "საქართველოს სატვირთო საბურავები",
+
+  // Header
+  "nav.home": "მთავარი",
+  "nav.shop": "მაღაზია",
+  "nav.about": "ჩვენ შესახებ",
+  "nav.news": "სტატიები",
+  "nav.contacts": "კონტაქტი",
+  "nav.feedback": "უკუკავშირი",
+  "lang.ru": "Рус",
+  "lang.ka": "ქარ",
+
+  // Footer
+  "footer.quickLinks": "სწრაფი ბმულები",
+  "footer.categories": "კატეგორიები",
+  "footer.contacts": "კონტაქტი",
+  "footer.copyright": "© {year} საქართველოს სატვირთო საბურავები. ყველა უფლება დაცულია.",
+
+  // Home
+  "home.hero.title": "პრემიუმ სატვირთო საბურავები საქართველოში",
+  "home.hero.subtitle": "საიმედოობა, მოჭიდება და გამძლეობა სატვირთოებისა და მისაბმელებისთვის.",
+  "home.hero.cta": "საბურავების კატალოგი",
+  "home.categories": "კატეგორიები",
+  "home.discounted": "ფასდაკლებული პროდუქტები",
+  "home.discounted.sub": "სპეციალური შეთავაზებები საბურავებზე",
+
+  // Categories
+  "cat.tractor": "სატვირთოებისთვის საბურავები",
+  "cat.combine": "მისაბმელებისთვის საბურავები",
+  "cat.loader": "სპეცტექნიკის საბურავები",
+  "cat.sprayer": "ყველა სეზონის საბურავები",
+  "cat.trailer": "ტრანსპორტის საბურავები",
+
+  // Product/Cart
+  "btn.addToCart": "დამატება კალათაში",
+  "btn.outOfStock": "არ არის მარაგში",
+  "stock.in": "მარაგშია",
+  "stock.onOrder": "შეკვეთით",
+  "stock.out": "არ არის მარაგში",
+
+  // Contacts
+  "contacts.title": "კონტაქტი",
+  "contacts.phone": "ტელ.",
+  "contacts.name": "დავით",
+  "contacts.address.title": "ჩვენი მისამართი",
+  "contacts.address": "სამხედრო დასახლება II ქუჩა №14, თბილისი, საქართველო",
+  "contacts.phone.value": "+995312334455",
+  "contacts.email.label": "შეკვეთებისთვის მოგვწერეთ ელფოსტაზე",
+
+  // About
+  "about.title": "ჩვენ შესახებ",
+  "about.lead": "საქართველოს სატვირთო საბურავები — საიმედო საბურავები და სერვისი.",
+
+  // About sections
+  "about.stats.items": "დასახელება",
+  "about.stats.invest": "ინვესტიციები",
+  "about.stats.years": "წლის გამოცდილება",
+  "about.stats.employees": "თანამშრომელი",
+  "about.section.delivery.title": "კომფორტული გაცემის პუნქტები და სწრაფი მიწოდება",
+  "about.section.delivery.text": "საწყობები თბილისში უზრუნველყოფს სწრაფ მიწოდებას سرا દેશમાં.",
+  "about.section.range.badge": "ფართო ასორტიმენტი",
+  "about.section.range.badgeSub": "500+ დასახელება",
+  "about.section.range.title": "საბურავების ფართო ასორტიმენტი ნებისმიერი ამოცანისთვის",
+  "about.section.range.text": "გვაქვს სატვირთო საბურავების დიდი არჩევანი ნებისმიერი ექსპლუატაციისთვის.",
+  "about.section.partner.title": "თქვენი საიმედო პარტნიორი",
+  "about.section.partner.text": "დაგეხმარებით ოპტიმალური საბურავების შერჩევაში და სერვისში.",
+  "about.features.title": "ჩვენ ამ ბიზნესში ვართ პროფესიონალები",
+  "about.features.support": "მხარდაჭერა",
+  "about.features.support.text": "პროფესიონალური კონსულტაცია, სწრაფი მიწოდება და სერვისი.",
+  "about.features.strength": "სიმტკიცე",
+  "about.features.strength.text": "მძიმე პირობებისთვის შექმნილი.",
+  "about.features.economy": "ეკონომია",
+  "about.features.economy.text": "ცვეთილობისა და საწვავის ხარჯის შემცირება.",
+  "about.features.grip": "მოჭიდება",
+  "about.features.grip.text": "ეფექტურობა ნებისმიერ გზაზე.",
+
+  // News page
+  "news.title": "ახალი ამბები და სტატიები",
+  "news.lead": "საიმედო ინფორმაცია სატვირთო საბურავებზე",
+  "news.badge": "გვერდი მუშავდება",
+  "news.coming.title": "მალე აქ იქნება საინტერესო მასალა",
+  "news.coming.text": "ვამზადებთ სასარგებლო კონტენტს სატრანსპორტო სფეროს პროფესიონალებისთვის.",
+  "news.card.reviews": "ახალი პროდუქტების მიმოხილვა",
+  "news.card.reviews.text": "სატვირთო საბურავების ახალი მოდელების მიმოხილვები და შედარებები.",
+  "news.card.advice": "რჩევები შერჩევისთვის",
+  "news.card.advice.text": "გაიდები საბურავების შერჩევაზე სხვადასხვა პირობებისთვის.",
+  "news.card.use": "ექსპლუატაცია",
+  "news.card.use.text": "პრაქტიკული რჩევები გამოყენებისა და მოვლის შესახებ.",
+  "news.card.hacks": "სასარგებლო რჩევები",
+  "news.card.hacks.text": "როგორ გავახანგრძლივოთ საბურავის სიცოცხლე და დავზოგოთ.",
+  "news.card.safety": "უსაფრთხოება და საიმედოობა",
+  "news.card.safety.text": "უსაფრთხოების ძირითადი ასპექტები და საბურავის მდგომარეობის შემოწმება.",
+  "news.card.tech": "ტექნიკური სტატიები",
+  "news.card.tech.text": "ტექნოლოგიებისა და ინოვაციების შესახებ მასალები.",
+  "news.cta.title": "მოუახლოვდით მოგვიანებით!",
+  "news.cta.text": "ვმუშაობთ ხარისხიან კონტენტზე სატვირთო საბურავების არჩევასა და ექსპლუატაციაზე.",
+  "news.cta.shop": "გადასვლა მაღაზიაში",
+  "news.cta.contact": "დაგვიკავშირდით",
+  "news.newsletter.title": "გაეცანით სიახლეებს",
+  "news.newsletter.text": "გამოწერეთ, რომ პირველებმა გაიგოთ ახალი სტატიებისა და აქციების შესახებ.",
+  "news.newsletter.input": "თქვენი email",
+  "news.newsletter.submitting": "გამოწერა...",
+  "news.newsletter.submit": "გამოწერა",
+  "news.newsletter.success": "გმადლობთ, რომ გამოიწერეთ ჩვენი სიახლეები!",
+  "news.newsletter.error.empty": "გთხოვთ, შეიყვანოთ email",
+  "news.newsletter.error.fail": "გამოწერის შეცდომა",
+
+  // Contact modal
+  "contact.modal.title": "უკუკავშირი",
+  "contact.modal.close": "დახურვა",
+  "contact.modal.lead": "შეავსეთ ფორმა და მალე დაგიკავშირდებით",
+  "contact.modal.sent": "თქვენი შეტყობინება გაიგზავნა.",
+  "contact.modal.soon": "ჩვენ მალე დაგიკავშირდებით.",
+  "contact.modal.name": "სახელი",
+  "contact.modal.name.placeholder": "შეიყვანეთ თქვენი სახელი",
+  "contact.modal.phone": "ტელეფონი",
+  "contact.modal.email": "Email",
+  "contact.modal.message": "შეტყობინება",
+  "contact.modal.message.placeholder": "აღწერეთ თქვენი კითხვა ან წინადადება...",
+  "contact.modal.sending": "გაგზავნა...",
+  "contact.modal.send": "გაგზავნა",
+  "contact.modal.cancel": "გაუქმება",
+  "contact.modal.required": "ველები, მონიშნული *, სავალდებულოა",
+
+  // API contact errors
+  "api.contact.invalid": "ფორმის მონაცემები არასწორია",
+  "api.contact.required": "სახელი და ტელეფონი სავალდებულოა",
+  "api.contact.email": "Email ფორმატი არასწორია",
+  "api.contact.phone": "ტელეფონის ფორმატი არასწორია",
+  "api.contact.tg": "Telegram-ზე გაგზავნის შეცდომა",
+  "api.contact.ok": "შეტყობინება წარმატებით გაიგზავნა",
+};
+
+export default ka;
+
+
